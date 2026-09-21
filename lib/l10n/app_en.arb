@@ -1,0 +1,207 @@
+{
+  "@@locale": "en",
+  "appTitle": "SwipePix",
+  "welcome": "Make room for what matters",
+  "intro": "Start by connecting your photo library. Your photos stay on your device; SwipePix never uploads them.",
+  "safety": "You stay in control. Swiping will only mark photos. Deletion will require a separate review and confirmation.",
+  "connect": "Explore my photos",
+  "gallery": "Your photo library",
+  "libraryTitle": "Library",
+  "recentPhotos": "Recent photos",
+  "photoSummary": "{count, plural, =0{No photos yet} =1{1 photo} other{{count} photos}}",
+  "@photoSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "galleryHeroTitle": "Ready to clean",
+  "permissionIntro": "Allow photo access to see your library. You can grant access to selected photos only.",
+  "allow": "Allow photo access",
+  "settings": "Settings",
+  "openSettings": "Open device settings",
+  "limited": "Selected photos only",
+  "authorized": "Full photo access",
+  "denied": "Photo access is denied. You can try again or change it in device settings.",
+  "restricted": "Photo access is restricted by this device.",
+  "unsupported": "Open SwipePix on Android or iOS to access your photos.",
+  "manage": "Change selected photos",
+  "empty": "No accessible photos. If access is limited, try selecting more photos.",
+  "error": "Could not load your photos. Check access and try again.",
+  "retry": "Try again",
+  "refresh": "Refresh library",
+  "more": "Load more photos",
+  "loadingMorePhotos": "Loading more photos…",
+  "readOnly": "Swiping only marks photos; deletion always requires review and confirmation.",
+  "language": "Language",
+  "system": "System default",
+  "theme": "Appearance",
+  "light": "Light",
+  "dark": "Dark",
+  "thumbnailError": "Preview unavailable",
+  "photo": "Photo",
+  "sessionSettings": "These preferences are saved on this device.",
+  "startCleanup": "Start reviewing",
+  "quickCleanup": "Quick cleanup",
+  "allPhotos": "All",
+  "largePhotos": "Large",
+  "oldestPhotos": "Oldest",
+  "albums": "Albums",
+  "chooseWhatToClean": "Choose what to clean",
+  "seeAll": "See all",
+  "albumPhotoCount": "{count, plural, =1{1 photo} other{{count} photos}}",
+  "@albumPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noAlbums": "Albums will appear here when the device shares them.",
+  "albumNotFound": "This album is no longer available.",
+  "startAlbumCleanup": "Start cleanup in this album",
+  "reviewedShort": "{current} of {total} reviewed",
+  "@reviewedShort": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "loadedSessionCount": "You will review the {count} loaded photos.",
+  "@loadedSessionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cleanupTitle": "Review photos",
+  "swipeHint": "Swipe left to delete · right to keep",
+  "mark": "Mark",
+  "keep": "Keep",
+  "deleteAction": "Delete",
+  "deleteOverlay": "DELETE",
+  "keepOverlay": "KEEP",
+  "photoMetadata": "{date}  •  {size}",
+  "@photoMetadata": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "Undo",
+  "reviewProgress": "{current} of {total}",
+  "@reviewProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "cleanupProgressSummary": "Reviewed: {reviewed} · Remaining: {remaining} · Marked: {marked}",
+  "@cleanupProgressSummary": {
+    "placeholders": {
+      "reviewed": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      },
+      "marked": {
+        "type": "int"
+      }
+    }
+  },
+  "markedCount": "{count, plural, =0{None marked} =1{1 marked} other{{count} marked}}",
+  "@markedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewMarked": "Review marked photos",
+  "sessionComplete": "You finished this round",
+  "sessionCompleteBody": "Review the marked photos before deciding whether to delete them.",
+  "nothingMarked": "You did not mark any photos for deletion.",
+  "continueNextBatch": "Continue with the next batch",
+  "loadingNextBatch": "Looking for more photos…",
+  "noMorePhotos": "There are no new photos left to review",
+  "backToGallery": "Back to library",
+  "deleteReviewTitle": "Review before deleting",
+  "deleteReviewSafety": "These photos have not been deleted yet. Remove any photo you want to keep.",
+  "removeFromDelete": "Keep this photo",
+  "deleteSelected": "Delete selected photos",
+  "confirmDeleteTitle": "Delete permanently?",
+  "confirmDeleteBody": "SwipePix will request deletion of {count, plural, =1{1 photo} other{{count} photos}} from the device. The system may ask for another confirmation.",
+  "@confirmDeleteBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cancel": "Cancel",
+  "confirmDelete": "Confirm deletion",
+  "deleting": "Waiting for system confirmation…",
+  "deleteSuccess": "{count, plural, =1{1 photo was deleted} other{{count} photos were deleted}}.",
+  "@deleteSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deletePartial": "Some photos were not deleted or confirmation was canceled. They remain in the list.",
+  "deleteAccessLost": "Could not delete. Check photo access and try again.",
+  "previewUnavailable": "This photo could not be loaded.",
+  "sortBy": "Sort by",
+  "newestFirst": "Newest first",
+  "oldestFirst": "Oldest first",
+  "largestFirst": "Largest first",
+  "calculatingSizes": "Calculating library sizes…",
+  "continueCleanup": "Continue cleanup",
+  "continueCleanupDetail": "Saved progress: {current} of {total}",
+  "@continueCleanupDetail": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "restoringSession": "Checking photos…",
+  "sessionUnavailable": "Could not restore the session. Check photo access.",
+  "startNewCleanup": "Start a new cleanup",
+  "replaceSessionTitle": "Replace the saved session?",
+  "replaceSessionBody": "Progress and marked photos from the previous session will be lost. No photos will be deleted.",
+  "viewIntroduction": "View introduction",
+  "savedCleanupTitle": "Cleanup session",
+  "noSavedCleanup": "There is no cleanup in progress. Start a new one to save your progress.",
+  "youWillFree": "You'll free approximately:",
+  "about": "About",
+  "version": "Version",
+  "swipeToOrganize": "Swipe to organize",
+  "skip": "Skip",
+  "aboutSwipePix": "About SwipePix",
+  "aboutSwipePixBody": "SwipePix helps you review your photo library quickly and safely. Photos stay on your device, and swiping only marks photos for review. Nothing is deleted until you confirm it.",
+  "privacyPolicy": "Privacy Policy",
+  "privacyPolicyBody": "SwipePix requests access to your photo library only to show photos, organize review sessions, and request deletion from the device when you confirm. SwipePix does not upload, sell, or share your photos. Your review progress and preferences are stored locally on this device.",
+  "termsConditions": "Terms & Conditions",
+  "termsConditionsBody": "SwipePix is provided to help you review and manage your own photos. You are responsible for confirming which photos should be deleted. Deletion requests are handled by the device system and may require an additional confirmation.",
+  "legalUpdated": "Last updated: September 21, 2026"
+}

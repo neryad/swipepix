@@ -1,0 +1,207 @@
+{
+  "@@locale": "es",
+  "appTitle": "SwipePix",
+  "welcome": "Haz espacio para lo que importa",
+  "intro": "Empieza conectando tu galería. Tus fotos permanecen en tu dispositivo; SwipePix nunca las sube.",
+  "safety": "Tú tienes el control. El swipe solo marcará fotos. Borrar requerirá una revisión y confirmación aparte.",
+  "connect": "Explorar mis fotos",
+  "gallery": "Tu galería",
+  "libraryTitle": "Biblioteca",
+  "recentPhotos": "Fotos recientes",
+  "photoSummary": "{count, plural, =0{Sin fotos todavía} =1{1 foto} other{{count} fotos}}",
+  "@photoSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "galleryHeroTitle": "Lista para limpiar",
+  "permissionIntro": "Permite el acceso para ver tu galería. Puedes compartir solo las fotos que elijas.",
+  "allow": "Permitir acceso a fotos",
+  "settings": "Ajustes",
+  "openSettings": "Abrir ajustes del dispositivo",
+  "limited": "Solo las fotos seleccionadas",
+  "authorized": "Acceso completo a fotos",
+  "denied": "El acceso está denegado. Puedes reintentarlo o cambiarlo en los ajustes del dispositivo.",
+  "restricted": "El acceso a fotos está restringido por este dispositivo.",
+  "unsupported": "Abre SwipePix en Android o iOS para acceder a tus fotos.",
+  "manage": "Cambiar fotos seleccionadas",
+  "empty": "No hay fotos accesibles. Si el acceso es limitado, prueba seleccionando más fotos.",
+  "error": "No se pudieron cargar tus fotos. Revisa el acceso y vuelve a intentarlo.",
+  "retry": "Reintentar",
+  "refresh": "Actualizar galería",
+  "more": "Cargar más fotos",
+  "loadingMorePhotos": "Cargando más fotos…",
+  "readOnly": "Deslizar solo marca fotos; borrar siempre requiere revisión y confirmación.",
+  "language": "Idioma",
+  "system": "Según el sistema",
+  "theme": "Apariencia",
+  "light": "Claro",
+  "dark": "Oscuro",
+  "thumbnailError": "Vista previa no disponible",
+  "photo": "Foto",
+  "sessionSettings": "Estas preferencias se guardan en este dispositivo.",
+  "startCleanup": "Empezar a revisar",
+  "quickCleanup": "Limpieza rápida",
+  "allPhotos": "Todas",
+  "largePhotos": "Grandes",
+  "oldestPhotos": "Antiguas",
+  "albums": "Álbumes",
+  "chooseWhatToClean": "Elige qué limpiar",
+  "seeAll": "Ver todo",
+  "albumPhotoCount": "{count, plural, =1{1 foto} other{{count} fotos}}",
+  "@albumPhotoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noAlbums": "Los álbumes aparecerán aquí cuando el dispositivo los comparta.",
+  "albumNotFound": "Este álbum ya no está disponible.",
+  "startAlbumCleanup": "Limpiar este álbum",
+  "reviewedShort": "{current} de {total} revisadas",
+  "@reviewedShort": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "loadedSessionCount": "Revisarás las {count} fotos cargadas.",
+  "@loadedSessionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cleanupTitle": "Revisar fotos",
+  "swipeHint": "Izquierda para eliminar · derecha para conservar",
+  "mark": "Marcar",
+  "keep": "Conservar",
+  "deleteAction": "Eliminar",
+  "deleteOverlay": "ELIMINAR",
+  "keepOverlay": "CONSERVAR",
+  "photoMetadata": "{date}  •  {size}",
+  "@photoMetadata": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "Deshacer",
+  "reviewProgress": "{current} de {total}",
+  "@reviewProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "cleanupProgressSummary": "Revisadas: {reviewed} · Pendientes: {remaining} · Marcadas: {marked}",
+  "@cleanupProgressSummary": {
+    "placeholders": {
+      "reviewed": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "int"
+      },
+      "marked": {
+        "type": "int"
+      }
+    }
+  },
+  "markedCount": "{count, plural, =0{Ninguna marcada} =1{1 marcada} other{{count} marcadas}}",
+  "@markedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewMarked": "Revisar marcadas",
+  "sessionComplete": "Terminaste esta ronda",
+  "sessionCompleteBody": "Revisa las fotos marcadas antes de decidir si quieres borrarlas.",
+  "nothingMarked": "No marcaste ninguna foto para borrar.",
+  "continueNextBatch": "Continuar con el siguiente lote",
+  "loadingNextBatch": "Buscando más fotos…",
+  "noMorePhotos": "No hay más fotos nuevas para revisar",
+  "backToGallery": "Volver a la galería",
+  "deleteReviewTitle": "Revisión antes de borrar",
+  "deleteReviewSafety": "Estas fotos todavía no se han borrado. Quita cualquiera que quieras conservar.",
+  "removeFromDelete": "Conservar esta foto",
+  "deleteSelected": "Borrar fotos seleccionadas",
+  "confirmDeleteTitle": "¿Borrar definitivamente?",
+  "confirmDeleteBody": "Se solicitará borrar {count, plural, =1{1 foto} other{{count} fotos}} del dispositivo. El sistema puede pedir otra confirmación.",
+  "@confirmDeleteBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cancel": "Cancelar",
+  "confirmDelete": "Confirmar borrado",
+  "deleting": "Esperando confirmación del sistema…",
+  "deleteSuccess": "{count, plural, =1{Se borró 1 foto} other{Se borraron {count} fotos}}.",
+  "@deleteSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deletePartial": "Algunas fotos no se borraron o se canceló la confirmación. Siguen en la lista.",
+  "deleteAccessLost": "No se pudo borrar. Revisa el permiso de fotos y vuelve a intentarlo.",
+  "previewUnavailable": "No se pudo cargar esta foto.",
+  "sortBy": "Ordenar por",
+  "newestFirst": "Más recientes",
+  "oldestFirst": "Más antiguas",
+  "largestFirst": "Mayor tamaño",
+  "calculatingSizes": "Calculando tamaños de la galería…",
+  "continueCleanup": "Continuar limpieza",
+  "continueCleanupDetail": "Progreso guardado: {current} de {total}",
+  "@continueCleanupDetail": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "restoringSession": "Comprobando fotos…",
+  "sessionUnavailable": "No se pudo recuperar la sesión. Revisa el permiso de fotos.",
+  "startNewCleanup": "Empezar una limpieza nueva",
+  "replaceSessionTitle": "¿Reemplazar la sesión guardada?",
+  "replaceSessionBody": "Se perderá el progreso y las fotos marcadas de la sesión anterior. Ninguna foto se borrará.",
+  "viewIntroduction": "Ver introducción",
+  "savedCleanupTitle": "Sesión de limpieza",
+  "noSavedCleanup": "No hay una limpieza pendiente. Empieza una nueva para guardar tu progreso.",
+  "youWillFree": "Liberarás aproximadamente:",
+  "about": "Acerca de",
+  "version": "Versión",
+  "swipeToOrganize": "Desliza para organizar",
+  "skip": "Omitir",
+  "aboutSwipePix": "Acerca de SwipePix",
+  "aboutSwipePixBody": "SwipePix te ayuda a revisar tu galería de forma rápida y segura. Las fotos permanecen en tu dispositivo, y deslizar solo marca fotos para revisión. Nada se borra hasta que lo confirmas.",
+  "privacyPolicy": "Política de privacidad",
+  "privacyPolicyBody": "SwipePix solicita acceso a tu galería solo para mostrar fotos, organizar sesiones de revisión y solicitar el borrado en el dispositivo cuando tú confirmas. SwipePix no sube, vende ni comparte tus fotos. Tu progreso y preferencias se guardan localmente en este dispositivo.",
+  "termsConditions": "Términos y condiciones",
+  "termsConditionsBody": "SwipePix se ofrece para ayudarte a revisar y gestionar tus propias fotos. Tú eres responsable de confirmar qué fotos quieres borrar. Las solicitudes de borrado las gestiona el sistema del dispositivo y pueden requerir una confirmación adicional.",
+  "legalUpdated": "Última actualización: 21 de septiembre de 2026"
+}
