@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/app_routes.dart';
 import '../../../app/design_system.dart';
+import '../../../app/empty_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../gallery/application/gallery_controller.dart';
 import '../../gallery/domain/gallery_repository.dart';
@@ -93,7 +94,13 @@ class DeleteReviewScreen extends ConsumerWidget {
             ),
             Expanded(
               child: photos.isEmpty
-                  ? Center(child: Text(l.nothingMarked))
+                  ? AppEmptyState(
+                      icon: Icons.fact_check_outlined,
+                      title: l.nothingMarked,
+                      body: l.safety,
+                      actionLabel: l.backToGallery,
+                      onAction: () => context.go(AppRoutes.gallery),
+                    )
                   : GridView.builder(
                       padding: const EdgeInsets.symmetric(
                         horizontal: SwipeSpacing.lg,
@@ -149,17 +156,13 @@ class DeleteReviewScreen extends ConsumerWidget {
                         FilledButton.icon(
                           onPressed: photos.isEmpty
                               ? null
-                              : () => _confirmAndDelete(
-                                  context,
-                                  ref,
-                                  photos.length,
-                                ),
+                              : () => _deleteReviewed(context, ref),
                           style: FilledButton.styleFrom(
                             backgroundColor: palette.delete,
                             foregroundColor: Colors.white,
                           ),
                           icon: const Icon(Icons.delete_forever_outlined),
-                          label: Text(l.deleteSelected),
+                          label: Text(l.deleteReviewedPhotos(photos.length)),
                         ),
                       ],
                     ),
@@ -170,30 +173,8 @@ class DeleteReviewScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _confirmAndDelete(
-    BuildContext context,
-    WidgetRef ref,
-    int count,
-  ) async {
+  Future<void> _deleteReviewed(BuildContext context, WidgetRef ref) async {
     final l = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l.confirmDeleteTitle),
-        content: Text(l.confirmDeleteBody(count)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: Text(l.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(dialogContext, true),
-            child: Text(l.confirmDelete),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !context.mounted) return;
     final outcome = await ref.read(cleanupProvider.notifier).deletePending();
     if (!context.mounted) return;
     if (outcome.deleted.isNotEmpty) {

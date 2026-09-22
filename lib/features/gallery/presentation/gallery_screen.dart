@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../app/app_routes.dart';
 import '../../../app/design_system.dart';
+import '../../../app/empty_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cleanup/application/cleanup_controller.dart';
 import '../application/gallery_controller.dart';
@@ -179,8 +180,19 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen>
                         state.access.canRead &&
                         state.photos.isEmpty)
                       Padding(
-                        padding: const EdgeInsets.only(top: SwipeSpacing.md),
-                        child: Text(l.empty),
+                        padding: const EdgeInsets.only(top: SwipeSpacing.xl),
+                        child: AppEmptyState(
+                          icon: Icons.photo_library_outlined,
+                          title: l.photoSummary(0),
+                          body: l.empty,
+                          actionLabel: state.access == GalleryAccess.limited
+                              ? null
+                              : l.refresh,
+                          onAction: state.access == GalleryAccess.limited
+                              ? null
+                              : () => controller.refresh(),
+                          compact: true,
+                        ),
                       ),
                     if (state.access.canRead) ...[
                       const SizedBox(height: SwipeSpacing.xl),

@@ -536,6 +536,18 @@ abstract class AppLocalizations {
   /// **'Delete selected photos'**
   String get deleteSelected;
 
+  /// No description provided for @deleteReviewedPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Delete 1 reviewed photo} other{Delete {count} reviewed photos}}'**
+  String deleteReviewedPhotos(int count);
+
+  /// No description provided for @deleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for system confirmation…'**
+  String get deleting;
+
   /// No description provided for @confirmDeleteTitle.
   ///
   /// In en, this message translates to:
@@ -559,12 +571,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm deletion'**
   String get confirmDelete;
-
-  /// No description provided for @deleting.
-  ///
-  /// In en, this message translates to:
-  /// **'Waiting for system confirmation…'**
-  String get deleting;
 
   /// No description provided for @deleteSuccess.
   ///

@@ -273,6 +273,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteSelected => 'Delete selected photos';
 
   @override
+  String deleteReviewedPhotos(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Delete $count reviewed photos',
+      one: 'Delete 1 reviewed photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get deleting => 'Waiting for system confirmation…';
+
+  @override
   String get confirmDeleteTitle => 'Delete permanently?';
 
   @override
@@ -291,9 +305,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmDelete => 'Confirm deletion';
-
-  @override
-  String get deleting => 'Waiting for system confirmation…';
 
   @override
   String deleteSuccess(int count) {

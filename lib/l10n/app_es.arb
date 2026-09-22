@@ -144,6 +144,15 @@
   "deleteReviewSafety": "Estas fotos todavía no se han borrado. Quita cualquiera que quieras conservar.",
   "removeFromDelete": "Conservar esta foto",
   "deleteSelected": "Borrar fotos seleccionadas",
+  "deleteReviewedPhotos": "{count, plural, =1{Borrar 1 foto revisada} other{Borrar {count} fotos revisadas}}",
+  "@deleteReviewedPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleting": "Esperando confirmación del sistema…",
   "confirmDeleteTitle": "¿Borrar definitivamente?",
   "confirmDeleteBody": "Se solicitará borrar {count, plural, =1{1 foto} other{{count} fotos}} del dispositivo. El sistema puede pedir otra confirmación.",
   "@confirmDeleteBody": {
@@ -155,7 +164,6 @@
   },
   "cancel": "Cancelar",
   "confirmDelete": "Confirmar borrado",
-  "deleting": "Esperando confirmación del sistema…",
   "deleteSuccess": "{count, plural, =1{Se borró 1 foto} other{Se borraron {count} fotos}}.",
   "@deleteSuccess": {
     "placeholders": {

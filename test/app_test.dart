@@ -213,7 +213,7 @@ void main() {
     expect(container.read(cleanupProvider).current?.id, 'two');
   });
 
-  testWidgets('swipe flow marks, reviews, and requires confirmation', (
+  testWidgets('swipe flow marks, reviews, and deletes after review action', (
     tester,
   ) async {
     final repo = FakeGallery()
@@ -246,17 +246,9 @@ void main() {
     await tester.tap(find.byTooltip('1 marked'));
     await tester.pumpAndSettle();
     expect(find.text('Review before deleting'), findsOneWidget);
-    await tester.tap(find.text('Delete selected photos'));
-    await tester.pumpAndSettle();
-    expect(find.text('Delete permanently?'), findsOneWidget);
+    expect(find.text('Delete permanently?'), findsNothing);
     expect(repo.deleteCalls, 0);
-    await tester.tap(find.text('Cancel'));
-    await tester.pumpAndSettle();
-    expect(repo.deleteCalls, 0);
-    expect(container.read(cleanupProvider).pendingDeletion, {'one'});
-    await tester.tap(find.text('Delete selected photos'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Confirm deletion'));
+    await tester.tap(find.text('Delete 1 reviewed photo'));
     await tester.pumpAndSettle();
     expect(repo.deleteCalls, 1);
     expect(container.read(cleanupProvider).pendingDeletion, isEmpty);

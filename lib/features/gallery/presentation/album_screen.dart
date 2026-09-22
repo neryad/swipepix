@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/app_routes.dart';
 import '../../../app/design_system.dart';
+import '../../../app/empty_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cleanup/application/cleanup_controller.dart';
 import '../application/gallery_controller.dart';
@@ -91,9 +92,8 @@ class _AlbumsScreenState extends ConsumerState<AlbumsScreen> {
                         title: album.name,
                         subtitle: l.albumPhotoCount(album.photoCount),
                         coverPhoto: album.coverPhoto,
-                        onTap: () => context.push(
-                          '/album/${Uri.encodeComponent(album.id)}',
-                        ),
+                        onTap: () =>
+                            context.push(AppRoutes.albumDetails(album.id)),
                       );
                     }, childCount: items.length + 1),
                     gridDelegate:
@@ -108,7 +108,7 @@ class _AlbumsScreenState extends ConsumerState<AlbumsScreen> {
               else
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: _AlbumsMessage(
+                  child: AppEmptyState(
                     icon: Icons.photo_library_outlined,
                     title: l.albums,
                     body: _accessBody(l, gallery.access),
@@ -129,7 +129,7 @@ class _AlbumsScreenState extends ConsumerState<AlbumsScreen> {
             ],
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, _) => _AlbumsMessage(
+          error: (_, _) => AppEmptyState(
             icon: Icons.error_outline,
             title: l.error,
             body: l.retry,
@@ -249,31 +249,56 @@ class AlbumScreen extends ConsumerWidget {
                   ),
                 ),
                 photos.when(
-                  data: (loaded) => SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: SwipeSpacing.lg,
-                    ),
-                    sliver: SliverGrid.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 122,
-                            mainAxisSpacing: SwipeSpacing.sm,
-                            crossAxisSpacing: SwipeSpacing.sm,
+                  data: (loaded) => loaded.isEmpty
+                      ? SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: AppEmptyState(
+                            icon: Icons.photo_library_outlined,
+                            title: l.photoSummary(0),
+                            body: l.empty,
+                            actionLabel: l.refresh,
+                            onAction: () {
+                              ref.invalidate(galleryAlbumProvider(albumId));
+                              ref.invalidate(
+                                galleryAlbumPhotosProvider(albumId),
+                              );
+                            },
                           ),
-                      itemCount: loaded.length,
-                      itemBuilder: (context, index) => PhotoTile(
-                        key: ValueKey(loaded[index].id),
-                        photo: loaded[index],
-                      ),
-                    ),
-                  ),
+                        )
+                      : SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: SwipeSpacing.lg,
+                          ),
+                          sliver: SliverGrid.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 122,
+                                  mainAxisSpacing: SwipeSpacing.sm,
+                                  crossAxisSpacing: SwipeSpacing.sm,
+                                ),
+                            itemCount: loaded.length,
+                            itemBuilder: (context, index) => PhotoTile(
+                              key: ValueKey(loaded[index].id),
+                              photo: loaded[index],
+                            ),
+                          ),
+                        ),
                   loading: () => const SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(child: CircularProgressIndicator()),
                   ),
                   error: (_, _) => SliverFillRemaining(
                     hasScrollBody: false,
-                    child: Center(child: Text(l.error)),
+                    child: AppEmptyState(
+                      icon: Icons.error_outline,
+                      title: l.error,
+                      body: l.retry,
+                      actionLabel: l.retry,
+                      onAction: () {
+                        ref.invalidate(galleryAlbumProvider(albumId));
+                        ref.invalidate(galleryAlbumPhotosProvider(albumId));
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -281,7 +306,16 @@ class AlbumScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, _) => Center(child: Text(l.error)),
+        error: (_, _) => AppEmptyState(
+          icon: Icons.error_outline,
+          title: l.error,
+          body: l.retry,
+          actionLabel: l.retry,
+          onAction: () {
+            ref.invalidate(galleryAlbumProvider(albumId));
+            ref.invalidate(galleryAlbumPhotosProvider(albumId));
+          },
+        ),
       ),
     );
   }
@@ -492,65 +526,6 @@ class PhotoCover extends ConsumerWidget {
                   error: (_, _) => placeholder(),
                   loading: () => placeholder(),
                 ),
-    );
-  }
-}
-
-class _AlbumsMessage extends StatelessWidget {
-  const _AlbumsMessage({
-    required this.icon,
-    required this.title,
-    required this.body,
-    this.actionLabel,
-    this.onAction,
-  });
-
-  final IconData icon;
-  final String title;
-  final String body;
-  final String? actionLabel;
-  final VoidCallback? onAction;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final palette = SwipePixPalette.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(SwipeSpacing.xxl),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 68,
-            height: 68,
-            decoration: BoxDecoration(
-              color: palette.accentLow,
-              borderRadius: BorderRadius.circular(SwipeRadius.card),
-            ),
-            child: Icon(icon, color: palette.accent, size: 30),
-          ),
-          const SizedBox(height: SwipeSpacing.lg),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: SwipeSpacing.sm),
-          Text(
-            body,
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
-          ),
-          if (actionLabel != null && onAction != null) ...[
-            const SizedBox(height: SwipeSpacing.lg),
-            FilledButton(onPressed: onAction, child: Text(actionLabel!)),
-          ],
-        ],
-      ),
     );
   }
 }

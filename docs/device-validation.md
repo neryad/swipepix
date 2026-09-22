@@ -42,3 +42,21 @@ Registrar dispositivo, versión del SO, resultado y evidencia sin exponer fotos 
 - Eliminar de pendientes solo los IDs devueltos como eliminados por la API.
 - Conservar cancelaciones, fallos parciales y IDs no borrados para revisión.
 - Deshacer aplica a la selección previa al borrado; no prometer restaurar una eliminación nativa.
+
+## Prueba de biblioteca grande
+
+Antes de publicar, validar SwipePix en al menos un dispositivo real con una biblioteca grande:
+
+- 5,000+ fotos para navegación general y carga incremental.
+- 10,000+ fotos para ordenar por fecha y revisar fluidez del grid.
+- 20,000+ fotos, si está disponible, para probar “Mayor tamaño” y confirmar que el cálculo no bloquea la UI por demasiado tiempo.
+- Fotos en iCloud/almacenamiento remoto para comprobar miniaturas lentas o no disponibles.
+- Permiso limitado en Android/iOS para confirmar que “Cambiar fotos seleccionadas” sigue siendo claro.
+- Texto grande del sistema y dark mode para revisar que CTA, empty states y pantalla de swipe no se rompen.
+
+Criterios mínimos:
+
+- La app no debe cerrarse durante carga, paginación ni cambio de orden.
+- El grid debe mostrar progreso o mantener fotos visibles mientras carga más.
+- El swipe nunca debe borrar físicamente; solo marca para revisión.
+- El borrado real debe seguir pasando por revisión, confirmación de SwipePix y confirmación del sistema cuando aplique.

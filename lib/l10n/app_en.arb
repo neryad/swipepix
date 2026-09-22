@@ -144,6 +144,15 @@
   "deleteReviewSafety": "These photos have not been deleted yet. Remove any photo you want to keep.",
   "removeFromDelete": "Keep this photo",
   "deleteSelected": "Delete selected photos",
+  "deleteReviewedPhotos": "{count, plural, =1{Delete 1 reviewed photo} other{Delete {count} reviewed photos}}",
+  "@deleteReviewedPhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleting": "Waiting for system confirmation…",
   "confirmDeleteTitle": "Delete permanently?",
   "confirmDeleteBody": "SwipePix will request deletion of {count, plural, =1{1 photo} other{{count} photos}} from the device. The system may ask for another confirmation.",
   "@confirmDeleteBody": {
@@ -155,7 +164,6 @@
   },
   "cancel": "Cancel",
   "confirmDelete": "Confirm deletion",
-  "deleting": "Waiting for system confirmation…",
   "deleteSuccess": "{count, plural, =1{1 photo was deleted} other{{count} photos were deleted}}.",
   "@deleteSuccess": {
     "placeholders": {
