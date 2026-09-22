@@ -1,6 +1,6 @@
 # SwipePix
 
-Fase 1 de SwipePix: acceso real a la galería, revisión por swipe y eliminación segura con revisión y confirmación.
+SwipePix es una app Flutter para revisar fotos de forma rápida, marcar candidatas con swipe y borrarlas de forma segura después de revisar la selección.
 
 ## Ejecutar
 
@@ -32,7 +32,9 @@ Ejecutar estos comandos desde la carpeta que contiene este README. Se incluye `p
 - Cadenas nativas de permiso iOS ES/EN (siguen el idioma del sistema).
 - Swipe a la izquierda para marcar y a la derecha para conservar, con botones equivalentes y deshacer.
 - Revisión separada para retirar candidatas antes de borrar.
-- Confirmación de SwipePix y confirmación adicional del sistema cuando la plataforma la solicite.
+- Flujo de borrado simplificado: no hay alerta interna redundante después de la revisión.
+- La pantalla de revisión funciona como confirmación interna; el botón rojo solicita el borrado al sistema.
+- Confirmación adicional del sistema cuando la plataforma la solicite.
 - Resultados parciales: solo desaparecen los IDs que el sistema devuelve como borrados; cancelaciones y fallos permanecen pendientes.
 - Orden por fecha, en ambas direcciones, usando la consulta nativa de la galería.
 - Orden global por tamaño real del archivo, calculado por lotes y mostrado en las miniaturas.
@@ -43,16 +45,19 @@ Ejecutar estos comandos desde la carpeta que contiene este README. Se incluye `p
 - Acceso a “Ver introducción” desde Ajustes después de completar el onboarding.
 - Progreso de revisadas, pendientes y marcadas durante la limpieza.
 - Continuación por lotes de hasta 60 fotos sin repetir las que ya pertenecen a la sesión; el lote nuevo también se guarda localmente.
+- Icono y splash nativos de SwipePix para Android/iOS.
+- Empty states pulidos en galería, álbumes, detalles de álbum y revisión de borrado.
+- Sección About, Privacy Policy, Terms & Conditions y versión real del paquete en Settings.
 
-Las preferencias y la sesión de limpieza se guardan en el dispositivo mediante el almacenamiento ligero de Flutter. Solo se guardan preferencias, IDs y metadatos necesarios para reanudar; no se guardan copias de las fotos. Todavía no hay cálculo de espacio liberado. La primera selección de “Mayor tamaño” recorre los metadatos de la galería y puede tardar en bibliotecas grandes; no carga las imágenes originales. Las miniaturas de fotos en iCloud pueden requerir que el sistema las descargue: SwipePix no sube fotos a ningún servicio.
+Las preferencias y la sesión de limpieza se guardan en el dispositivo mediante el almacenamiento ligero de Flutter. Solo se guardan preferencias, IDs y metadatos necesarios para reanudar; no se guardan copias de las fotos. La revisión de borrado muestra el espacio aproximado a liberar cuando los tamaños están disponibles. La primera selección de “Mayor tamaño” recorre los metadatos de la galería y puede tardar en bibliotecas grandes; no carga las imágenes originales. Las miniaturas de fotos en iCloud pueden requerir que el sistema las descargue: SwipePix no sube fotos a ningún servicio.
 
 ## Arquitectura por features
 
-`lib/app`: composición, router y tema.
+`lib/app`: composición, rutas, tema, design system y widgets compartidos como empty states.
 
 `lib/features/onboarding`: bienvenida.
 
-`lib/features/settings`: preferencias y pantalla de ajustes.
+`lib/features/settings`: preferencias, pantalla de ajustes y pantallas internas About/Privacy/Terms.
 
 `lib/features/gallery/domain`: modelos y contrato del repositorio sin APIs del plugin.
 
@@ -62,30 +67,29 @@ Las preferencias y la sesión de limpieza se guardan en el dispositivo mediante 
 
 `lib/features/gallery/presentation`: widgets y ciclo de vida de la pantalla.
 
-`lib/features/cleanup`: estado de la sesión, swipe, deshacer, revisión y borrado confirmado.
+`lib/features/cleanup`: estado de la sesión, swipe, deshacer, revisión y solicitud de borrado al sistema.
 
 `lib/l10n`: traducciones y clases generadas. Editar los ARB, no las clases generadas.
 
 Los widgets no llaman al plugin. El controlador depende de un repositorio sustituible en pruebas. No se añade una capa de casos de uso hasta que exista lógica que la justifique.
 
-## Verificación de esta entrega
+## Verificación actual
 
 - `flutter analyze`: sin incidencias.
-- `flutter test`: 33 pruebas aprobadas (permisos, revocación, errores, paginación automática, lotes sin duplicados, ordenamiento, persistencia, restauración, onboarding accesible, navegación, ES/EN, swipe, revisión, cancelación y borrado parcial).
-- No se generó un APK en esta entrega; la app se ejecuta desde el entorno Flutter del usuario.
-- Configuración y traducciones nativas iOS: archivos validados con `plutil`.
-- Las pruebas utilizan repositorios simulados: no demuestran funcionamiento del permiso del sistema operativo.
-- El acceso, la carga, el swipe, la revisión y el borrado de aproximadamente 3 fotos fueron confirmados por el usuario en un móvil. La plataforma y versión del SO no se registraron todavía.
-- El emulador Pixel_10 instalado no arrancó: “Incompatible processor … neon”.
-- Xcode requiere completar la instalación de componentes antes de validar iOS.
-- Consultar `docs/device-validation.md` para cerrar la prueba nativa antes del swipe.
+- `flutter test`: 33 pruebas aprobadas (permisos, revocación, errores, paginación automática, lotes sin duplicados, ordenamiento, persistencia, restauración, onboarding accesible, navegación, ES/EN, swipe, revisión y borrado parcial).
+- `flutter build apk --debug`: compila correctamente.
+- Android muestra un warning conocido de `photo_manager` sobre Kotlin Gradle Plugin. No bloquea el build actual, pero debe revisarse antes de release.
+- Las pruebas automatizadas utilizan repositorios simulados: no sustituyen la prueba de permisos nativos en Android/iOS.
+- El acceso, la carga, el swipe, la revisión y el borrado real de aproximadamente 3 fotos fueron confirmados por el usuario en un móvil. La plataforma y versión del SO no se registraron todavía.
+- Consultar `docs/device-validation.md` para cerrar la matriz nativa y las pruebas con bibliotecas grandes.
 
 ## Próximos incrementos
 
 1. Validar permisos y miniaturas en Android e iOS reales; completar la matriz adjunta.
-2. Validar swipe, cancelación, confirmación del sistema y borrado parcial con fotos prescindibles en Android e iOS.
+2. Probar el flujo simplificado de borrado con fotos prescindibles en Android e iOS.
 3. Medir consumo de memoria y pulir el rendimiento con galerías grandes.
-4. Medir espacio liberado solo cuando la plataforma permita verificarlo con fiabilidad.
+4. Implementar filtros útiles empezando por Screenshots.
+5. Preparar release: firma, privacidad pública, screenshots de tienda y revisión del warning de `photo_manager`.
 
 ## Referencias
 
