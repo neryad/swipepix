@@ -397,20 +397,56 @@ class _StartCleanupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = SwipePixPalette.of(context);
-    return SizedBox(
-      height: 44,
-      child: FilledButton.icon(
-        onPressed: enabled ? onPressed : null,
-        icon: const Icon(Icons.cleaning_services_outlined, size: 18),
-        label: Text(label),
-        style: FilledButton.styleFrom(
-          backgroundColor: palette.accent,
-          foregroundColor: const Color(0xff05201b),
-          disabledBackgroundColor: Theme.of(
-            context,
-          ).colorScheme.surfaceContainerHighest,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SwipeRadius.control),
+    final scheme = Theme.of(context).colorScheme;
+    return AnimatedOpacity(
+      duration: SwipeMotion.quick,
+      opacity: enabled ? 1 : 0.48,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(SwipeRadius.control),
+        child: InkWell(
+          onTap: enabled ? onPressed : null,
+          borderRadius: BorderRadius.circular(SwipeRadius.control),
+          child: Ink(
+            height: 46,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(SwipeRadius.control),
+              gradient: LinearGradient(
+                colors: enabled
+                    ? [palette.accent, palette.accentHigh]
+                    : [
+                        scheme.surfaceContainerHighest,
+                        scheme.surfaceContainerHighest,
+                      ],
+              ),
+              boxShadow: enabled
+                  ? [
+                      BoxShadow(
+                        color: palette.accent.withValues(alpha: 0.28),
+                        blurRadius: 22,
+                        offset: const Offset(0, 10),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.auto_awesome_motion_rounded,
+                  size: 18,
+                  color: enabled ? Colors.white : scheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: SwipeSpacing.sm),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: enabled ? Colors.white : scheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -541,7 +577,7 @@ class _QuickCleanupTile extends StatelessWidget {
       duration: SwipeMotion.quick,
       opacity: onPressed == null ? 0.55 : 1,
       child: Material(
-        color: scheme.surfaceContainerLow,
+        color: palette.glass,
         borderRadius: BorderRadius.circular(SwipeRadius.control),
         child: InkWell(
           onTap: onPressed,
@@ -555,13 +591,13 @@ class _QuickCleanupTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(SwipeRadius.control),
               border: Border.all(
-                color: scheme.outlineVariant.withValues(alpha: 0.34),
+                color: scheme.outlineVariant.withValues(alpha: 0.18),
               ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, size: 18, color: palette.accent),
+                Icon(icon, size: 18, color: palette.accentHigh),
                 const SizedBox(height: SwipeSpacing.xs),
                 Text(
                   title,
@@ -747,8 +783,11 @@ class _AccessChip extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest,
+        color: SwipePixPalette.of(context).glassStrong,
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.16),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -758,7 +797,9 @@ class _AccessChip extends StatelessWidget {
             Icon(
               canRead ? Icons.check_circle_outline : Icons.info_outline,
               size: 16,
-              color: canRead ? scheme.primary : scheme.onSurfaceVariant,
+              color: canRead
+                  ? SwipePixPalette.of(context).keep
+                  : scheme.onSurfaceVariant,
             ),
             const SizedBox(width: 6),
             Flexible(
@@ -1011,7 +1052,7 @@ class _ContinueCleanupCard extends StatelessWidget {
     final current = state.index.clamp(0, state.photos.length).toInt();
     final progress = state.photos.isEmpty ? 0.0 : current / state.photos.length;
     return Material(
-      color: scheme.surfaceContainerLow,
+      color: palette.glass,
       borderRadius: BorderRadius.circular(SwipeRadius.card),
       child: InkWell(
         onTap: onContinue,
@@ -1021,7 +1062,7 @@ class _ContinueCleanupCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(SwipeRadius.card),
             border: Border.all(
-              color: scheme.outlineVariant.withValues(alpha: 0.3),
+              color: scheme.outlineVariant.withValues(alpha: 0.16),
             ),
           ),
           child: Row(
@@ -1030,13 +1071,12 @@ class _ContinueCleanupCard extends StatelessWidget {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: palette.accentLow,
+                  gradient: LinearGradient(
+                    colors: [palette.accent, palette.accentHigh],
+                  ),
                   borderRadius: BorderRadius.circular(SwipeRadius.control),
                 ),
-                child: Icon(
-                  Icons.bookmark_border_rounded,
-                  color: palette.accent,
-                ),
+                child: Icon(Icons.bookmark_border_rounded, color: Colors.white),
               ),
               const SizedBox(width: SwipeSpacing.md),
               Expanded(
@@ -1065,7 +1105,7 @@ class _ContinueCleanupCard extends StatelessWidget {
                         minHeight: 5,
                         value: progress,
                         backgroundColor: scheme.surfaceContainerHighest,
-                        valueColor: AlwaysStoppedAnimation(palette.accent),
+                        valueColor: AlwaysStoppedAnimation(palette.accentHigh),
                       ),
                     ),
                   ],
@@ -1159,8 +1199,11 @@ class PhotoTile extends ConsumerWidget {
                   bottom: 6,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.72),
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withValues(alpha: 0.68),
+                      borderRadius: BorderRadius.circular(SwipeRadius.chip),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.08),
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

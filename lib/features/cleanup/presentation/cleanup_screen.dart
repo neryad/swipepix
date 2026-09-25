@@ -313,19 +313,9 @@ class _ReviewDeckState extends State<_ReviewDeck>
     final dragProgress = (_dragOffset.dx.abs() / _threshold).clamp(0.0, 1.0);
     final rotation = (_dragOffset.dx / width * 0.16).clamp(-0.16, 0.16);
     final palette = SwipePixPalette.of(context);
+    final glowColor = _dragOffset.dx < 0 ? palette.delete : palette.keep;
     return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: RadialGradient(
-          center: Alignment.topCenter,
-          radius: 1.35,
-          colors: [
-            palette.accentLow.withValues(
-              alpha: scheme.brightness == Brightness.dark ? 0.24 : 0.34,
-            ),
-            scheme.surface,
-          ],
-        ),
-      ),
+      decoration: BoxDecoration(color: scheme.surface),
       child: Column(
         children: [
           Padding(
@@ -351,7 +341,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final horizontal = width < 390 ? 12.0 : 18.0;
-                final cardHeight = (constraints.maxHeight - 8).clamp(
+                final cardHeight = (constraints.maxHeight - 2).clamp(
                   360.0,
                   constraints.maxHeight,
                 );
@@ -362,6 +352,22 @@ class _ReviewDeckState extends State<_ReviewDeck>
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
+                        if (_dragOffset.dx != 0)
+                          Positioned.fill(
+                            child: IgnorePointer(
+                              child: Opacity(
+                                opacity: 0.12 + dragProgress * 0.22,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: RadialGradient(
+                                      radius: 0.82,
+                                      colors: [glowColor, Colors.transparent],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         if (nextPhoto != null)
                           Transform.translate(
                             offset: Offset(0, 18 + dragProgress * -10),
@@ -372,7 +378,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
                                 child: Padding(
                                   padding: EdgeInsets.fromLTRB(
                                     horizontal + 18,
-                                    SwipeSpacing.lg,
+                                    SwipeSpacing.sm,
                                     horizontal + 18,
                                     0,
                                   ),
@@ -397,7 +403,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
                                   horizontal,
-                                  SwipeSpacing.sm,
+                                  0,
                                   horizontal,
                                   0,
                                 ),
@@ -662,36 +668,61 @@ class SwipeActionBar extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     final palette = SwipePixPalette.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _CircleActionButton(
-          size: 58,
-          onPressed: onDelete,
-          tooltip: l.deleteAction,
-          icon: Icons.delete_outline_rounded,
-          background: palette.delete,
-          foreground: Colors.white,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: palette.glassStrong,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.14),
         ),
-        const SizedBox(width: SwipeSpacing.lg),
-        _CircleActionButton(
-          size: 48,
-          onPressed: onUndo,
-          tooltip: l.undo,
-          icon: Icons.undo_rounded,
-          background: scheme.surfaceContainerHigh,
-          foreground: scheme.onSurfaceVariant,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(
+              alpha: scheme.brightness == Brightness.dark ? 0.34 : 0.12,
+            ),
+            blurRadius: 28,
+            offset: const Offset(0, 14),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: SwipeSpacing.sm,
+          vertical: SwipeSpacing.xs,
         ),
-        const SizedBox(width: SwipeSpacing.lg),
-        _CircleActionButton(
-          size: 58,
-          onPressed: onKeep,
-          tooltip: l.keep,
-          icon: Icons.check_rounded,
-          background: palette.keep,
-          foreground: Colors.white,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _CircleActionButton(
+              size: 56,
+              onPressed: onDelete,
+              tooltip: l.deleteAction,
+              icon: Icons.delete_outline_rounded,
+              background: palette.delete,
+              foreground: Colors.white,
+            ),
+            const SizedBox(width: SwipeSpacing.sm),
+            _CircleActionButton(
+              size: 44,
+              onPressed: onUndo,
+              tooltip: l.undo,
+              icon: Icons.undo_rounded,
+              background: scheme.surfaceContainerHigh.withValues(alpha: 0.9),
+              foreground: scheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: SwipeSpacing.sm),
+            _CircleActionButton(
+              size: 56,
+              onPressed: onKeep,
+              tooltip: l.keep,
+              icon: Icons.check_rounded,
+              background: palette.keep,
+              foreground: Colors.white,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -724,10 +755,8 @@ class _CircleActionButton extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(
-                alpha: scheme.brightness == Brightness.dark ? 0.22 : 0.12,
-              ),
-              blurRadius: 18,
+              color: background.withValues(alpha: 0.28),
+              blurRadius: 20,
               offset: const Offset(0, 8),
             ),
           ],
@@ -877,11 +906,11 @@ class _PhotoCard extends ConsumerWidget {
       label: '${l.photo} · $metadata',
       image: true,
       child: Material(
-        elevation: isBackgroundCard ? 0 : 18,
+        elevation: isBackgroundCard ? 0 : 24,
         shadowColor: Colors.black.withValues(
-          alpha: scheme.brightness == Brightness.dark ? 0.38 : 0.2,
+          alpha: scheme.brightness == Brightness.dark ? 0.58 : 0.22,
         ),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(28),
         clipBehavior: Clip.antiAlias,
         child: ColoredBox(
           color: scheme.surfaceContainerHighest,
@@ -898,7 +927,7 @@ class _PhotoCard extends ConsumerWidget {
                             bytes,
                             fit: BoxFit.cover,
                             excludeFromSemantics: true,
-                            opacity: const AlwaysStoppedAnimation(0.34),
+                            opacity: const AlwaysStoppedAnimation(0.3),
                             errorBuilder: (_, _, _) => _PreviewUnavailable(
                               message: l.previewUnavailable,
                             ),
@@ -909,8 +938,8 @@ class _PhotoCard extends ConsumerWidget {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  Colors.black.withValues(alpha: 0.04),
-                                  Colors.black.withValues(alpha: 0.18),
+                                  Colors.black.withValues(alpha: 0.02),
+                                  Colors.black.withValues(alpha: 0.24),
                                 ],
                               ),
                             ),
@@ -950,7 +979,7 @@ class _PhotoCard extends ConsumerWidget {
                       color: palette.photoScrim,
                       borderRadius: BorderRadius.circular(SwipeRadius.control),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.08),
+                        color: Colors.white.withValues(alpha: 0.1),
                       ),
                     ),
                     child: Padding(

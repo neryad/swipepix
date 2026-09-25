@@ -41,11 +41,18 @@ class DeleteReviewScreen extends ConsumerWidget {
               ),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: palette.delete.withValues(alpha: 0.18),
+                  color: palette.glass,
                   borderRadius: BorderRadius.circular(SwipeRadius.card),
                   border: Border.all(
-                    color: palette.delete.withValues(alpha: 0.22),
+                    color: palette.delete.withValues(alpha: 0.2),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: palette.delete.withValues(alpha: 0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 12),
+                    ),
+                  ],
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(SwipeSpacing.lg),
@@ -160,6 +167,8 @@ class DeleteReviewScreen extends ConsumerWidget {
                           style: FilledButton.styleFrom(
                             backgroundColor: palette.delete,
                             foregroundColor: Colors.white,
+                            shadowColor: palette.delete.withValues(alpha: 0.36),
+                            elevation: 0,
                           ),
                           icon: const Icon(Icons.delete_forever_outlined),
                           label: Text(l.deleteReviewedPhotos(photos.length)),

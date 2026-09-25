@@ -254,12 +254,13 @@ class _SettingsGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final palette = SwipePixPalette.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerLow,
+        color: palette.glass,
         borderRadius: BorderRadius.circular(SwipeRadius.card),
         border: Border.all(
-          color: scheme.outlineVariant.withValues(alpha: 0.28),
+          color: scheme.outlineVariant.withValues(alpha: 0.16),
         ),
       ),
       child: Column(
@@ -271,7 +272,7 @@ class _SettingsGroup extends StatelessWidget {
               Divider(
                 height: 1,
                 indent: 48,
-                color: scheme.outlineVariant.withValues(alpha: 0.32),
+                color: scheme.outlineVariant.withValues(alpha: 0.18),
               ),
           ],
         ],

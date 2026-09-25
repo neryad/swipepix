@@ -28,16 +28,16 @@ class SwipePixPalette extends ThemeExtension<SwipePixPalette> {
   static SwipePixPalette fromBrightness(Brightness brightness) {
     final dark = brightness == Brightness.dark;
     return SwipePixPalette(
-      accent: const Color(0xff70e4ca),
-      accentHigh: const Color(0xff9cf4df),
-      accentLow: dark ? const Color(0xff10362f) : const Color(0xffd8f7ef),
-      keep: const Color(0xff11b981),
-      delete: const Color(0xfff43f3f),
+      accent: const Color(0xff6366f1),
+      accentHigh: const Color(0xff8b5cf6),
+      accentLow: dark ? const Color(0xff1e1b4b) : const Color(0xffe0e7ff),
+      keep: const Color(0xff10b981),
+      delete: const Color(0xfff43f5e),
       glass: dark
-          ? const Color(0x141be0c2)
+          ? const Color(0xb812141c)
           : const Color(0xffffffff).withValues(alpha: 0.78),
       glassStrong: dark
-          ? const Color(0x1fffffff)
+          ? const Color(0xe61e2230)
           : const Color(0xffffffff).withValues(alpha: 0.92),
       photoScrim: Colors.black.withValues(alpha: 0.62),
     );
@@ -92,10 +92,10 @@ abstract final class SwipeSpacing {
 
 abstract final class SwipeRadius {
   static const double chip = 14;
-  static const double control = 16;
-  static const double tile = 18;
-  static const double card = 22;
-  static const double sheet = 28;
+  static const double control = 18;
+  static const double tile = 20;
+  static const double card = 24;
+  static const double sheet = 30;
 }
 
 abstract final class SwipeMotion {

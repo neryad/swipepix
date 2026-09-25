@@ -88,14 +88,17 @@ class SwipePixApp extends ConsumerWidget {
     final scheme = ColorScheme.fromSeed(
       seedColor: palette.accent,
       brightness: brightness,
-      primary: const Color(0xff2bb99e),
-      surface: dark ? const Color(0xff061010) : const Color(0xfff8faf7),
+      primary: const Color(0xff6366f1),
+      secondary: const Color(0xff8b5cf6),
+      tertiary: const Color(0xff10b981),
+      surface: dark ? const Color(0xff090a0f) : const Color(0xfff8fafc),
       error: palette.delete,
     );
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
       extensions: [palette],
+      fontFamily: 'Plus Jakarta Sans',
       scaffoldBackgroundColor: scheme.surface,
       appBarTheme: AppBarTheme(
         centerTitle: false,
@@ -107,12 +110,13 @@ class SwipePixApp extends ConsumerWidget {
           color: scheme.onSurface,
           fontSize: 21,
           letterSpacing: -0.4,
+          fontFamily: 'Space Grotesk',
           fontWeight: FontWeight.w900,
         ),
       ),
       cardTheme: CardThemeData(
         elevation: 0,
-        color: dark ? const Color(0xff0c1717) : Colors.white,
+        color: dark ? const Color(0xff12141c) : Colors.white,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(SwipeRadius.card),
@@ -120,8 +124,8 @@ class SwipePixApp extends ConsumerWidget {
       ),
       chipTheme: ChipThemeData(
         backgroundColor: dark
-            ? const Color(0xff121d1d)
-            : const Color(0xffeef2ee),
+            ? const Color(0xff1e2230)
+            : const Color(0xffeef2ff),
         selectedColor: palette.accentLow,
         disabledColor: scheme.surfaceContainerHighest,
         labelStyle: TextStyle(
@@ -141,7 +145,7 @@ class SwipePixApp extends ConsumerWidget {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: palette.accent,
-          foregroundColor: const Color(0xff05201b),
+          foregroundColor: Colors.white,
           minimumSize: const Size.fromHeight(46),
           textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900),
           shape: RoundedRectangleBorder(
@@ -166,10 +170,25 @@ class SwipePixApp extends ConsumerWidget {
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
+          fillColor: dark ? const Color(0xff1e2230) : Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
           ),
+        ),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: dark ? const Color(0xff12141c) : Colors.white,
+        surfaceTintColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: dark ? const Color(0xff12141c) : Colors.white,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(SwipeRadius.sheet),
         ),
       ),
     );

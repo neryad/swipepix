@@ -222,26 +222,28 @@ class AlbumScreen extends ConsumerWidget {
                         const SizedBox(height: SwipeSpacing.lg),
                         SizedBox(
                           height: 46,
-                          child: FilledButton.icon(
-                            onPressed: photos.maybeWhen(
-                              data: (loaded) => loaded.isEmpty
-                                  ? null
-                                  : () => _startAlbumCleanup(
-                                      context,
-                                      ref,
-                                      album: value,
-                                      photos: loaded,
-                                      replaceExisting:
-                                          cleanup.index > 0 ||
-                                          cleanup.pendingDeletion.isNotEmpty,
-                                    ),
-                              orElse: () => null,
+                          child: _AlbumCtaButton(
+                            enabled: photos.maybeWhen(
+                              data: (loaded) => loaded.isEmpty ? false : true,
+                              orElse: () => false,
                             ),
-                            icon: const Icon(
-                              Icons.cleaning_services_outlined,
-                              size: 18,
-                            ),
-                            label: Text(l.startAlbumCleanup),
+                            label: l.startAlbumCleanup,
+                            onPressed: () {
+                              final loaded = photos.maybeWhen<List<Photo>?>(
+                                data: (value) => value,
+                                orElse: () => null,
+                              );
+                              if (loaded == null || loaded.isEmpty) return;
+                              _startAlbumCleanup(
+                                context,
+                                ref,
+                                album: value,
+                                photos: loaded,
+                                replaceExisting:
+                                    cleanup.index > 0 ||
+                                    cleanup.pendingDeletion.isNotEmpty,
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -382,6 +384,76 @@ class _AllPhotosAlbumTile extends StatelessWidget {
   }
 }
 
+class _AlbumCtaButton extends StatelessWidget {
+  const _AlbumCtaButton({
+    required this.enabled,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final bool enabled;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = SwipePixPalette.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    return AnimatedOpacity(
+      duration: SwipeMotion.quick,
+      opacity: enabled ? 1 : 0.48,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(SwipeRadius.control),
+        child: InkWell(
+          onTap: enabled ? onPressed : null,
+          borderRadius: BorderRadius.circular(SwipeRadius.control),
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(SwipeRadius.control),
+              gradient: LinearGradient(
+                colors: enabled
+                    ? [palette.accent, palette.accentHigh]
+                    : [
+                        scheme.surfaceContainerHighest,
+                        scheme.surfaceContainerHighest,
+                      ],
+              ),
+              boxShadow: enabled
+                  ? [
+                      BoxShadow(
+                        color: palette.accent.withValues(alpha: 0.26),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.auto_awesome_motion_rounded,
+                  size: 18,
+                  color: enabled ? Colors.white : scheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: SwipeSpacing.sm),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: enabled ? Colors.white : scheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _AlbumGridTile extends StatelessWidget {
   const _AlbumGridTile({
     required this.title,
@@ -402,6 +474,7 @@ class _AlbumGridTile extends StatelessWidget {
     final palette = SwipePixPalette.of(context);
     return Material(
       color: Colors.transparent,
+      elevation: 0,
       borderRadius: BorderRadius.circular(SwipeRadius.card),
       child: InkWell(
         onTap: onTap,
@@ -410,6 +483,23 @@ class _AlbumGridTile extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             PhotoCover(photo: coverPhoto, radius: SwipeRadius.card),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(SwipeRadius.card),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.22),
+                      blurRadius: 26,
+                      offset: const Offset(0, 14),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Positioned.fill(
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -442,11 +532,7 @@ class _AlbumGridTile extends StatelessWidget {
                         color: palette.accent.withValues(alpha: 0.92),
                         borderRadius: BorderRadius.circular(SwipeRadius.chip),
                       ),
-                      child: Icon(
-                        leadingIcon,
-                        size: 18,
-                        color: const Color(0xff05201b),
-                      ),
+                      child: Icon(leadingIcon, size: 18, color: Colors.white),
                     ),
                     const SizedBox(height: SwipeSpacing.sm),
                   ],
