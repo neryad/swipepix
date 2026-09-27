@@ -11,7 +11,7 @@ final galleryRepositoryProvider = Provider<GalleryRepository>(
 final thumbnailProvider = FutureProvider.autoDispose.family<Uint8List?, String>(
   (ref, id) => ref.watch(galleryRepositoryProvider).thumbnail(id),
 );
-final photoPreviewProvider = FutureProvider.autoDispose
+final mediaPreviewProvider = FutureProvider.autoDispose
     .family<Uint8List?, String>(
       (ref, id) => ref.watch(galleryRepositoryProvider).preview(id),
     );
@@ -31,7 +31,7 @@ final galleryAlbumProvider = FutureProvider.autoDispose
       return repository.album(id);
     });
 final galleryAlbumPhotosProvider = FutureProvider.autoDispose
-    .family<List<Photo>, String>((ref, id) async {
+    .family<List<MediaAsset>, String>((ref, id) async {
       final repository = ref.watch(galleryRepositoryProvider);
       final access = await repository.access();
       if (!access.canRead) return const [];
@@ -44,19 +44,19 @@ final galleryProvider = NotifierProvider<GalleryController, GalleryState>(
 class GalleryState {
   GalleryState({
     this.access = GalleryAccess.notDetermined,
-    List<Photo> photos = const [],
+    List<MediaAsset> photos = const [],
     this.busy = false,
     this.loadingMore = false,
     this.failed = false,
     this.hasMore = false,
     this.sort = GallerySort.newest,
-    this.totalPhotoCount,
+    this.totalMediaCount,
   }) : photos = List.unmodifiable(photos);
   final GalleryAccess access;
-  final List<Photo> photos;
+  final List<MediaAsset> photos;
   final bool busy, loadingMore, failed, hasMore;
   final GallerySort sort;
-  final int? totalPhotoCount;
+  final int? totalMediaCount;
 }
 
 class GalleryController extends Notifier<GalleryState> {
@@ -84,16 +84,16 @@ class GalleryController extends Notifier<GalleryState> {
       access: state.access,
       busy: true,
       sort: state.sort,
-      totalPhotoCount: state.totalPhotoCount,
+      totalMediaCount: state.totalMediaCount,
     );
     try {
       final access = await _repository.access(request: request);
-      final (photos, totalPhotoCount) = access.canRead
+      final (photos, totalMediaCount) = access.canRead
           ? await (
               _repository.page(0, pageSize, sort: state.sort),
-              _repository.photoCount(),
+              _repository.mediaCount(),
             ).wait
-          : (<Photo>[], null);
+          : (<MediaAsset>[], null);
       if (!ref.mounted || generation != _generation) return;
       _page = 0;
       state = GalleryState(
@@ -101,7 +101,7 @@ class GalleryController extends Notifier<GalleryState> {
         photos: photos,
         hasMore: photos.length == pageSize,
         sort: state.sort,
-        totalPhotoCount: totalPhotoCount,
+        totalMediaCount: totalMediaCount,
       );
     } catch (_) {
       if (ref.mounted && generation == _generation) {
@@ -109,7 +109,7 @@ class GalleryController extends Notifier<GalleryState> {
           access: state.access,
           failed: true,
           sort: state.sort,
-          totalPhotoCount: state.totalPhotoCount,
+          totalMediaCount: state.totalMediaCount,
         );
       }
     }
@@ -130,7 +130,7 @@ class GalleryController extends Notifier<GalleryState> {
       hasMore: true,
       loadingMore: true,
       sort: before.sort,
-      totalPhotoCount: before.totalPhotoCount,
+      totalMediaCount: before.totalMediaCount,
     );
     try {
       final access = await _repository.access();
@@ -154,7 +154,7 @@ class GalleryController extends Notifier<GalleryState> {
         photos: byId.values.toList(),
         hasMore: photos.length == pageSize,
         sort: before.sort,
-        totalPhotoCount: before.totalPhotoCount,
+        totalMediaCount: before.totalMediaCount,
       );
     } catch (_) {
       if (ref.mounted && generation == _generation) {
@@ -164,7 +164,7 @@ class GalleryController extends Notifier<GalleryState> {
           hasMore: true,
           failed: true,
           sort: before.sort,
-          totalPhotoCount: before.totalPhotoCount,
+          totalMediaCount: before.totalMediaCount,
         );
       }
     }
@@ -182,7 +182,7 @@ class GalleryController extends Notifier<GalleryState> {
           photos: state.photos,
           failed: true,
           sort: state.sort,
-          totalPhotoCount: state.totalPhotoCount,
+          totalMediaCount: state.totalMediaCount,
         );
       }
     }
@@ -208,7 +208,7 @@ class GalleryController extends Notifier<GalleryState> {
     if (deleted.isEmpty) return;
     for (final id in deleted) {
       ref.invalidate(thumbnailProvider(id));
-      ref.invalidate(photoPreviewProvider(id));
+      ref.invalidate(mediaPreviewProvider(id));
     }
     state = GalleryState(
       access: state.access,
@@ -220,9 +220,9 @@ class GalleryController extends Notifier<GalleryState> {
       failed: state.failed,
       hasMore: state.hasMore,
       sort: state.sort,
-      totalPhotoCount: state.totalPhotoCount == null
+      totalMediaCount: state.totalMediaCount == null
           ? null
-          : (state.totalPhotoCount! - deleted.length).clamp(0, 1 << 31),
+          : (state.totalMediaCount! - deleted.length).clamp(0, 1 << 31),
     );
   }
 
@@ -233,7 +233,7 @@ class GalleryController extends Notifier<GalleryState> {
       photos: state.photos,
       hasMore: state.hasMore,
       sort: sort,
-      totalPhotoCount: state.totalPhotoCount,
+      totalMediaCount: state.totalMediaCount,
     );
     unawaited(
       ref

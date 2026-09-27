@@ -111,9 +111,9 @@ void main() {
       ..fetch = (page) async => page == 0
           ? List.generate(
               GalleryController.pageSize,
-              (index) => Photo(id: '$index', createdAt: DateTime(2026)),
+              (index) => MediaAsset(id: '$index', createdAt: DateTime(2026)),
             )
-          : [Photo(id: '60', createdAt: DateTime(2026))];
+          : [MediaAsset(id: '60', createdAt: DateTime(2026))];
     final container = ProviderContainer(
       overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
     );
@@ -185,8 +185,8 @@ void main() {
     seed.read(onboardingProvider.notifier).complete();
     final seedCleanup = seed.read(cleanupProvider.notifier);
     seedCleanup.start([
-      Photo(id: 'one', createdAt: DateTime(2026, 1, 1)),
-      Photo(id: 'two', createdAt: DateTime(2026, 1, 2)),
+      MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+      MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
     ]);
     seedCleanup.markForDeletion();
     await seedCleanup.flushPersistence();
@@ -221,8 +221,8 @@ void main() {
   ) async {
     final repo = FakeGallery()
       ..fetch = (_) async => [
-        Photo(id: 'one', createdAt: DateTime(2026, 1, 1)),
-        Photo(id: 'two', createdAt: DateTime(2026, 1, 2)),
+        MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+        MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
       ];
     final container = ProviderContainer(
       overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
@@ -240,7 +240,7 @@ void main() {
 
     await tester.tap(find.text('Start reviewing'));
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('active-photo-one')), findsOneWidget);
+    expect(find.byKey(const ValueKey('active-media-one')), findsOneWidget);
 
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
@@ -254,8 +254,8 @@ void main() {
   ) async {
     final repo = FakeGallery()
       ..fetch = (_) async => [
-        Photo(id: 'one', createdAt: DateTime(2026, 1, 1)),
-        Photo(id: 'two', createdAt: DateTime(2026, 1, 2)),
+        MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+        MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
       ];
     final container = ProviderContainer(
       overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
@@ -273,7 +273,7 @@ void main() {
     await tester.tap(find.text('Start reviewing'));
     await tester.pumpAndSettle();
     await tester.drag(
-      find.byKey(const ValueKey('active-photo-one')),
+      find.byKey(const ValueKey('active-media-one')),
       const Offset(-500, 0),
     );
     await tester.pumpAndSettle();

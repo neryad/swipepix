@@ -10,6 +10,7 @@ import '../../../app/design_system.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../gallery/application/gallery_controller.dart';
 import '../../gallery/domain/gallery_repository.dart';
+import '../../gallery/presentation/media_widgets.dart';
 import '../application/cleanup_controller.dart';
 
 class CleanupScreen extends ConsumerWidget {
@@ -389,7 +390,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
                                     horizontal + 18,
                                     0,
                                   ),
-                                  child: _PhotoCard(
+                                  child: _MediaCard(
                                     photo: nextPhoto,
                                     showMetadata: false,
                                     isBackgroundCard: true,
@@ -399,7 +400,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
                             ),
                           ),
                         GestureDetector(
-                          key: ValueKey('active-photo-${photo.id}'),
+                          key: ValueKey('active-media-${photo.id}'),
                           onPanUpdate: _handlePanUpdate,
                           onPanEnd: _handlePanEnd,
                           onPanCancel: _snapBack,
@@ -417,7 +418,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
                                 child: Stack(
                                   fit: StackFit.expand,
                                   children: [
-                                    _PhotoCard(photo: photo),
+                                    _MediaCard(photo: photo),
                                     _DecisionOverlay(
                                       alignment: Alignment.topRight,
                                       visible: _dragOffset.dx > 0,
@@ -917,30 +918,30 @@ class _DecisionOverlay extends StatelessWidget {
   }
 }
 
-class _PhotoCard extends ConsumerWidget {
-  const _PhotoCard({
+class _MediaCard extends ConsumerWidget {
+  const _MediaCard({
     required this.photo,
     this.showMetadata = true,
     this.isBackgroundCard = false,
   });
 
-  final Photo photo;
+  final MediaAsset photo;
   final bool showMetadata;
   final bool isBackgroundCard;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    final preview = ref.watch(photoPreviewProvider(photo.id));
+    final preview = ref.watch(mediaPreviewProvider(photo.id));
     final date = MaterialLocalizations.of(
       context,
     ).formatMediumDate(photo.createdAt);
     final size = photo.sizeBytes == null
         ? null
-        : _formatFileSize(photo.sizeBytes!);
+        : formatFileSize(photo.sizeBytes!);
     final metadataParts = [
       date,
-      if (photo.duration != null) _formatDuration(photo.duration!),
+      if (photo.duration != null) formatDuration(photo.duration!),
       ?size,
     ];
     final metadata = metadataParts.length == 1
@@ -1035,7 +1036,10 @@ class _PhotoCard extends ConsumerWidget {
                 Positioned(
                   top: SwipeSpacing.md,
                   right: SwipeSpacing.md,
-                  child: _VideoBadge(duration: photo.duration),
+                  child: MediaVideoBadge(
+                    duration: photo.duration,
+                    prominent: true,
+                  ),
                 ),
               if (showMetadata)
                 Positioned(
@@ -1109,69 +1113,6 @@ class _PreviewUnavailable extends StatelessWidget {
       ),
     );
   }
-}
-
-String _formatDuration(Duration duration) {
-  final totalSeconds = duration.inSeconds;
-  final minutes = totalSeconds ~/ 60;
-  final seconds = totalSeconds % 60;
-  final hours = minutes ~/ 60;
-  if (hours > 0) {
-    final remainingMinutes = minutes % 60;
-    return '$hours:${remainingMinutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-  }
-  return '$minutes:${seconds.toString().padLeft(2, '0')}';
-}
-
-class _VideoBadge extends StatelessWidget {
-  const _VideoBadge({this.duration});
-
-  final Duration? duration;
-
-  @override
-  Widget build(BuildContext context) {
-    final text = duration == null || duration == Duration.zero
-        ? null
-        : _formatDuration(duration!);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.68),
-        borderRadius: BorderRadius.circular(SwipeRadius.chip),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 16),
-            if (text != null) ...[
-              const SizedBox(width: 3),
-              Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-String _formatFileSize(int bytes) {
-  if (bytes >= 1024 * 1024 * 1024) {
-    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
-  }
-  if (bytes >= 1024 * 1024) {
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-  }
-  if (bytes >= 1024) return '${(bytes / 1024).toStringAsFixed(0)} KB';
-  return '$bytes B';
 }
 
 class _CompletedSession extends StatelessWidget {

@@ -10,9 +10,9 @@ import '../../gallery/domain/gallery_repository.dart';
 enum CleanupDecision { keep, markForDeletion }
 
 class CleanupAction {
-  const CleanupAction({required this.photoId, required this.decision});
+  const CleanupAction({required this.mediaId, required this.decision});
 
-  final String photoId;
+  final String mediaId;
   final CleanupDecision decision;
 }
 
@@ -49,7 +49,7 @@ class CleanupSource {
 
 class CleanupState {
   CleanupState({
-    List<Photo> photos = const [],
+    List<MediaAsset> photos = const [],
     this.index = 0,
     Set<String> pendingDeletion = const {},
     List<CleanupAction> history = const [],
@@ -63,7 +63,7 @@ class CleanupState {
        pendingDeletion = Set.unmodifiable(pendingDeletion),
        history = List.unmodifiable(history);
 
-  final List<Photo> photos;
+  final List<MediaAsset> photos;
   final int index;
   final Set<String> pendingDeletion;
   final List<CleanupAction> history;
@@ -74,12 +74,12 @@ class CleanupState {
   final bool loadingNextBatch;
   final CleanupSource source;
 
-  Photo? get current => index < photos.length ? photos[index] : null;
+  MediaAsset? get current => index < photos.length ? photos[index] : null;
   bool get hasSession => photos.isNotEmpty;
   bool get hasUnreviewed => current != null;
   bool get isComplete => photos.isNotEmpty && index >= photos.length;
   bool get canUndo => history.isNotEmpty && !deleting && !loadingNextBatch;
-  List<Photo> get pendingPhotos => photos
+  List<MediaAsset> get pendingMedia => photos
       .where((photo) => pendingDeletion.contains(photo.id))
       .toList(growable: false);
 }
@@ -97,10 +97,12 @@ class CleanupController extends Notifier<CleanupState> {
       _decodeSession(_store.getString(LocalStoreKeys.cleanupSession));
 
   void start(
-    Iterable<Photo> photos, {
+    Iterable<MediaAsset> photos, {
     CleanupSource source = const CleanupSource.library(),
   }) {
-    final unique = <String, Photo>{for (final photo in photos) photo.id: photo};
+    final unique = <String, MediaAsset>{
+      for (final photo in photos) photo.id: photo,
+    };
     state = CleanupState(
       photos: unique.values.toList(growable: false),
       source: source,
@@ -125,7 +127,7 @@ class CleanupController extends Notifier<CleanupState> {
       pendingDeletion: pending,
       history: [
         ...state.history,
-        CleanupAction(photoId: photo.id, decision: decision),
+        CleanupAction(mediaId: photo.id, decision: decision),
       ],
       source: state.source,
     );
@@ -137,7 +139,7 @@ class CleanupController extends Notifier<CleanupState> {
     final last = state.history.last;
     final pending = {...state.pendingDeletion};
     if (last.decision == CleanupDecision.markForDeletion) {
-      pending.remove(last.photoId);
+      pending.remove(last.mediaId);
     }
     state = CleanupState(
       photos: state.photos,
@@ -191,7 +193,7 @@ class CleanupController extends Notifier<CleanupState> {
       }
       final resolved = await ref
           .read(galleryRepositoryProvider)
-          .resolvePhotos(saved.photos.map((photo) => photo.id));
+          .resolveMedia(saved.photos.map((photo) => photo.id));
       final resolvedById = {for (final photo in resolved) photo.id: photo};
       final validIds = resolvedById.keys.toSet();
       final missingBeforeCurrent = saved.photos
@@ -202,7 +204,7 @@ class CleanupController extends Notifier<CleanupState> {
           .where((photo) => validIds.contains(photo.id))
           .map((photo) {
             final current = resolvedById[photo.id]!;
-            return Photo(
+            return MediaAsset(
               id: current.id,
               createdAt: current.createdAt,
               sizeBytes: photo.sizeBytes ?? current.sizeBytes,
@@ -220,7 +222,7 @@ class CleanupController extends Notifier<CleanupState> {
         index: (saved.index - missingBeforeCurrent).clamp(0, photos.length),
         pendingDeletion: saved.pendingDeletion.intersection(validIds),
         history: saved.history
-            .where((action) => validIds.contains(action.photoId))
+            .where((action) => validIds.contains(action.mediaId))
             .toList(growable: false),
         source: saved.source,
       );
@@ -306,7 +308,7 @@ class CleanupController extends Notifier<CleanupState> {
     }
   }
 
-  Future<List<Photo>> _nextLibraryPhotos(CleanupState completed) async {
+  Future<List<MediaAsset>> _nextLibraryPhotos(CleanupState completed) async {
     var gallery = ref.read(galleryProvider);
     var next = _unreviewedPhotos(completed, gallery.photos);
     while (next.isEmpty && gallery.hasMore) {
@@ -319,7 +321,7 @@ class CleanupController extends Notifier<CleanupState> {
     return next;
   }
 
-  Future<List<Photo>> _nextAlbumPhotos(CleanupState completed) async {
+  Future<List<MediaAsset>> _nextAlbumPhotos(CleanupState completed) async {
     final albumId = completed.source.albumId;
     if (albumId == null) return const [];
     final loadedIds = completed.photos.map((photo) => photo.id).toSet();
@@ -343,9 +345,9 @@ class CleanupController extends Notifier<CleanupState> {
     return const [];
   }
 
-  List<Photo> _unreviewedPhotos(
+  List<MediaAsset> _unreviewedPhotos(
     CleanupState completed,
-    Iterable<Photo> photos,
+    Iterable<MediaAsset> photos,
   ) {
     final reviewedIds = completed.photos.map((photo) => photo.id).toSet();
     return photos
@@ -382,7 +384,7 @@ class CleanupController extends Notifier<CleanupState> {
       }
       final returned = await ref
           .read(galleryRepositoryProvider)
-          .deletePhotos(requested);
+          .deleteMedia(requested);
       final requestedSet = requested.toSet();
       final deleted = returned.where(requestedSet.contains).toSet();
       final remaining = requestedSet.difference(deleted);
@@ -399,7 +401,7 @@ class CleanupController extends Notifier<CleanupState> {
         index: state.index - deletedBeforeCurrent,
         pendingDeletion: remaining,
         history: state.history
-            .where((action) => !deleted.contains(action.photoId))
+            .where((action) => !deleted.contains(action.mediaId))
             .toList(growable: false),
         deleteFailed: remaining.isNotEmpty,
         source: state.source,
@@ -445,12 +447,12 @@ class CleanupController extends Notifier<CleanupState> {
   String _encodeSession(CleanupState value) => jsonEncode({
     'version': 1,
     'index': value.index,
-    'photos': [for (final photo in value.photos) _encodePhoto(photo)],
+    'media': [for (final photo in value.photos) _encodeMediaAsset(photo)],
     'pending': value.pendingDeletion.toList(growable: false),
     'source': _encodeSource(value.source),
     'history': [
       for (final action in value.history)
-        {'photoId': action.photoId, 'decision': action.decision.name},
+        {'mediaId': action.mediaId, 'decision': action.decision.name},
     ],
   });
 
@@ -461,7 +463,7 @@ class CleanupController extends Notifier<CleanupState> {
     'sort': source.sort.name,
   };
 
-  Map<String, Object> _encodePhoto(Photo photo) {
+  Map<String, Object> _encodeMediaAsset(MediaAsset photo) {
     final result = <String, Object>{
       'id': photo.id,
       'createdAt': photo.createdAt.millisecondsSinceEpoch,
@@ -485,14 +487,16 @@ class CleanupController extends Notifier<CleanupState> {
       if (decoded is! Map<String, dynamic> || decoded['version'] != 1) {
         return CleanupState();
       }
-      final photos = <Photo>[];
-      for (final item in decoded['photos'] as List? ?? const []) {
+      final photos = <MediaAsset>[];
+      final savedMedia =
+          decoded['media'] as List? ?? decoded['photos'] as List? ?? const [];
+      for (final item in savedMedia) {
         if (item is! Map<String, dynamic>) continue;
         final id = item['id'];
         final createdAt = item['createdAt'];
         if (id is! String || createdAt is! num) continue;
         photos.add(
-          Photo(
+          MediaAsset(
             id: id,
             createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt.toInt()),
             sizeBytes: (item['sizeBytes'] as num?)?.toInt(),
@@ -510,18 +514,18 @@ class CleanupController extends Notifier<CleanupState> {
       final history = <CleanupAction>[];
       for (final item in decoded['history'] as List? ?? const []) {
         if (item is! Map<String, dynamic>) continue;
-        final photoId = item['photoId'];
+        final mediaId = item['mediaId'] ?? item['photoId'];
         final decisionName = item['decision'];
-        if (photoId is! String ||
+        if (mediaId is! String ||
             decisionName is! String ||
-            !validIds.contains(photoId)) {
+            !validIds.contains(mediaId)) {
           continue;
         }
         final decision = CleanupDecision.values
             .where((value) => value.name == decisionName)
             .firstOrNull;
         if (decision != null) {
-          history.add(CleanupAction(photoId: photoId, decision: decision));
+          history.add(CleanupAction(mediaId: mediaId, decision: decision));
         }
       }
       final savedIndex = (decoded['index'] as num?)?.toInt() ?? 0;

@@ -8,6 +8,7 @@ import '../../../app/empty_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../gallery/application/gallery_controller.dart';
 import '../../gallery/domain/gallery_repository.dart';
+import '../../gallery/presentation/media_widgets.dart';
 import '../application/cleanup_controller.dart';
 
 class DeleteReviewScreen extends ConsumerWidget {
@@ -17,7 +18,7 @@ class DeleteReviewScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     final state = ref.watch(cleanupProvider);
-    final photos = state.pendingPhotos;
+    final photos = state.pendingMedia;
     final scheme = Theme.of(context).colorScheme;
     final palette = SwipePixPalette.of(context);
     final estimatedBytes = photos.fold<int?>(
@@ -119,7 +120,7 @@ class DeleteReviewScreen extends ConsumerWidget {
                             crossAxisSpacing: SwipeSpacing.sm,
                           ),
                       itemCount: photos.length,
-                      itemBuilder: (context, index) => _PendingPhotoTile(
+                      itemBuilder: (context, index) => _PendingMediaTile(
                         photo: photos[index],
                         disabled: state.deleting,
                         onKeep: () => ref
@@ -154,7 +155,7 @@ class DeleteReviewScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: SwipeSpacing.xxs),
                           Text(
-                            _formatFileSize(estimatedBytes),
+                            formatFileSize(estimatedBytes),
                             style: Theme.of(context).textTheme.headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.w900),
                           ),
@@ -198,14 +199,14 @@ class DeleteReviewScreen extends ConsumerWidget {
   }
 }
 
-class _PendingPhotoTile extends ConsumerWidget {
-  const _PendingPhotoTile({
+class _PendingMediaTile extends ConsumerWidget {
+  const _PendingMediaTile({
     required this.photo,
     required this.disabled,
     required this.onKeep,
   });
 
-  final Photo photo;
+  final MediaAsset photo;
   final bool disabled;
   final VoidCallback onKeep;
 
@@ -258,7 +259,7 @@ class _PendingPhotoTile extends ConsumerWidget {
             Positioned(
               top: SwipeSpacing.xs,
               left: SwipeSpacing.xs,
-              child: _VideoBadge(duration: photo.duration),
+              child: MediaVideoBadge(duration: photo.duration),
             ),
           Positioned(
             left: SwipeSpacing.sm,
@@ -279,8 +280,7 @@ class _PendingPhotoTile extends ConsumerWidget {
                     MaterialLocalizations.of(
                       context,
                     ).formatMediumDate(photo.createdAt),
-                    if (photo.duration != null)
-                      _formatDuration(photo.duration!),
+                    if (photo.duration != null) formatDuration(photo.duration!),
                   ].join(' · '),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
@@ -296,67 +296,4 @@ class _PendingPhotoTile extends ConsumerWidget {
       ),
     );
   }
-}
-
-String _formatDuration(Duration duration) {
-  final totalSeconds = duration.inSeconds;
-  final minutes = totalSeconds ~/ 60;
-  final seconds = totalSeconds % 60;
-  final hours = minutes ~/ 60;
-  if (hours > 0) {
-    final remainingMinutes = minutes % 60;
-    return '$hours:${remainingMinutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-  }
-  return '$minutes:${seconds.toString().padLeft(2, '0')}';
-}
-
-class _VideoBadge extends StatelessWidget {
-  const _VideoBadge({this.duration});
-
-  final Duration? duration;
-
-  @override
-  Widget build(BuildContext context) {
-    final text = duration == null || duration == Duration.zero
-        ? null
-        : _formatDuration(duration!);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.68),
-        borderRadius: BorderRadius.circular(SwipeRadius.chip),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 14),
-            if (text != null) ...[
-              const SizedBox(width: 2),
-              Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-String _formatFileSize(int bytes) {
-  if (bytes >= 1024 * 1024 * 1024) {
-    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
-  }
-  if (bytes >= 1024 * 1024) {
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-  }
-  if (bytes >= 1024) return '${(bytes / 1024).toStringAsFixed(0)} KB';
-  return '$bytes B';
 }

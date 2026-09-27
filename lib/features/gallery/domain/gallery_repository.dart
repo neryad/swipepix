@@ -18,8 +18,8 @@ enum GallerySort { newest, oldest, largest }
 
 enum MediaType { image, video }
 
-class Photo {
-  const Photo({
+class MediaAsset {
+  const MediaAsset({
     required this.id,
     required this.createdAt,
     this.sizeBytes,
@@ -40,17 +40,17 @@ class GalleryAlbum {
   const GalleryAlbum({
     required this.id,
     required this.name,
-    required this.photoCount,
-    this.coverPhoto,
+    required this.mediaCount,
+    this.coverMedia,
   });
 
   final String id;
   final String name;
-  final int photoCount;
-  final Photo? coverPhoto;
+  final int mediaCount;
+  final MediaAsset? coverMedia;
 }
 
-List<Photo> sortPhotosLargestFirst(Iterable<Photo> photos) {
+List<MediaAsset> sortMediaLargestFirst(Iterable<MediaAsset> photos) {
   final sorted = photos.toList(growable: false);
   sorted.sort((a, b) {
     final bySize = (b.sizeBytes ?? -1).compareTo(a.sizeBytes ?? -1);
@@ -61,24 +61,24 @@ List<Photo> sortPhotosLargestFirst(Iterable<Photo> photos) {
 
 abstract interface class GalleryRepository {
   Future<GalleryAccess> access({bool request = false});
-  Future<int?> photoCount();
+  Future<int?> mediaCount();
   Future<List<GalleryAlbum>> albums({int? limit});
   Future<GalleryAlbum?> album(String id);
-  Future<List<Photo>> page(
+  Future<List<MediaAsset>> page(
     int page,
     int size, {
     GallerySort sort = GallerySort.newest,
   });
-  Future<List<Photo>> albumPage(
+  Future<List<MediaAsset>> albumPage(
     String albumId,
     int page,
     int size, {
     GallerySort sort = GallerySort.newest,
   });
-  Future<List<Photo>> resolvePhotos(Iterable<String> ids);
+  Future<List<MediaAsset>> resolveMedia(Iterable<String> ids);
   Future<Uint8List?> thumbnail(String id);
   Future<Uint8List?> preview(String id);
-  Future<List<String>> deletePhotos(List<String> ids);
+  Future<List<String>> deleteMedia(List<String> ids);
   Future<void> manageLimited();
   Future<void> openSettings();
 }

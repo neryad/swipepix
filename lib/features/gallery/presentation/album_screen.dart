@@ -9,7 +9,8 @@ import '../../../l10n/app_localizations.dart';
 import '../../cleanup/application/cleanup_controller.dart';
 import '../application/gallery_controller.dart';
 import '../domain/gallery_repository.dart';
-import 'gallery_screen.dart' show PhotoTile, formatFileSize;
+import 'media_widgets.dart';
+import 'gallery_screen.dart' show MediaTile;
 
 class AlbumsScreen extends ConsumerStatefulWidget {
   const AlbumsScreen({super.key});
@@ -80,18 +81,18 @@ class _AlbumsScreenState extends ConsumerState<AlbumsScreen> {
                     delegate: SliverChildBuilderDelegate((context, index) {
                       if (index == 0) {
                         final count =
-                            gallery.totalPhotoCount ?? gallery.photos.length;
+                            gallery.totalMediaCount ?? gallery.photos.length;
                         return _AllPhotosAlbumTile(
                           count: count,
-                          coverPhoto: gallery.photos.firstOrNull,
+                          coverMedia: gallery.photos.firstOrNull,
                           onTap: () => context.go(AppRoutes.gallery),
                         );
                       }
                       final album = items[index - 1];
                       return _AlbumGridTile(
                         title: album.name,
-                        subtitle: l.albumPhotoCount(album.photoCount),
-                        coverPhoto: album.coverPhoto,
+                        subtitle: l.albumPhotoCount(album.mediaCount),
+                        coverMedia: album.coverMedia,
                         onTap: () =>
                             context.push(AppRoutes.albumDetails(album.id)),
                       );
@@ -210,7 +211,7 @@ class AlbumScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: SwipeSpacing.xs),
                         Text(
-                          l.albumPhotoCount(value.photoCount),
+                          l.albumPhotoCount(value.mediaCount),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(
@@ -229,10 +230,11 @@ class AlbumScreen extends ConsumerWidget {
                             ),
                             label: l.startAlbumCleanup,
                             onPressed: () {
-                              final loaded = photos.maybeWhen<List<Photo>?>(
-                                data: (value) => value,
-                                orElse: () => null,
-                              );
+                              final loaded = photos
+                                  .maybeWhen<List<MediaAsset>?>(
+                                    data: (value) => value,
+                                    orElse: () => null,
+                                  );
                               if (loaded == null || loaded.isEmpty) return;
                               _startAlbumCleanup(
                                 context,
@@ -279,7 +281,7 @@ class AlbumScreen extends ConsumerWidget {
                                   crossAxisSpacing: SwipeSpacing.sm,
                                 ),
                             itemCount: loaded.length,
-                            itemBuilder: (context, index) => PhotoTile(
+                            itemBuilder: (context, index) => MediaTile(
                               key: ValueKey(loaded[index].id),
                               photo: loaded[index],
                             ),
@@ -326,7 +328,7 @@ class AlbumScreen extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref, {
     required GalleryAlbum album,
-    required List<Photo> photos,
+    required List<MediaAsset> photos,
     required bool replaceExisting,
   }) async {
     final l = AppLocalizations.of(context)!;
@@ -363,12 +365,12 @@ class AlbumScreen extends ConsumerWidget {
 class _AllPhotosAlbumTile extends StatelessWidget {
   const _AllPhotosAlbumTile({
     required this.count,
-    required this.coverPhoto,
+    required this.coverMedia,
     required this.onTap,
   });
 
   final int count;
-  final Photo? coverPhoto;
+  final MediaAsset? coverMedia;
   final VoidCallback onTap;
 
   @override
@@ -377,7 +379,7 @@ class _AllPhotosAlbumTile extends StatelessWidget {
     return _AlbumGridTile(
       title: l.allPhotos,
       subtitle: l.albumPhotoCount(count),
-      coverPhoto: coverPhoto,
+      coverMedia: coverMedia,
       leadingIcon: Icons.photo_library_outlined,
       onTap: onTap,
     );
@@ -458,14 +460,14 @@ class _AlbumGridTile extends StatelessWidget {
   const _AlbumGridTile({
     required this.title,
     required this.subtitle,
-    required this.coverPhoto,
+    required this.coverMedia,
     required this.onTap,
     this.leadingIcon,
   });
 
   final String title;
   final String subtitle;
-  final Photo? coverPhoto;
+  final MediaAsset? coverMedia;
   final VoidCallback onTap;
   final IconData? leadingIcon;
 
@@ -482,7 +484,7 @@ class _AlbumGridTile extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            PhotoCover(photo: coverPhoto, radius: SwipeRadius.card),
+            MediaCover(media: coverMedia, radius: SwipeRadius.card),
             Positioned.fill(
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -574,13 +576,13 @@ class AlbumCover extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
-      PhotoCover(photo: album.coverPhoto, radius: radius);
+      MediaCover(media: album.coverMedia, radius: radius);
 }
 
-class PhotoCover extends ConsumerWidget {
-  const PhotoCover({super.key, required this.photo, this.radius = 18});
+class MediaCover extends ConsumerWidget {
+  const MediaCover({super.key, required this.media, this.radius = 18});
 
-  final Photo? photo;
+  final MediaAsset? media;
   final double radius;
 
   @override
@@ -597,10 +599,10 @@ class PhotoCover extends ConsumerWidget {
     );
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
-      child: photo == null
+      child: media == null
           ? placeholder()
           : ref
-                .watch(thumbnailProvider(photo!.id))
+                .watch(thumbnailProvider(media!.id))
                 .when(
                   data: (bytes) => bytes == null
                       ? placeholder()
@@ -617,7 +619,7 @@ class PhotoCover extends ConsumerWidget {
 }
 
 String albumSubtitle(BuildContext context, GalleryAlbum album) =>
-    AppLocalizations.of(context)!.albumPhotoCount(album.photoCount);
+    AppLocalizations.of(context)!.albumPhotoCount(album.mediaCount);
 
-String? photoSizeLabel(Photo photo) =>
-    photo.sizeBytes == null ? null : formatFileSize(photo.sizeBytes!);
+String? mediaSizeLabel(MediaAsset media) =>
+    media.sizeBytes == null ? null : formatFileSize(media.sizeBytes!);

@@ -3,7 +3,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../domain/gallery_repository.dart';
 
 class DeviceGalleryRepository implements GalleryRepository {
-  List<Photo>? _largestCache;
+  List<MediaAsset>? _largestCache;
   List<AssetPathEntity>? _albumCache;
   static const _permission = PermissionRequestOption(
     androidPermission: AndroidPermission(
@@ -31,7 +31,7 @@ class DeviceGalleryRepository implements GalleryRepository {
   }
 
   @override
-  Future<int?> photoCount() =>
+  Future<int?> mediaCount() =>
       PhotoManager.getAssetCount(type: RequestType.common);
 
   @override
@@ -54,8 +54,10 @@ class DeviceGalleryRepository implements GalleryRepository {
           GalleryAlbum(
             id: path.id,
             name: path.name,
-            photoCount: count,
-            coverPhoto: coverAssets.isEmpty ? null : _toPhoto(coverAssets[0]),
+            mediaCount: count,
+            coverMedia: coverAssets.isEmpty
+                ? null
+                : _toMediaAsset(coverAssets[0]),
           ),
         );
       } catch (_) {
@@ -81,8 +83,8 @@ class DeviceGalleryRepository implements GalleryRepository {
       return GalleryAlbum(
         id: path.id,
         name: path.name,
-        photoCount: count,
-        coverPhoto: coverAssets.isEmpty ? null : _toPhoto(coverAssets[0]),
+        mediaCount: count,
+        coverMedia: coverAssets.isEmpty ? null : _toMediaAsset(coverAssets[0]),
       );
     } catch (_) {
       return null;
@@ -90,7 +92,7 @@ class DeviceGalleryRepository implements GalleryRepository {
   }
 
   @override
-  Future<List<Photo>> page(
+  Future<List<MediaAsset>> page(
     int page,
     int size, {
     GallerySort sort = GallerySort.newest,
@@ -104,11 +106,11 @@ class DeviceGalleryRepository implements GalleryRepository {
       type: RequestType.common,
       filterOption: _filterForSort(sort),
     );
-    return assets.map(_toPhoto).toList(growable: false);
+    return assets.map(_toMediaAsset).toList(growable: false);
   }
 
   @override
-  Future<List<Photo>> albumPage(
+  Future<List<MediaAsset>> albumPage(
     String albumId,
     int page,
     int size, {
@@ -128,10 +130,10 @@ class DeviceGalleryRepository implements GalleryRepository {
       size: size,
       type: RequestType.common,
     );
-    return assets.map(_toPhoto).toList(growable: false);
+    return assets.map(_toMediaAsset).toList(growable: false);
   }
 
-  Future<List<Photo>> _largestPage(int page, int size) async {
+  Future<List<MediaAsset>> _largestPage(int page, int size) async {
     final count = await PhotoManager.getAssetCount(type: RequestType.common);
     if (_largestCache == null || _largestCache!.length != count) {
       _largestCache = await _buildSizeIndex(count);
@@ -142,7 +144,7 @@ class DeviceGalleryRepository implements GalleryRepository {
     return _largestCache!.sublist(start, end);
   }
 
-  Future<List<Photo>> _buildSizeIndex(int count) async {
+  Future<List<MediaAsset>> _buildSizeIndex(int count) async {
     if (count == 0) return const [];
     final assets = <AssetEntity>[];
     const queryBatchSize = 500;
@@ -156,7 +158,7 @@ class DeviceGalleryRepository implements GalleryRepository {
       );
     }
 
-    final photos = <Photo>[];
+    final photos = <MediaAsset>[];
     const metadataBatchSize = 12;
     for (var start = 0; start < assets.length; start += metadataBatchSize) {
       final end = (start + metadataBatchSize).clamp(0, assets.length);
@@ -170,12 +172,12 @@ class DeviceGalleryRepository implements GalleryRepository {
             } catch (_) {
               sizeBytes = null;
             }
-            return _toPhoto(asset, sizeBytes: sizeBytes);
+            return _toMediaAsset(asset, sizeBytes: sizeBytes);
           }),
         ),
       );
     }
-    return sortPhotosLargestFirst(photos);
+    return sortMediaLargestFirst(photos);
   }
 
   @override
@@ -191,16 +193,16 @@ class DeviceGalleryRepository implements GalleryRepository {
   }
 
   @override
-  Future<List<Photo>> resolvePhotos(Iterable<String> ids) async {
+  Future<List<MediaAsset>> resolveMedia(Iterable<String> ids) async {
     final orderedIds = ids.toList(growable: false);
-    final photos = <Photo>[];
+    final photos = <MediaAsset>[];
     const batchSize = 12;
     for (var start = 0; start < orderedIds.length; start += batchSize) {
       final end = (start + batchSize).clamp(0, orderedIds.length);
       final resolved = await Future.wait(
         orderedIds.sublist(start, end).map((id) async {
           final asset = await AssetEntity.fromId(id);
-          return asset == null ? null : _toPhoto(asset);
+          return asset == null ? null : _toMediaAsset(asset);
         }),
       );
       photos.addAll(resolved.nonNulls);
@@ -209,7 +211,7 @@ class DeviceGalleryRepository implements GalleryRepository {
   }
 
   @override
-  Future<List<String>> deletePhotos(List<String> ids) {
+  Future<List<String>> deleteMedia(List<String> ids) {
     _largestCache = null;
     _albumCache = null;
     return PhotoManager.editor.deleteWithIds(List.unmodifiable(ids));
@@ -225,7 +227,7 @@ class DeviceGalleryRepository implements GalleryRepository {
   @override
   Future<void> openSettings() => PhotoManager.openSetting();
 
-  Future<List<Photo>> _albumSizeIndex(String albumId) async {
+  Future<List<MediaAsset>> _albumSizeIndex(String albumId) async {
     final path = await _albumPath(albumId);
     if (path == null) return const [];
     final count = await path.assetCountAsync;
@@ -241,7 +243,7 @@ class DeviceGalleryRepository implements GalleryRepository {
         ),
       );
     }
-    final photos = <Photo>[];
+    final photos = <MediaAsset>[];
     const metadataBatchSize = 12;
     for (var start = 0; start < assets.length; start += metadataBatchSize) {
       final end = (start + metadataBatchSize).clamp(0, assets.length);
@@ -255,12 +257,12 @@ class DeviceGalleryRepository implements GalleryRepository {
             } catch (_) {
               sizeBytes = null;
             }
-            return _toPhoto(asset, sizeBytes: sizeBytes);
+            return _toMediaAsset(asset, sizeBytes: sizeBytes);
           }),
         ),
       );
     }
-    return sortPhotosLargestFirst(photos);
+    return sortMediaLargestFirst(photos);
   }
 
   Future<AssetPathEntity?> _albumPath(
@@ -303,7 +305,7 @@ class DeviceGalleryRepository implements GalleryRepository {
     ],
   );
 
-  Photo _toPhoto(AssetEntity asset, {int? sizeBytes}) => Photo(
+  MediaAsset _toMediaAsset(AssetEntity asset, {int? sizeBytes}) => MediaAsset(
     id: asset.id,
     createdAt: asset.createDateTime,
     sizeBytes: sizeBytes,

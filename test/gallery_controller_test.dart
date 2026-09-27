@@ -15,8 +15,8 @@ class FakeGallery implements GalleryRepository {
   final List<GallerySort> requestedSorts = [];
   final Set<String> unavailableIds = {};
   List<GalleryAlbum> fakeAlbums = const [];
-  Future<List<Photo>> Function(String, int)? fetchAlbum;
-  Future<List<Photo>> Function(int)? fetch;
+  Future<List<MediaAsset>> Function(String, int)? fetchAlbum;
+  Future<List<MediaAsset>> Function(int)? fetch;
   @override
   Future<GalleryAccess> access({bool request = false}) async {
     if (request) requests++;
@@ -24,7 +24,7 @@ class FakeGallery implements GalleryRepository {
   }
 
   @override
-  Future<int?> photoCount() async => 1;
+  Future<int?> mediaCount() async => 1;
 
   @override
   Future<List<GalleryAlbum>> albums({int? limit}) async => limit == null
@@ -36,7 +36,7 @@ class FakeGallery implements GalleryRepository {
       fakeAlbums.where((album) => album.id == id).firstOrNull;
 
   @override
-  Future<List<Photo>> page(
+  Future<List<MediaAsset>> page(
     int page,
     int size, {
     GallerySort sort = GallerySort.newest,
@@ -46,11 +46,11 @@ class FakeGallery implements GalleryRepository {
     if (fail) throw StateError('Unavailable');
     return fetch != null
         ? await fetch!(page)
-        : [Photo(id: 'one', createdAt: DateTime(2026))];
+        : [MediaAsset(id: 'one', createdAt: DateTime(2026))];
   }
 
   @override
-  Future<List<Photo>> albumPage(
+  Future<List<MediaAsset>> albumPage(
     String albumId,
     int page,
     int size, {
@@ -60,7 +60,7 @@ class FakeGallery implements GalleryRepository {
     if (fail) throw StateError('Unavailable');
     return fetchAlbum != null
         ? await fetchAlbum!(albumId, page)
-        : [Photo(id: '$albumId-one', createdAt: DateTime(2026))];
+        : [MediaAsset(id: '$albumId-one', createdAt: DateTime(2026))];
   }
 
   @override
@@ -68,12 +68,12 @@ class FakeGallery implements GalleryRepository {
   @override
   Future<Uint8List?> preview(String id) async => null;
   @override
-  Future<List<Photo>> resolvePhotos(Iterable<String> ids) async => ids
+  Future<List<MediaAsset>> resolveMedia(Iterable<String> ids) async => ids
       .where((id) => !unavailableIds.contains(id))
-      .map((id) => Photo(id: id, createdAt: DateTime(2026)))
+      .map((id) => MediaAsset(id: id, createdAt: DateTime(2026)))
       .toList(growable: false);
   @override
-  Future<List<String>> deletePhotos(List<String> ids) async {
+  Future<List<String>> deleteMedia(List<String> ids) async {
     deleteCalls++;
     if (fail) throw StateError('Unavailable');
     return deleteResult ?? ids;
@@ -138,10 +138,13 @@ void main() {
   });
   test('pagination deduplicates and stops at last page', () async {
     repo.fetch = (page) async => page == 0
-        ? List.generate(60, (i) => Photo(id: '$i', createdAt: DateTime(2026)))
+        ? List.generate(
+            60,
+            (i) => MediaAsset(id: '$i', createdAt: DateTime(2026)),
+          )
         : [
-            Photo(id: '59', createdAt: DateTime(2026)),
-            Photo(id: '60', createdAt: DateTime(2026)),
+            MediaAsset(id: '59', createdAt: DateTime(2026)),
+            MediaAsset(id: '60', createdAt: DateTime(2026)),
           ];
     await controller.refresh();
     expect(container.read(galleryProvider).hasMore, isTrue);
@@ -152,11 +155,11 @@ void main() {
     expect(repo.reads, 2);
   });
   test('pagination keeps existing photos visible while loading', () async {
-    final nextPage = Completer<List<Photo>>();
+    final nextPage = Completer<List<MediaAsset>>();
     repo.fetch = (page) async => page == 0
         ? List.generate(
             GalleryController.pageSize,
-            (i) => Photo(id: '$i', createdAt: DateTime(2026)),
+            (i) => MediaAsset(id: '$i', createdAt: DateTime(2026)),
           )
         : nextPage.future;
     await controller.refresh();
@@ -186,11 +189,19 @@ void main() {
     },
   );
   test('largest sorting uses size then newest date and puts unknown last', () {
-    final sorted = sortPhotosLargestFirst([
-      Photo(id: 'unknown', createdAt: DateTime(2026, 1, 5)),
-      Photo(id: 'small', createdAt: DateTime(2026, 1, 4), sizeBytes: 5),
-      Photo(id: 'large-old', createdAt: DateTime(2026, 1, 1), sizeBytes: 10),
-      Photo(id: 'large-new', createdAt: DateTime(2026, 1, 2), sizeBytes: 10),
+    final sorted = sortMediaLargestFirst([
+      MediaAsset(id: 'unknown', createdAt: DateTime(2026, 1, 5)),
+      MediaAsset(id: 'small', createdAt: DateTime(2026, 1, 4), sizeBytes: 5),
+      MediaAsset(
+        id: 'large-old',
+        createdAt: DateTime(2026, 1, 1),
+        sizeBytes: 10,
+      ),
+      MediaAsset(
+        id: 'large-new',
+        createdAt: DateTime(2026, 1, 2),
+        sizeBytes: 10,
+      ),
     ]);
 
     expect(sorted.map((photo) => photo.id), [
@@ -203,13 +214,13 @@ void main() {
   test(
     'old request cannot restore photos after permission revocation',
     () async {
-      final pending = Completer<List<Photo>>();
+      final pending = Completer<List<MediaAsset>>();
       repo.fetch = (_) => pending.future;
       final old = controller.refresh();
       await Future<void>.delayed(Duration.zero);
       repo.permission = GalleryAccess.denied;
       await controller.refresh();
-      pending.complete([Photo(id: 'stale', createdAt: DateTime(2026))]);
+      pending.complete([MediaAsset(id: 'stale', createdAt: DateTime(2026))]);
       await old;
       expect(container.read(galleryProvider).access, GalleryAccess.denied);
       expect(container.read(galleryProvider).photos, isEmpty);
@@ -218,8 +229,10 @@ void main() {
   test(
     'permission revoked before pagination does not query next page',
     () async {
-      repo.fetch = (_) async =>
-          List.generate(60, (i) => Photo(id: '$i', createdAt: DateTime(2026)));
+      repo.fetch = (_) async => List.generate(
+        60,
+        (i) => MediaAsset(id: '$i', createdAt: DateTime(2026)),
+      );
       await controller.refresh();
       repo.permission = GalleryAccess.denied;
       await controller.loadMore();

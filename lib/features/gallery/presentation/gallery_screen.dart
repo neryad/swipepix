@@ -10,6 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../cleanup/application/cleanup_controller.dart';
 import '../application/gallery_controller.dart';
 import '../domain/gallery_repository.dart';
+import 'media_widgets.dart';
 
 class GalleryScreen extends ConsumerStatefulWidget {
   const GalleryScreen({super.key});
@@ -69,7 +70,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen>
     final controller = ref.read(galleryProvider.notifier);
     final cleanup = ref.watch(cleanupProvider);
     final albums = ref.watch(galleryAlbumsProvider);
-    final totalCount = state.totalPhotoCount ?? state.photos.length;
+    final totalCount = state.totalMediaCount ?? state.photos.length;
     final activeSession =
         cleanup.hasSession &&
         (cleanup.index > 0 || cleanup.pendingDeletion.isNotEmpty);
@@ -237,7 +238,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen>
                   crossAxisSpacing: SwipeSpacing.sm,
                 ),
                 itemCount: state.photos.length,
-                itemBuilder: (context, index) => PhotoTile(
+                itemBuilder: (context, index) => MediaTile(
                   key: ValueKey(state.photos[index].id),
                   photo: state.photos[index],
                 ),
@@ -755,7 +756,7 @@ class _AlbumCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    l.albumPhotoCount(album.photoCount),
+                    l.albumPhotoCount(album.mediaCount),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -781,7 +782,7 @@ class _AlbumCover extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
-    final cover = album.coverPhoto;
+    final cover = album.coverMedia;
     Widget placeholder() => ColoredBox(
       color: scheme.surfaceContainerHighest,
       child: Icon(Icons.photo_library_outlined, color: scheme.onSurfaceVariant),
@@ -807,7 +808,9 @@ class _AlbumCover extends ConsumerWidget {
                               Positioned(
                                 top: SwipeSpacing.xs,
                                 right: SwipeSpacing.xs,
-                                child: _VideoBadge(duration: cover.duration),
+                                child: MediaVideoBadge(
+                                  duration: cover.duration,
+                                ),
                               ),
                           ],
                         ),
@@ -1204,10 +1207,10 @@ class _InlineMessage extends StatelessWidget {
   );
 }
 
-class PhotoTile extends ConsumerWidget {
-  const PhotoTile({super.key, required this.photo});
+class MediaTile extends ConsumerWidget {
+  const MediaTile({super.key, required this.photo});
 
-  final Photo photo;
+  final MediaAsset photo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1264,7 +1267,7 @@ class PhotoTile extends ConsumerWidget {
                 Positioned(
                   top: 6,
                   right: 6,
-                  child: _VideoBadge(duration: photo.duration),
+                  child: MediaVideoBadge(duration: photo.duration),
                 ),
               if (size != null)
                 Positioned(
@@ -1296,69 +1299,6 @@ class PhotoTile extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _VideoBadge extends StatelessWidget {
-  const _VideoBadge({this.duration});
-
-  final Duration? duration;
-
-  @override
-  Widget build(BuildContext context) {
-    final text = duration == null || duration == Duration.zero
-        ? null
-        : formatDuration(duration!);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.68),
-        borderRadius: BorderRadius.circular(SwipeRadius.chip),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 14),
-            if (text != null) ...[
-              const SizedBox(width: 2),
-              Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-String formatDuration(Duration duration) {
-  final totalSeconds = duration.inSeconds;
-  final minutes = totalSeconds ~/ 60;
-  final seconds = totalSeconds % 60;
-  final hours = minutes ~/ 60;
-  if (hours > 0) {
-    final remainingMinutes = minutes % 60;
-    return '$hours:${remainingMinutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-  }
-  return '$minutes:${seconds.toString().padLeft(2, '0')}';
-}
-
-String formatFileSize(int bytes) {
-  if (bytes >= 1024 * 1024 * 1024) {
-    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
-  }
-  if (bytes >= 1024 * 1024) {
-    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-  }
-  if (bytes >= 1024) return '${(bytes / 1024).toStringAsFixed(0)} KB';
-  return '$bytes B';
 }
 
 String _formatCount(BuildContext context, int count) =>

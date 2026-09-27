@@ -12,9 +12,9 @@ void main() {
   late ProviderContainer container;
   late CleanupController controller;
   final photos = [
-    Photo(id: 'one', createdAt: DateTime(2026, 1, 1)),
-    Photo(id: 'two', createdAt: DateTime(2026, 1, 2)),
-    Photo(id: 'three', createdAt: DateTime(2026, 1, 3)),
+    MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+    MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
+    MediaAsset(id: 'three', createdAt: DateTime(2026, 1, 3)),
   ];
 
   setUp(() {
@@ -113,11 +113,11 @@ void main() {
     repository.fetch = (page) async => page == 0
         ? List.generate(
             GalleryController.pageSize,
-            (index) => Photo(id: '$index', createdAt: DateTime(2026)),
+            (index) => MediaAsset(id: '$index', createdAt: DateTime(2026)),
           )
         : [
-            Photo(id: '59', createdAt: DateTime(2026)),
-            Photo(id: '60', createdAt: DateTime(2026)),
+            MediaAsset(id: '59', createdAt: DateTime(2026)),
+            MediaAsset(id: '60', createdAt: DateTime(2026)),
           ];
     await container.read(galleryProvider.notifier).refresh();
     controller.start(container.read(galleryProvider).photos);
@@ -137,11 +137,11 @@ void main() {
 
   test('next batch first uses already loaded unseen photos', () async {
     repository.fetch = (_) async => [
-      Photo(id: 'one', createdAt: DateTime(2026)),
-      Photo(id: 'two', createdAt: DateTime(2026)),
+      MediaAsset(id: 'one', createdAt: DateTime(2026)),
+      MediaAsset(id: 'two', createdAt: DateTime(2026)),
     ];
     await container.read(galleryProvider.notifier).refresh();
-    controller.start([Photo(id: 'one', createdAt: DateTime(2026))]);
+    controller.start([MediaAsset(id: 'one', createdAt: DateTime(2026))]);
     controller.keep();
 
     final added = await controller.loadNextBatch();
