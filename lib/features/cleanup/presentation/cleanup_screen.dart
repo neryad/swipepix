@@ -511,49 +511,82 @@ class _ReviewHeader extends StatelessWidget {
     final palette = SwipePixPalette.of(context);
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              l.appTitle,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w900,
-                letterSpacing: -0.35,
-              ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: palette.glass,
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: scheme.outlineVariant.withValues(alpha: 0.14),
             ),
-            const SizedBox(width: SwipeSpacing.md),
-            Expanded(
-              child: Text(
-                progressText,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: scheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w700,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: SwipeSpacing.sm,
+              vertical: SwipeSpacing.xs,
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: SwipeSpacing.sm,
+                  ),
+                  child: Text(
+                    l.appTitle,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.35,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: SwipeSpacing.xs),
+                Expanded(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: scheme.surface.withValues(alpha: 0.45),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: SwipeSpacing.md,
+                        vertical: SwipeSpacing.sm,
+                      ),
+                      child: Text(
+                        progressText,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: scheme.onSurface,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: SwipeSpacing.xs),
+                _HeaderIconButton(
+                  onPressed: onSettings,
+                  tooltip: l.settings,
+                  icon: Icons.tune_rounded,
+                ),
+                const SizedBox(width: SwipeSpacing.xs),
+                _PendingDeletionButton(
+                  count: pendingCount,
+                  tooltip: pendingText,
+                  onPressed: onPending,
+                ),
+              ],
             ),
-            _HeaderIconButton(
-              onPressed: onSettings,
-              tooltip: l.settings,
-              icon: Icons.tune_rounded,
-            ),
-            const SizedBox(width: SwipeSpacing.xs),
-            _PendingDeletionButton(
-              count: pendingCount,
-              tooltip: pendingText,
-              onPressed: onPending,
-            ),
-          ],
+          ),
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: SwipeSpacing.sm),
         ClipRRect(
           borderRadius: BorderRadius.circular(999),
           child: LinearProgressIndicator(
             minHeight: 4,
             value: progress,
             backgroundColor: scheme.surfaceContainerHighest.withValues(
-              alpha: 0.72,
+              alpha: 0.55,
             ),
-            valueColor: AlwaysStoppedAnimation(palette.accent),
+            valueColor: AlwaysStoppedAnimation(palette.accentHigh),
           ),
         ),
       ],
@@ -581,11 +614,9 @@ class _HeaderIconButton extends StatelessWidget {
         onPressed: onPressed,
         tooltip: tooltip,
         style: IconButton.styleFrom(
-          backgroundColor: scheme.surfaceContainerLow.withValues(alpha: 0.86),
+          backgroundColor: scheme.surfaceContainerLow.withValues(alpha: 0.76),
           foregroundColor: scheme.onSurface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(SwipeRadius.chip),
-          ),
+          shape: const CircleBorder(),
         ),
         iconSize: 20,
         icon: Icon(icon),
@@ -804,20 +835,17 @@ class _DecisionOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!visible) return const SizedBox.shrink();
     final intensity = Curves.easeOutCubic.transform(progress.clamp(0.0, 1.0));
+    final left = alignment == Alignment.topLeft;
     return Stack(
       fit: StackFit.expand,
       children: [
         Opacity(
-          opacity: intensity * 0.22,
+          opacity: intensity * 0.24,
           child: DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: alignment == Alignment.topLeft
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                end: alignment == Alignment.topLeft
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
+                begin: left ? Alignment.centerRight : Alignment.centerLeft,
+                end: left ? Alignment.centerLeft : Alignment.centerRight,
                 colors: [Colors.transparent, color],
               ),
             ),
@@ -829,43 +857,47 @@ class _DecisionOverlay extends StatelessWidget {
             padding: const EdgeInsets.all(SwipeSpacing.xxl),
             child: Opacity(
               opacity: intensity,
-              child: Transform.scale(
-                scale: 0.86 + intensity * 0.16,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.12 + intensity * 0.14),
-                    border: Border.all(
-                      color: color.withValues(alpha: 0.72 + intensity * 0.28),
-                      width: 1.5 + intensity * 1.2,
-                    ),
-                    borderRadius: BorderRadius.circular(SwipeRadius.card),
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.withValues(alpha: 0.16 * intensity),
-                        blurRadius: 24,
-                        offset: const Offset(0, 10),
+              child: Transform.rotate(
+                angle: left ? -0.18 : 0.18,
+                child: Transform.scale(
+                  scale: 0.82 + intensity * 0.2,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.12 + intensity * 0.08),
+                      border: Border.all(
+                        color: color.withValues(alpha: 0.72 + intensity * 0.28),
+                        width: 2.0 + intensity,
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: SwipeSpacing.md,
-                      vertical: SwipeSpacing.sm,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(icon, color: Colors.white, size: 24),
-                        const SizedBox(width: SwipeSpacing.sm),
-                        Text(
-                          label,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 0.9,
-                          ),
+                      borderRadius: BorderRadius.circular(SwipeRadius.control),
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.22 * intensity),
+                          blurRadius: 28,
+                          offset: const Offset(0, 12),
                         ),
                       ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: SwipeSpacing.lg,
+                        vertical: SwipeSpacing.md,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(icon, color: Colors.white, size: 26),
+                          const SizedBox(width: SwipeSpacing.sm),
+                          Text(
+                            label,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 1.4,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -969,30 +1001,48 @@ class _PhotoCard extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (showMetadata)
-                Positioned(
-                  left: SwipeSpacing.lg,
-                  right: SwipeSpacing.lg,
-                  bottom: SwipeSpacing.lg,
+              Positioned.fill(
+                child: IgnorePointer(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: palette.photoScrim,
-                      borderRadius: BorderRadius.circular(SwipeRadius.control),
+                      borderRadius: BorderRadius.circular(28),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.1),
+                        color: Colors.white.withValues(alpha: 0.08),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              if (showMetadata)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withValues(alpha: 0.82),
+                        ],
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: SwipeSpacing.md,
-                        vertical: SwipeSpacing.sm,
+                      padding: const EdgeInsets.fromLTRB(
+                        SwipeSpacing.lg,
+                        42,
+                        SwipeSpacing.lg,
+                        SwipeSpacing.lg,
                       ),
                       child: Text(
                         metadata,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.1,
                         ),
                       ),
                     ),

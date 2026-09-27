@@ -94,11 +94,53 @@ class SwipePixApp extends ConsumerWidget {
       surface: dark ? const Color(0xff090a0f) : const Color(0xfff8fafc),
       error: palette.delete,
     );
+    final textTheme = ThemeData(
+      brightness: brightness,
+      useMaterial3: true,
+    ).textTheme.apply(fontFamily: 'Plus Jakarta Sans');
+    final displayTheme = textTheme.copyWith(
+      displayLarge: textTheme.displayLarge?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -1.2,
+      ),
+      displayMedium: textTheme.displayMedium?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -1,
+      ),
+      headlineLarge: textTheme.headlineLarge?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.8,
+      ),
+      headlineMedium: textTheme.headlineMedium?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.7,
+      ),
+      headlineSmall: textTheme.headlineSmall?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.6,
+      ),
+      titleLarge: textTheme.titleLarge?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.45,
+      ),
+      titleMedium: textTheme.titleMedium?.copyWith(
+        fontFamily: 'Space Grotesk',
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.25,
+      ),
+    );
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
       extensions: [palette],
       fontFamily: 'Plus Jakarta Sans',
+      textTheme: displayTheme,
       scaffoldBackgroundColor: scheme.surface,
       appBarTheme: AppBarTheme(
         centerTitle: false,

@@ -361,24 +361,74 @@ class _HomeSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Text(
-            l.photoSummary(count),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: scheme.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+    final palette = SwipePixPalette.of(context);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: palette.glass,
+        borderRadius: BorderRadius.circular(SwipeRadius.card),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.14),
         ),
-        if (access != GalleryAccess.authorized)
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 220),
-            child: _AccessChip(label: status, canRead: access.canRead),
-          ),
-      ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(SwipeSpacing.md),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [palette.accent, palette.accentHigh],
+                ),
+                borderRadius: BorderRadius.circular(SwipeRadius.control),
+                boxShadow: [
+                  BoxShadow(
+                    color: palette.accent.withValues(alpha: 0.22),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: const SizedBox.square(
+                dimension: 44,
+                child: Icon(
+                  Icons.photo_library_outlined,
+                  color: Colors.white,
+                  size: 22,
+                ),
+              ),
+            ),
+            const SizedBox(width: SwipeSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _formatCount(context, count),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.8,
+                    ),
+                  ),
+                  const SizedBox(height: SwipeSpacing.xxs),
+                  Text(
+                    l.photoSummary(count),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (access != GalleryAccess.authorized)
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 190),
+                child: _AccessChip(label: status, canRead: access.canRead),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
