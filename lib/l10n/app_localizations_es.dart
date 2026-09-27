@@ -16,11 +16,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get intro =>
-      'Empieza conectando tu galería. Tus fotos permanecen en tu dispositivo; SwipePix nunca las sube.';
+      'Empieza conectando tu galería. Tus fotos y videos permanecen en tu dispositivo; SwipePix nunca los sube.';
 
   @override
   String get safety =>
-      'Tú tienes el control. El swipe solo marcará fotos. Borrar requerirá una revisión y confirmación aparte.';
+      'Tú tienes el control. El swipe solo marcará elementos. Borrar requerirá una revisión y confirmación aparte.';
 
   @override
   String get connect => 'Explorar mis fotos';
@@ -32,16 +32,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get libraryTitle => 'Biblioteca';
 
   @override
-  String get recentPhotos => 'Fotos recientes';
+  String get recentPhotos => 'Medios recientes';
 
   @override
   String photoSummary(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count fotos',
-      one: '1 foto',
-      zero: 'Sin fotos todavía',
+      other: '$count elementos',
+      one: '1 elemento',
+      zero: 'Sin medios todavía',
     );
     return '$_temp0';
   }
@@ -51,10 +51,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get permissionIntro =>
-      'Permite el acceso para ver tu galería. Puedes compartir solo las fotos que elijas.';
+      'Permite el acceso para ver tu galería. Puedes compartir solo las fotos y videos que elijas.';
 
   @override
-  String get allow => 'Permitir acceso a fotos';
+  String get allow => 'Permitir acceso a fotos y videos';
 
   @override
   String get settings => 'Ajustes';
@@ -63,33 +63,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get openSettings => 'Abrir ajustes del dispositivo';
 
   @override
-  String get limited => 'Solo las fotos seleccionadas';
+  String get limited => 'Solo fotos y videos seleccionados';
 
   @override
-  String get authorized => 'Acceso completo a fotos';
+  String get authorized => 'Acceso completo a fotos y videos';
 
   @override
   String get denied =>
-      'El acceso está denegado. Puedes reintentarlo o cambiarlo en los ajustes del dispositivo.';
+      'El acceso a fotos y videos está denegado. Puedes reintentarlo o cambiarlo en los ajustes del dispositivo.';
 
   @override
   String get restricted =>
-      'El acceso a fotos está restringido por este dispositivo.';
+      'El acceso a fotos y videos está restringido por este dispositivo.';
 
   @override
   String get unsupported =>
-      'Abre SwipePix en Android o iOS para acceder a tus fotos.';
+      'Abre SwipePix en Android o iOS para acceder a tu galería.';
 
   @override
-  String get manage => 'Cambiar fotos seleccionadas';
+  String get manage => 'Cambiar medios seleccionados';
 
   @override
   String get empty =>
-      'No hay fotos accesibles. Si el acceso es limitado, prueba seleccionando más fotos.';
+      'No hay fotos ni videos accesibles. Si el acceso es limitado, prueba seleccionando más medios.';
 
   @override
   String get error =>
-      'No se pudieron cargar tus fotos. Revisa el acceso y vuelve a intentarlo.';
+      'No se pudo cargar tu galería. Revisa el acceso y vuelve a intentarlo.';
 
   @override
   String get retry => 'Reintentar';
@@ -101,11 +101,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get more => 'Cargar más fotos';
 
   @override
-  String get loadingMorePhotos => 'Cargando más fotos…';
+  String get loadingMorePhotos => 'Cargando más medios…';
 
   @override
   String get readOnly =>
-      'Deslizar solo marca fotos; borrar siempre requiere revisión y confirmación.';
+      'Deslizar solo marca elementos; borrar siempre requiere revisión y confirmación.';
 
   @override
   String get language => 'Idioma';
@@ -139,13 +139,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quickCleanup => 'Limpieza rápida';
 
   @override
-  String get allPhotos => 'Todas';
+  String get allPhotos => 'Todos';
 
   @override
-  String get largePhotos => 'Grandes';
+  String get largePhotos => 'Archivos grandes';
 
   @override
-  String get oldestPhotos => 'Antiguas';
+  String get oldestPhotos => 'Antiguos';
 
   @override
   String get albums => 'Álbumes';
@@ -161,8 +161,8 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count fotos',
-      one: '1 foto',
+      other: '$count elementos',
+      one: '1 elemento',
     );
     return '$_temp0';
   }
@@ -184,11 +184,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String loadedSessionCount(int count) {
-    return 'Revisarás las $count fotos cargadas.';
+    return 'Revisarás los $count elementos cargados.';
   }
 
   @override
-  String get cleanupTitle => 'Revisar fotos';
+  String get cleanupTitle => 'Revisar medios';
 
   @override
   String get swipeHint => 'Izquierda para eliminar · derecha para conservar';
@@ -246,19 +246,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sessionCompleteBody =>
-      'Revisa las fotos marcadas antes de decidir si quieres borrarlas.';
+      'Revisa los elementos marcados antes de decidir si quieres borrarlos.';
 
   @override
-  String get nothingMarked => 'No marcaste ninguna foto para borrar.';
+  String get nothingMarked => 'No marcaste nada para borrar.';
 
   @override
   String get continueNextBatch => 'Continuar con el siguiente lote';
 
   @override
-  String get loadingNextBatch => 'Buscando más fotos…';
+  String get loadingNextBatch => 'Buscando más medios…';
 
   @override
-  String get noMorePhotos => 'No hay más fotos nuevas para revisar';
+  String get noMorePhotos => 'No hay más elementos nuevos para revisar';
 
   @override
   String get backToGallery => 'Volver a la galería';
@@ -268,21 +268,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get deleteReviewSafety =>
-      'Estas fotos todavía no se han borrado. Quita cualquiera que quieras conservar.';
+      'Estos elementos todavía no se han borrado. Quita cualquiera que quieras conservar.';
 
   @override
-  String get removeFromDelete => 'Conservar esta foto';
+  String get removeFromDelete => 'Conservar este elemento';
 
   @override
-  String get deleteSelected => 'Borrar fotos seleccionadas';
+  String get deleteSelected => 'Borrar elementos seleccionados';
 
   @override
   String deleteReviewedPhotos(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Borrar $count fotos revisadas',
-      one: 'Borrar 1 foto revisada',
+      other: 'Borrar $count elementos revisados',
+      one: 'Borrar 1 elemento revisado',
     );
     return '$_temp0';
   }
@@ -298,8 +298,8 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count fotos',
-      one: '1 foto',
+      other: '$count elementos',
+      one: '1 elemento',
     );
     return 'Se solicitará borrar $_temp0 del dispositivo. El sistema puede pedir otra confirmación.';
   }
@@ -315,22 +315,22 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Se borraron $count fotos',
-      one: 'Se borró 1 foto',
+      other: 'Se borraron $count elementos',
+      one: 'Se borró 1 elemento',
     );
     return '$_temp0.';
   }
 
   @override
   String get deletePartial =>
-      'Algunas fotos no se borraron o se canceló la confirmación. Siguen en la lista.';
+      'Algunos elementos no se borraron o se canceló la confirmación. Siguen en la lista.';
 
   @override
   String get deleteAccessLost =>
-      'No se pudo borrar. Revisa el permiso de fotos y vuelve a intentarlo.';
+      'No se pudo borrar. Revisa el permiso de galería y vuelve a intentarlo.';
 
   @override
-  String get previewUnavailable => 'No se pudo cargar esta foto.';
+  String get previewUnavailable => 'No se pudo cargar este elemento.';
 
   @override
   String get sortBy => 'Ordenar por';
@@ -356,11 +356,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get restoringSession => 'Comprobando fotos…';
+  String get restoringSession => 'Comprobando medios…';
 
   @override
   String get sessionUnavailable =>
-      'No se pudo recuperar la sesión. Revisa el permiso de fotos.';
+      'No se pudo recuperar la sesión. Revisa el permiso de galería.';
 
   @override
   String get startNewCleanup => 'Empezar una limpieza nueva';
@@ -370,7 +370,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get replaceSessionBody =>
-      'Se perderá el progreso y las fotos marcadas de la sesión anterior. Ninguna foto se borrará.';
+      'Se perderá el progreso y los elementos marcados de la sesión anterior. Nada se borrará.';
 
   @override
   String get viewIntroduction => 'Ver introducción';
@@ -402,22 +402,33 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aboutSwipePixBody =>
-      'SwipePix te ayuda a revisar tu galería de forma rápida y segura. Las fotos permanecen en tu dispositivo, y deslizar solo marca fotos para revisión. Nada se borra hasta que lo confirmas.';
+      'SwipePix te ayuda a revisar tu galería de fotos y videos de forma rápida y segura. Los medios permanecen en tu dispositivo, y deslizar solo marca elementos para revisión. Nada se borra hasta que lo confirmas.';
 
   @override
   String get privacyPolicy => 'Política de privacidad';
 
   @override
   String get privacyPolicyBody =>
-      'SwipePix está diseñada como una herramienta local para revisar fotos. La app solicita acceso a tu galería solo para mostrar fotos, crear sesiones de revisión, calcular metadatos de tamaño cuando estén disponibles y pedir al sistema operativo del dispositivo que borre fotos después de tu confirmación.\n\nSwipePix no sube fotos ni videos. SwipePix no vende ni comparte tus fotos. En la app de producción actual, SwipePix no usa SDKs de publicidad, SDKs de analítica, píxeles de rastreo, SDKs de reportes de fallos, cuentas ni almacenamiento en la nube.\n\nLos datos guardados en este dispositivo pueden incluir tu idioma, apariencia, preferencia de orden, estado del onboarding, progreso de la sesión de limpieza, identificadores de fotos necesarios para reanudar una sesión y metadatos limitados como fechas o tamaños de archivo. Estos datos se guardan localmente en el almacenamiento de la app del dispositivo y se usan solo para la funcionalidad de la app.\n\nLos servicios de la plataforma pueden procesar el permiso de galería, el acceso limitado a fotos seleccionadas y la confirmación de borrado según el comportamiento del sistema de Apple o Google/Android. Si tu dispositivo usa servicios como iCloud Photos o Google Photos, esos servicios dependen del proveedor del dispositivo o de la cuenta, no de SwipePix.\n\nSwipePix no recopila intencionalmente información personal de menores y no está dirigida a menores.\n\nOpciones de privacidad: puedes revocar o limitar el acceso a fotos desde los ajustes del dispositivo. Puedes eliminar los datos locales borrando la app de tu dispositivo. Si la app agrega analítica, cuentas, sincronización en la nube, anuncios, pagos o cualquier procesamiento fuera del dispositivo, esta política y las declaraciones de privacidad de las tiendas deben actualizarse antes del lanzamiento.\n\nContacto: usa el contacto del desarrollador indicado en App Store o Google Play. Antes del lanzamiento público, reemplaza esta frase con el nombre de la entidad legal y un correo dedicado de privacidad.';
+      'SwipePix está diseñada como una herramienta local para revisar fotos y videos. La app solicita acceso a tu galería solo para mostrar fotos y videos, crear sesiones de revisión, calcular metadatos de tamaño cuando estén disponibles y pedir al sistema operativo del dispositivo que borre elementos seleccionados después de tu confirmación.\n\nSwipePix no sube fotos ni videos. SwipePix no vende ni comparte tus fotos ni videos. En la app de producción actual, SwipePix no usa SDKs de publicidad, SDKs de analítica, píxeles de rastreo, SDKs de reportes de fallos, cuentas ni almacenamiento en la nube.\n\nLos datos guardados en este dispositivo pueden incluir tu idioma, apariencia, preferencia de orden, estado del onboarding, progreso de la sesión de limpieza, identificadores de medios necesarios para reanudar una sesión y metadatos limitados como fechas, duraciones o tamaños de archivo. Estos datos se guardan localmente en el almacenamiento de la app del dispositivo y se usan solo para la funcionalidad de la app.\n\nLos servicios de la plataforma pueden procesar el permiso de galería, el acceso limitado a medios seleccionados y la confirmación de borrado según el comportamiento del sistema de Apple o Google/Android. Si tu dispositivo usa servicios como iCloud Photos o Google Photos, esos servicios dependen del proveedor del dispositivo o de la cuenta, no de SwipePix.\n\nSwipePix no recopila intencionalmente información personal de menores y no está dirigida a menores.\n\nOpciones de privacidad: puedes revocar o limitar el acceso a la galería desde los ajustes del dispositivo. Puedes eliminar los datos locales borrando la app de tu dispositivo. Si la app agrega analítica, cuentas, sincronización en la nube, anuncios, pagos o cualquier procesamiento fuera del dispositivo, esta política y las declaraciones de privacidad de las tiendas deben actualizarse antes del lanzamiento.\n\nContacto: usa el contacto del desarrollador indicado en App Store o Google Play. Antes del lanzamiento público, reemplaza esta frase con el nombre de la entidad legal y un correo dedicado de privacidad.';
 
   @override
   String get termsConditions => 'Términos y condiciones';
 
   @override
   String get termsConditionsBody =>
-      'Estos Términos regulan tu uso de SwipePix. Si no estás de acuerdo, no uses la app.\n\nServicio. SwipePix te ayuda a revisar fotos en tu propio dispositivo. Deslizar a la izquierda solo marca una foto para revisión de borrado. Las fotos no se borran hasta que revisas las fotos marcadas y solicitas al sistema operativo del dispositivo que las borre. El sistema puede mostrar una confirmación adicional.\n\nTu responsabilidad. Tú eres responsable de decidir qué fotos conservar o borrar y de mantener copias de seguridad de fotos importantes antes de usar funciones de limpieza. SwipePix no puede garantizar la recuperación de fotos después de que el sistema operativo complete el borrado.\n\nSin asesoría profesional. SwipePix se ofrece como herramienta utilitaria y no brinda asesoría legal, de gestión de almacenamiento, archivo, seguridad ni otro tipo de asesoría profesional.\n\nUso permitido. Puedes usar SwipePix solo con fines legales y solo con fotos a las que tienes derecho de acceder y gestionar. No puedes intentar aplicar ingeniería inversa, abusar, interrumpir o usar indebidamente la app o servicios relacionados.\n\nPrivacidad. La Política de privacidad explica qué datos se procesan y guardan. En la app de producción actual, SwipePix está pensada para procesar fotos localmente y no subirlas, venderlas ni compartirlas.\n\nDescargo. SwipePix se ofrece “tal cual” y “según disponibilidad”, sin garantías de ningún tipo en la máxima medida permitida por la ley. No garantizamos que la app funcionará sin interrupciones, sin errores o que será compatible con todos los dispositivos, configuraciones de galería o versiones del sistema operativo.\n\nLimitación de responsabilidad. En la máxima medida permitida por la ley, SwipePix y su desarrollador no serán responsables por daños indirectos, incidentales, especiales, consecuentes, ejemplares o punitivos, ni por pérdida de datos, pérdida de fotos, pérdida de ganancias o interrupción de negocio que surja de o se relacione con tu uso de la app.\n\nArbitraje y renuncia a demandas colectivas. Cualquier disputa, reclamación o controversia que surja de estos Términos o de SwipePix se resolverá mediante arbitraje individual final y vinculante, en lugar de en tribunales, excepto cuando cualquiera de las partes pueda presentar una reclamación individual en un tribunal de reclamos menores si califica. Tú y SwipePix renuncian al derecho a juicio por jurado y al derecho a participar en una demanda colectiva, consolidada, representativa, de fiscal general privado o similar. El arbitraje será administrado por la American Arbitration Association (AAA) bajo sus reglas de arbitraje de consumo aplicables, salvo que las partes acuerden otra cosa. El árbitro solo podrá otorgar remedios de forma individual. Esta sección no impide que cualquiera de las partes solicite medidas cautelares o equitativas por uso indebido de propiedad intelectual o acceso no autorizado.\n\nCambios. Estos Términos pueden actualizarse antes o después del lanzamiento. Si hay un cambio material, actualiza el aviso dentro de la app y la página pública de Términos.';
+      'Estos Términos regulan tu uso de SwipePix. Si no estás de acuerdo, no uses la app.\n\nServicio. SwipePix te ayuda a revisar fotos y videos en tu propio dispositivo. Deslizar a la izquierda solo marca un elemento para revisión de borrado. Los elementos no se borran hasta que revisas los elementos marcados y solicitas al sistema operativo del dispositivo que los borre. El sistema puede mostrar una confirmación adicional.\n\nTu responsabilidad. Tú eres responsable de decidir qué fotos o videos conservar o borrar y de mantener copias de seguridad de medios importantes antes de usar funciones de limpieza. SwipePix no puede garantizar la recuperación de medios después de que el sistema operativo complete el borrado.\n\nSin asesoría profesional. SwipePix se ofrece como herramienta utilitaria y no brinda asesoría legal, de gestión de almacenamiento, archivo, seguridad ni otro tipo de asesoría profesional.\n\nUso permitido. Puedes usar SwipePix solo con fines legales y solo con fotos y videos a los que tienes derecho de acceder y gestionar. No puedes intentar aplicar ingeniería inversa, abusar, interrumpir o usar indebidamente la app o servicios relacionados.\n\nPrivacidad. La Política de privacidad explica qué datos se procesan y guardan. En la app de producción actual, SwipePix está pensada para procesar fotos y videos localmente y no subirlos, venderlos ni compartirlos.\n\nDescargo. SwipePix se ofrece “tal cual” y “según disponibilidad”, sin garantías de ningún tipo en la máxima medida permitida por la ley. No garantizamos que la app funcionará sin interrupciones, sin errores o que será compatible con todos los dispositivos, configuraciones de galería o versiones del sistema operativo.\n\nLimitación de responsabilidad. En la máxima medida permitida por la ley, SwipePix y su desarrollador no serán responsables por daños indirectos, incidentales, especiales, consecuentes, ejemplares o punitivos, ni por pérdida de datos, pérdida de fotos, pérdida de ganancias o interrupción de negocio que surja de o se relacione con tu uso de la app.\n\nArbitraje y renuncia a demandas colectivas. Cualquier disputa, reclamación o controversia que surja de estos Términos o de SwipePix se resolverá mediante arbitraje individual final y vinculante, en lugar de en tribunales, excepto cuando cualquiera de las partes pueda presentar una reclamación individual en un tribunal de reclamos menores si califica. Tú y SwipePix renuncian al derecho a juicio por jurado y al derecho a participar en una demanda colectiva, consolidada, representativa, de fiscal general privado o similar. El arbitraje será administrado por la American Arbitration Association (AAA) bajo sus reglas de arbitraje de consumo aplicables, salvo que las partes acuerden otra cosa. El árbitro solo podrá otorgar remedios de forma individual. Esta sección no impide que cualquiera de las partes solicite medidas cautelares o equitativas por uso indebido de propiedad intelectual o acceso no autorizado.\n\nCambios. Estos Términos pueden actualizarse antes o después del lanzamiento. Si hay un cambio material, actualiza el aviso dentro de la app y la página pública de Términos.';
 
   @override
   String get legalUpdated => 'Última actualización: 25 de septiembre de 2026';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get media => 'Medio';
+
+  @override
+  String videoDuration(String duration) {
+    return '$duration';
+  }
 }

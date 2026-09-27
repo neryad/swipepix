@@ -113,13 +113,13 @@ abstract class AppLocalizations {
   /// No description provided for @intro.
   ///
   /// In en, this message translates to:
-  /// **'Start by connecting your photo library. Your photos stay on your device; SwipePix never uploads them.'**
+  /// **'Start by connecting your library. Your photos and videos stay on your device; SwipePix never uploads them.'**
   String get intro;
 
   /// No description provided for @safety.
   ///
   /// In en, this message translates to:
-  /// **'You stay in control. Swiping will only mark photos. Deletion will require a separate review and confirmation.'**
+  /// **'You stay in control. Swiping only marks items. Deleting requires a separate review and confirmation.'**
   String get safety;
 
   /// No description provided for @connect.
@@ -131,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @gallery.
   ///
   /// In en, this message translates to:
-  /// **'Your photo library'**
+  /// **'Your library'**
   String get gallery;
 
   /// No description provided for @libraryTitle.
@@ -143,13 +143,13 @@ abstract class AppLocalizations {
   /// No description provided for @recentPhotos.
   ///
   /// In en, this message translates to:
-  /// **'Recent photos'**
+  /// **'Recent media'**
   String get recentPhotos;
 
   /// No description provided for @photoSummary.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{No photos yet} =1{1 photo} other{{count} photos}}'**
+  /// **'{count, plural, =0{No media yet} =1{1 item} other{{count} items}}'**
   String photoSummary(int count);
 
   /// No description provided for @galleryHeroTitle.
@@ -161,13 +161,13 @@ abstract class AppLocalizations {
   /// No description provided for @permissionIntro.
   ///
   /// In en, this message translates to:
-  /// **'Allow photo access to see your library. You can grant access to selected photos only.'**
+  /// **'Allow access to view your library. You can share only the photos and videos you choose.'**
   String get permissionIntro;
 
   /// No description provided for @allow.
   ///
   /// In en, this message translates to:
-  /// **'Allow photo access'**
+  /// **'Allow photo and video access'**
   String get allow;
 
   /// No description provided for @settings.
@@ -185,49 +185,49 @@ abstract class AppLocalizations {
   /// No description provided for @limited.
   ///
   /// In en, this message translates to:
-  /// **'Selected photos only'**
+  /// **'Only selected photos and videos'**
   String get limited;
 
   /// No description provided for @authorized.
   ///
   /// In en, this message translates to:
-  /// **'Full photo access'**
+  /// **'Full photo and video access'**
   String get authorized;
 
   /// No description provided for @denied.
   ///
   /// In en, this message translates to:
-  /// **'Photo access is denied. You can try again or change it in device settings.'**
+  /// **'Photo and video access is denied. You can try again or change it in device settings.'**
   String get denied;
 
   /// No description provided for @restricted.
   ///
   /// In en, this message translates to:
-  /// **'Photo access is restricted by this device.'**
+  /// **'Photo and video access is restricted by this device.'**
   String get restricted;
 
   /// No description provided for @unsupported.
   ///
   /// In en, this message translates to:
-  /// **'Open SwipePix on Android or iOS to access your photos.'**
+  /// **'Open SwipePix on Android or iOS to access your library.'**
   String get unsupported;
 
   /// No description provided for @manage.
   ///
   /// In en, this message translates to:
-  /// **'Change selected photos'**
+  /// **'Change selected media'**
   String get manage;
 
   /// No description provided for @empty.
   ///
   /// In en, this message translates to:
-  /// **'No accessible photos. If access is limited, try selecting more photos.'**
+  /// **'No accessible photos or videos. If access is limited, try selecting more media.'**
   String get empty;
 
   /// No description provided for @error.
   ///
   /// In en, this message translates to:
-  /// **'Could not load your photos. Check access and try again.'**
+  /// **'Could not load your library. Check access and try again.'**
   String get error;
 
   /// No description provided for @retry.
@@ -251,13 +251,13 @@ abstract class AppLocalizations {
   /// No description provided for @loadingMorePhotos.
   ///
   /// In en, this message translates to:
-  /// **'Loading more photos…'**
+  /// **'Loading more media…'**
   String get loadingMorePhotos;
 
   /// No description provided for @readOnly.
   ///
   /// In en, this message translates to:
-  /// **'Swiping only marks photos; deletion always requires review and confirmation.'**
+  /// **'Swiping only marks items; deletion always requires review and confirmation.'**
   String get readOnly;
 
   /// No description provided for @language.
@@ -323,13 +323,13 @@ abstract class AppLocalizations {
   /// No description provided for @allPhotos.
   ///
   /// In en, this message translates to:
-  /// **'All'**
+  /// **'All media'**
   String get allPhotos;
 
   /// No description provided for @largePhotos.
   ///
   /// In en, this message translates to:
-  /// **'Large'**
+  /// **'Large files'**
   String get largePhotos;
 
   /// No description provided for @oldestPhotos.
@@ -359,7 +359,7 @@ abstract class AppLocalizations {
   /// No description provided for @albumPhotoCount.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 photo} other{{count} photos}}'**
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
   String albumPhotoCount(int count);
 
   /// No description provided for @noAlbums.
@@ -389,13 +389,13 @@ abstract class AppLocalizations {
   /// No description provided for @loadedSessionCount.
   ///
   /// In en, this message translates to:
-  /// **'You will review the {count} loaded photos.'**
+  /// **'You will review the {count} loaded items.'**
   String loadedSessionCount(int count);
 
   /// No description provided for @cleanupTitle.
   ///
   /// In en, this message translates to:
-  /// **'Review photos'**
+  /// **'Review media'**
   String get cleanupTitle;
 
   /// No description provided for @swipeHint.
@@ -479,13 +479,13 @@ abstract class AppLocalizations {
   /// No description provided for @sessionCompleteBody.
   ///
   /// In en, this message translates to:
-  /// **'Review the marked photos before deciding whether to delete them.'**
+  /// **'Review the marked items before deciding whether to delete them.'**
   String get sessionCompleteBody;
 
   /// No description provided for @nothingMarked.
   ///
   /// In en, this message translates to:
-  /// **'You did not mark any photos for deletion.'**
+  /// **'You did not mark anything for deletion.'**
   String get nothingMarked;
 
   /// No description provided for @continueNextBatch.
@@ -497,13 +497,13 @@ abstract class AppLocalizations {
   /// No description provided for @loadingNextBatch.
   ///
   /// In en, this message translates to:
-  /// **'Looking for more photos…'**
+  /// **'Looking for more media…'**
   String get loadingNextBatch;
 
   /// No description provided for @noMorePhotos.
   ///
   /// In en, this message translates to:
-  /// **'There are no new photos left to review'**
+  /// **'There are no new items left to review'**
   String get noMorePhotos;
 
   /// No description provided for @backToGallery.
@@ -521,25 +521,25 @@ abstract class AppLocalizations {
   /// No description provided for @deleteReviewSafety.
   ///
   /// In en, this message translates to:
-  /// **'These photos have not been deleted yet. Remove any photo you want to keep.'**
+  /// **'These items have not been deleted yet. Remove anything you want to keep.'**
   String get deleteReviewSafety;
 
   /// No description provided for @removeFromDelete.
   ///
   /// In en, this message translates to:
-  /// **'Keep this photo'**
+  /// **'Keep this item'**
   String get removeFromDelete;
 
   /// No description provided for @deleteSelected.
   ///
   /// In en, this message translates to:
-  /// **'Delete selected photos'**
+  /// **'Delete selected items'**
   String get deleteSelected;
 
   /// No description provided for @deleteReviewedPhotos.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{Delete 1 reviewed photo} other{Delete {count} reviewed photos}}'**
+  /// **'{count, plural, =1{Delete 1 reviewed item} other{Delete {count} reviewed items}}'**
   String deleteReviewedPhotos(int count);
 
   /// No description provided for @deleting.
@@ -557,7 +557,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirmDeleteBody.
   ///
   /// In en, this message translates to:
-  /// **'SwipePix will request deletion of {count, plural, =1{1 photo} other{{count} photos}} from the device. The system may ask for another confirmation.'**
+  /// **'SwipePix will request deletion of {count, plural, =1{1 item} other{{count} items}} from the device. The system may ask for another confirmation.'**
   String confirmDeleteBody(int count);
 
   /// No description provided for @cancel.
@@ -575,25 +575,25 @@ abstract class AppLocalizations {
   /// No description provided for @deleteSuccess.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 photo was deleted} other{{count} photos were deleted}}.'**
+  /// **'{count, plural, =1{1 item was deleted} other{{count} items were deleted}}.'**
   String deleteSuccess(int count);
 
   /// No description provided for @deletePartial.
   ///
   /// In en, this message translates to:
-  /// **'Some photos were not deleted or confirmation was canceled. They remain in the list.'**
+  /// **'Some items were not deleted or confirmation was canceled. They remain in the list.'**
   String get deletePartial;
 
   /// No description provided for @deleteAccessLost.
   ///
   /// In en, this message translates to:
-  /// **'Could not delete. Check photo access and try again.'**
+  /// **'Could not delete. Check library access and try again.'**
   String get deleteAccessLost;
 
   /// No description provided for @previewUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'This photo could not be loaded.'**
+  /// **'This item could not be loaded.'**
   String get previewUnavailable;
 
   /// No description provided for @sortBy.
@@ -641,13 +641,13 @@ abstract class AppLocalizations {
   /// No description provided for @restoringSession.
   ///
   /// In en, this message translates to:
-  /// **'Checking photos…'**
+  /// **'Checking media…'**
   String get restoringSession;
 
   /// No description provided for @sessionUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Could not restore the session. Check photo access.'**
+  /// **'Could not restore the session. Check library access.'**
   String get sessionUnavailable;
 
   /// No description provided for @startNewCleanup.
@@ -665,7 +665,7 @@ abstract class AppLocalizations {
   /// No description provided for @replaceSessionBody.
   ///
   /// In en, this message translates to:
-  /// **'Progress and marked photos from the previous session will be lost. No photos will be deleted.'**
+  /// **'Progress and marked items from the previous session will be lost. Nothing will be deleted.'**
   String get replaceSessionBody;
 
   /// No description provided for @viewIntroduction.
@@ -725,7 +725,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutSwipePixBody.
   ///
   /// In en, this message translates to:
-  /// **'SwipePix helps you review your photo library quickly and safely. Photos stay on your device, and swiping only marks photos for review. Nothing is deleted until you confirm it.'**
+  /// **'SwipePix helps you review your photo and video library quickly and safely. Media stays on your device, and swiping only marks items for review. Nothing is deleted until you confirm it.'**
   String get aboutSwipePixBody;
 
   /// No description provided for @privacyPolicy.
@@ -737,7 +737,7 @@ abstract class AppLocalizations {
   /// No description provided for @privacyPolicyBody.
   ///
   /// In en, this message translates to:
-  /// **'SwipePix is designed as a local photo review tool. The app requests access to your photo library only to show photos, create review sessions, calculate file-size metadata when available, and ask the device operating system to delete photos after you confirm.\n\nPhotos and videos are not uploaded by SwipePix. SwipePix does not sell or share your photos. SwipePix does not use advertising SDKs, analytics SDKs, tracking pixels, crash-reporting SDKs, accounts, or cloud storage in the current production app.\n\nData stored on this device may include your language, appearance, sort preference, onboarding state, cleanup-session progress, photo identifiers needed to resume a session, and limited metadata such as dates or file sizes. This data is stored locally through the device app storage and is used only for app functionality.\n\nPlatform services may process your photo library permission, selected-photo access, and deletion confirmation according to Apple or Google/Android system behavior. If your device uses services such as iCloud Photos or Google Photos, those services are controlled by the device/account provider, not by SwipePix.\n\nSwipePix does not knowingly collect personal information from children and is not directed to children.\n\nPrivacy choices: you can revoke or limit photo access in the device settings. You can remove local app data by deleting the app from your device. If the app later adds analytics, accounts, cloud sync, ads, payments, or any off-device processing, this policy and the store privacy disclosures must be updated before release.\n\nContact: use the developer contact listed on the App Store or Google Play listing. Before public release, replace this sentence with the legal entity name and a dedicated privacy contact email.'**
+  /// **'SwipePix is designed as a local photo and video review tool. The app requests access to your media library only to show photos and videos, create review sessions, calculate file-size metadata when available, and ask the device operating system to delete selected items after you confirm.\n\nPhotos and videos are not uploaded by SwipePix. SwipePix does not sell or share your photos or videos. SwipePix does not use advertising SDKs, analytics SDKs, tracking pixels, crash-reporting SDKs, accounts, or cloud storage in the current production app.\n\nData stored on this device may include your language, appearance, sort preference, onboarding state, cleanup-session progress, media identifiers needed to resume a session, and limited metadata such as dates, durations, or file sizes. This data is stored locally through the device app storage and is used only for app functionality.\n\nPlatform services may process your media library permission, selected-media access, and deletion confirmation according to Apple or Google/Android system behavior. If your device uses services such as iCloud Photos or Google Photos, those services are controlled by the device/account provider, not by SwipePix.\n\nSwipePix does not knowingly collect personal information from children and is not directed to children.\n\nPrivacy choices: you can revoke or limit media access in the device settings. You can remove local app data by deleting the app from your device. If the app later adds analytics, accounts, cloud sync, ads, payments, or any off-device processing, this policy and the store privacy disclosures must be updated before release.\n\nContact: use the developer contact listed on the App Store or Google Play listing. Before public release, replace this sentence with the legal entity name and a dedicated privacy contact email.'**
   String get privacyPolicyBody;
 
   /// No description provided for @termsConditions.
@@ -749,7 +749,7 @@ abstract class AppLocalizations {
   /// No description provided for @termsConditionsBody.
   ///
   /// In en, this message translates to:
-  /// **'These Terms govern your use of SwipePix. If you do not agree, do not use the app.\n\nService. SwipePix helps you review photos on your own device. Swiping left only marks a photo for deletion review. Photos are not deleted until you review the marked photos and ask the device operating system to delete them. The system may show an additional confirmation.\n\nYour responsibility. You are responsible for deciding which photos to keep or delete and for maintaining backups of important photos before using cleanup features. SwipePix cannot guarantee recovery of photos after the operating system completes deletion.\n\nNo professional advice. SwipePix is provided as a utility tool and does not provide legal, storage-management, archival, security, or professional advice.\n\nAcceptable use. You may use SwipePix only for lawful purposes and only with photos you have the right to access and manage. You may not attempt to reverse engineer, abuse, disrupt, or misuse the app or related services.\n\nPrivacy. The Privacy Policy explains what data is processed and stored. In the current production app, SwipePix is intended to process photos locally and not upload, sell, or share them.\n\nDisclaimer. SwipePix is provided “as is” and “as available,” without warranties of any kind to the fullest extent permitted by law. We do not warrant that the app will be uninterrupted, error-free, or compatible with every device, library configuration, or operating-system version.\n\nLimitation of liability. To the fullest extent permitted by law, SwipePix and its developer will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for lost data, lost photos, lost profits, or business interruption arising from or related to your use of the app.\n\nArbitration & Class Action Waiver. Any dispute, claim, or controversy arising out of or relating to these Terms or SwipePix will be resolved by final and binding individual arbitration, rather than in court, except that either party may bring an individual claim in small claims court if it qualifies. You and SwipePix waive any right to a jury trial and any right to participate in a class, collective, consolidated, private attorney general, or representative action. The arbitration will be administered by the American Arbitration Association (AAA) under its applicable consumer arbitration rules unless the parties agree otherwise. The arbitrator may award relief only on an individual basis. This section does not prevent either party from seeking injunctive or equitable relief for misuse of intellectual property or unauthorized access.\n\nChanges. These Terms may be updated before or after release. If a material change is made, update the in-app notice and public Terms page.'**
+  /// **'These Terms govern your use of SwipePix. If you do not agree, do not use the app.\n\nService. SwipePix helps you review photos and videos on your own device. Swiping left only marks an item for deletion review. Items are not deleted until you review the marked items and ask the device operating system to delete them. The system may show an additional confirmation.\n\nYour responsibility. You are responsible for deciding which photos or videos to keep or delete and for maintaining backups of important media before using cleanup features. SwipePix cannot guarantee recovery of media after the operating system completes deletion.\n\nNo professional advice. SwipePix is provided as a utility tool and does not provide legal, storage-management, archival, security, or professional advice.\n\nAcceptable use. You may use SwipePix only for lawful purposes and only with photos and videos you have the right to access and manage. You may not attempt to reverse engineer, abuse, disrupt, or misuse the app or related services.\n\nPrivacy. The Privacy Policy explains what data is processed and stored. In the current production app, SwipePix is intended to process photos and videos locally and not upload, sell, or share them.\n\nDisclaimer. SwipePix is provided “as is” and “as available,” without warranties of any kind to the fullest extent permitted by law. We do not warrant that the app will be uninterrupted, error-free, or compatible with every device, library configuration, or operating-system version.\n\nLimitation of liability. To the fullest extent permitted by law, SwipePix and its developer will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for lost data, lost media, lost profits, or business interruption arising from or related to your use of the app.\n\nArbitration & Class Action Waiver. Any dispute, claim, or controversy arising out of or relating to these Terms or SwipePix will be resolved by final and binding individual arbitration, rather than in court, except that either party may bring an individual claim in small claims court if it qualifies. You and SwipePix waive any right to a jury trial and any right to participate in a class, collective, consolidated, private attorney general, or representative action. The arbitration will be administered by the American Arbitration Association (AAA) under its applicable consumer arbitration rules unless the parties agree otherwise. The arbitrator may award relief only on an individual basis. This section does not prevent either party from seeking injunctive or equitable relief for misuse of intellectual property or unauthorized access.\n\nChanges. These Terms may be updated before or after release. If a material change is made, update the in-app notice and public Terms page.'**
   String get termsConditionsBody;
 
   /// No description provided for @legalUpdated.
@@ -757,6 +757,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last updated: September 25, 2026'**
   String get legalUpdated;
+
+  /// No description provided for @video.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// No description provided for @media.
+  ///
+  /// In en, this message translates to:
+  /// **'Media'**
+  String get media;
+
+  /// No description provided for @videoDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'{duration}'**
+  String videoDuration(String duration);
 }
 
 class _AppLocalizationsDelegate

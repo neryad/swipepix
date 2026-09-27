@@ -205,7 +205,9 @@ class CleanupController extends Notifier<CleanupState> {
             return Photo(
               id: current.id,
               createdAt: current.createdAt,
-              sizeBytes: photo.sizeBytes,
+              sizeBytes: photo.sizeBytes ?? current.sizeBytes,
+              mediaType: current.mediaType,
+              duration: current.duration,
             );
           })
           .toList(growable: false);
@@ -466,6 +468,13 @@ class CleanupController extends Notifier<CleanupState> {
     };
     final size = photo.sizeBytes;
     if (size != null) result['sizeBytes'] = size;
+    if (photo.mediaType != MediaType.image) {
+      result['mediaType'] = photo.mediaType.name;
+    }
+    final duration = photo.duration;
+    if (duration != null) {
+      result['durationSeconds'] = duration.inSeconds;
+    }
     return result;
   }
 
@@ -487,6 +496,8 @@ class CleanupController extends Notifier<CleanupState> {
             id: id,
             createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt.toInt()),
             sizeBytes: (item['sizeBytes'] as num?)?.toInt(),
+            mediaType: _decodeMediaType(item['mediaType']),
+            duration: _decodeDuration(item['durationSeconds']),
           ),
         );
       }
@@ -524,6 +535,21 @@ class CleanupController extends Notifier<CleanupState> {
     } catch (_) {
       return CleanupState();
     }
+  }
+
+  MediaType _decodeMediaType(Object? raw) {
+    if (raw is String) {
+      return MediaType.values.where((value) => value.name == raw).firstOrNull ??
+          MediaType.image;
+    }
+    return MediaType.image;
+  }
+
+  Duration? _decodeDuration(Object? raw) {
+    if (raw is num && raw > 0) {
+      return Duration(seconds: raw.toInt());
+    }
+    return null;
   }
 
   CleanupSource _decodeSource(Object? raw) {

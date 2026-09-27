@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>SwipePix needs access to show your photos for review. Nothing is deleted without your confirmation.</string>
+	<string>SwipePix needs access to show your photos and videos for review. Nothing is deleted without your confirmation.</string>
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
 	<key>CFBundleLocalizations</key>

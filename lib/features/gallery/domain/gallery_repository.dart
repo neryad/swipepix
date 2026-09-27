@@ -16,11 +16,24 @@ extension GalleryAccessCheck on GalleryAccess {
 
 enum GallerySort { newest, oldest, largest }
 
+enum MediaType { image, video }
+
 class Photo {
-  const Photo({required this.id, required this.createdAt, this.sizeBytes});
+  const Photo({
+    required this.id,
+    required this.createdAt,
+    this.sizeBytes,
+    this.mediaType = MediaType.image,
+    this.duration,
+  });
+
   final String id;
   final DateTime createdAt;
   final int? sizeBytes;
+  final MediaType mediaType;
+  final Duration? duration;
+
+  bool get isVideo => mediaType == MediaType.video;
 }
 
 class GalleryAlbum {

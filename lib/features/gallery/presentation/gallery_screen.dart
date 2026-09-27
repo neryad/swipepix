@@ -795,10 +795,21 @@ class _AlbumCover extends ConsumerWidget {
                 .when(
                   data: (bytes) => bytes == null
                       ? placeholder()
-                      : Image.memory(
-                          bytes,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => placeholder(),
+                      : Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.memory(
+                              bytes,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, _, _) => placeholder(),
+                            ),
+                            if (cover.isVideo)
+                              Positioned(
+                                top: SwipeSpacing.xs,
+                                right: SwipeSpacing.xs,
+                                child: _VideoBadge(duration: cover.duration),
+                              ),
+                          ],
                         ),
                   error: (_, _) => placeholder(),
                   loading: () => placeholder(),
@@ -1204,21 +1215,27 @@ class PhotoTile extends ConsumerWidget {
     final size = photo.sizeBytes == null
         ? null
         : formatFileSize(photo.sizeBytes!);
+    final mediaLabel = photo.isVideo ? l.video : l.photo;
     final label = [
-      l.photo,
+      mediaLabel,
       MaterialLocalizations.of(context).formatMediumDate(photo.createdAt),
+      if (photo.duration != null) formatDuration(photo.duration!),
       ?size,
     ].join(' · ');
     final preview = ref.watch(thumbnailProvider(photo.id));
     Widget unavailable() => Center(
       child: Tooltip(
         message: l.thumbnailError,
-        child: const Icon(Icons.broken_image_outlined),
+        child: Icon(
+          photo.isVideo
+              ? Icons.smart_display_outlined
+              : Icons.broken_image_outlined,
+        ),
       ),
     );
     return Semantics(
       label: label,
-      image: true,
+      image: !photo.isVideo,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(SwipeRadius.tile),
         child: ColoredBox(
@@ -1243,6 +1260,12 @@ class PhotoTile extends ConsumerWidget {
                   ),
                 ),
               ),
+              if (photo.isVideo)
+                Positioned(
+                  top: 6,
+                  right: 6,
+                  child: _VideoBadge(duration: photo.duration),
+                ),
               if (size != null)
                 Positioned(
                   left: 6,
@@ -1273,6 +1296,58 @@ class PhotoTile extends ConsumerWidget {
       ),
     );
   }
+}
+
+class _VideoBadge extends StatelessWidget {
+  const _VideoBadge({this.duration});
+
+  final Duration? duration;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = duration == null || duration == Duration.zero
+        ? null
+        : formatDuration(duration!);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.68),
+        borderRadius: BorderRadius.circular(SwipeRadius.chip),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 14),
+            if (text != null) ...[
+              const SizedBox(width: 2),
+              Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+String formatDuration(Duration duration) {
+  final totalSeconds = duration.inSeconds;
+  final minutes = totalSeconds ~/ 60;
+  final seconds = totalSeconds % 60;
+  final hours = minutes ~/ 60;
+  if (hours > 0) {
+    final remainingMinutes = minutes % 60;
+    return '$hours:${remainingMinutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+  return '$minutes:${seconds.toString().padLeft(2, '0')}';
 }
 
 String formatFileSize(int bytes) {

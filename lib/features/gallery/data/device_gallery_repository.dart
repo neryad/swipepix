@@ -7,7 +7,7 @@ class DeviceGalleryRepository implements GalleryRepository {
   List<AssetPathEntity>? _albumCache;
   static const _permission = PermissionRequestOption(
     androidPermission: AndroidPermission(
-      type: RequestType.image,
+      type: RequestType.common,
       mediaLocation: false,
     ),
   );
@@ -32,7 +32,7 @@ class DeviceGalleryRepository implements GalleryRepository {
 
   @override
   Future<int?> photoCount() =>
-      PhotoManager.getAssetCount(type: RequestType.image);
+      PhotoManager.getAssetCount(type: RequestType.common);
 
   @override
   Future<List<GalleryAlbum>> albums({int? limit}) async {
@@ -48,7 +48,7 @@ class DeviceGalleryRepository implements GalleryRepository {
         final coverAssets = await path.getAssetListPaged(
           page: 0,
           size: 1,
-          type: RequestType.image,
+          type: RequestType.common,
         );
         albums.add(
           GalleryAlbum(
@@ -76,7 +76,7 @@ class DeviceGalleryRepository implements GalleryRepository {
           : await path.getAssetListPaged(
               page: 0,
               size: 1,
-              type: RequestType.image,
+              type: RequestType.common,
             );
       return GalleryAlbum(
         id: path.id,
@@ -101,7 +101,7 @@ class DeviceGalleryRepository implements GalleryRepository {
     final assets = await PhotoManager.getAssetListPaged(
       page: page,
       pageCount: size,
-      type: RequestType.image,
+      type: RequestType.common,
       filterOption: _filterForSort(sort),
     );
     return assets.map(_toPhoto).toList(growable: false);
@@ -126,13 +126,13 @@ class DeviceGalleryRepository implements GalleryRepository {
     final assets = await path.getAssetListPaged(
       page: page,
       size: size,
-      type: RequestType.image,
+      type: RequestType.common,
     );
     return assets.map(_toPhoto).toList(growable: false);
   }
 
   Future<List<Photo>> _largestPage(int page, int size) async {
-    final count = await PhotoManager.getAssetCount(type: RequestType.image);
+    final count = await PhotoManager.getAssetCount(type: RequestType.common);
     if (_largestCache == null || _largestCache!.length != count) {
       _largestCache = await _buildSizeIndex(count);
     }
@@ -151,7 +151,7 @@ class DeviceGalleryRepository implements GalleryRepository {
         await PhotoManager.getAssetListRange(
           start: start,
           end: (start + queryBatchSize).clamp(0, count),
-          type: RequestType.image,
+          type: RequestType.common,
         ),
       );
     }
@@ -217,7 +217,7 @@ class DeviceGalleryRepository implements GalleryRepository {
 
   @override
   Future<void> manageLimited() async {
-    await PhotoManager.presentLimited(type: RequestType.image);
+    await PhotoManager.presentLimited(type: RequestType.common);
     _largestCache = null;
     _albumCache = null;
   }
@@ -237,7 +237,7 @@ class DeviceGalleryRepository implements GalleryRepository {
         await path.getAssetListRange(
           start: start,
           end: (start + queryBatchSize).clamp(0, count),
-          type: RequestType.image,
+          type: RequestType.common,
         ),
       );
     }
@@ -274,7 +274,7 @@ class DeviceGalleryRepository implements GalleryRepository {
     return AssetPathEntity.fromId(
       cached.id,
       filterOption: _filterForSort(sort),
-      type: RequestType.image,
+      type: RequestType.common,
       albumType: cached.albumType,
     );
   }
@@ -285,7 +285,7 @@ class DeviceGalleryRepository implements GalleryRepository {
     final paths = await PhotoManager.getAssetPathList(
       hasAll: false,
       onlyAll: false,
-      type: RequestType.image,
+      type: RequestType.common,
       filterOption: filterOption ?? _filterForSort(GallerySort.newest),
     );
     _albumCache = paths
@@ -307,5 +307,11 @@ class DeviceGalleryRepository implements GalleryRepository {
     id: asset.id,
     createdAt: asset.createDateTime,
     sizeBytes: sizeBytes,
+    mediaType: asset.type == AssetType.video
+        ? MediaType.video
+        : MediaType.image,
+    duration: asset.type == AssetType.video
+        ? Duration(seconds: asset.duration)
+        : null,
   );
 }

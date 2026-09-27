@@ -2,13 +2,13 @@
   "@@locale": "es",
   "appTitle": "SwipePix",
   "welcome": "Haz espacio para lo que importa",
-  "intro": "Empieza conectando tu galería. Tus fotos permanecen en tu dispositivo; SwipePix nunca las sube.",
-  "safety": "Tú tienes el control. El swipe solo marcará fotos. Borrar requerirá una revisión y confirmación aparte.",
+  "intro": "Empieza conectando tu galería. Tus fotos y videos permanecen en tu dispositivo; SwipePix nunca los sube.",
+  "safety": "Tú tienes el control. El swipe solo marcará elementos. Borrar requerirá una revisión y confirmación aparte.",
   "connect": "Explorar mis fotos",
   "gallery": "Tu galería",
   "libraryTitle": "Biblioteca",
-  "recentPhotos": "Fotos recientes",
-  "photoSummary": "{count, plural, =0{Sin fotos todavía} =1{1 foto} other{{count} fotos}}",
+  "recentPhotos": "Medios recientes",
+  "photoSummary": "{count, plural, =0{Sin medios todavía} =1{1 elemento} other{{count} elementos}}",
   "@photoSummary": {
     "placeholders": {
       "count": {
@@ -17,23 +17,23 @@
     }
   },
   "galleryHeroTitle": "Lista para limpiar",
-  "permissionIntro": "Permite el acceso para ver tu galería. Puedes compartir solo las fotos que elijas.",
-  "allow": "Permitir acceso a fotos",
+  "permissionIntro": "Permite el acceso para ver tu galería. Puedes compartir solo las fotos y videos que elijas.",
+  "allow": "Permitir acceso a fotos y videos",
   "settings": "Ajustes",
   "openSettings": "Abrir ajustes del dispositivo",
-  "limited": "Solo las fotos seleccionadas",
-  "authorized": "Acceso completo a fotos",
-  "denied": "El acceso está denegado. Puedes reintentarlo o cambiarlo en los ajustes del dispositivo.",
-  "restricted": "El acceso a fotos está restringido por este dispositivo.",
-  "unsupported": "Abre SwipePix en Android o iOS para acceder a tus fotos.",
-  "manage": "Cambiar fotos seleccionadas",
-  "empty": "No hay fotos accesibles. Si el acceso es limitado, prueba seleccionando más fotos.",
-  "error": "No se pudieron cargar tus fotos. Revisa el acceso y vuelve a intentarlo.",
+  "limited": "Solo fotos y videos seleccionados",
+  "authorized": "Acceso completo a fotos y videos",
+  "denied": "El acceso a fotos y videos está denegado. Puedes reintentarlo o cambiarlo en los ajustes del dispositivo.",
+  "restricted": "El acceso a fotos y videos está restringido por este dispositivo.",
+  "unsupported": "Abre SwipePix en Android o iOS para acceder a tu galería.",
+  "manage": "Cambiar medios seleccionados",
+  "empty": "No hay fotos ni videos accesibles. Si el acceso es limitado, prueba seleccionando más medios.",
+  "error": "No se pudo cargar tu galería. Revisa el acceso y vuelve a intentarlo.",
   "retry": "Reintentar",
   "refresh": "Actualizar galería",
   "more": "Cargar más fotos",
-  "loadingMorePhotos": "Cargando más fotos…",
-  "readOnly": "Deslizar solo marca fotos; borrar siempre requiere revisión y confirmación.",
+  "loadingMorePhotos": "Cargando más medios…",
+  "readOnly": "Deslizar solo marca elementos; borrar siempre requiere revisión y confirmación.",
   "language": "Idioma",
   "system": "Según el sistema",
   "theme": "Apariencia",
@@ -44,13 +44,13 @@
   "sessionSettings": "Estas preferencias se guardan en este dispositivo.",
   "startCleanup": "Empezar a revisar",
   "quickCleanup": "Limpieza rápida",
-  "allPhotos": "Todas",
-  "largePhotos": "Grandes",
-  "oldestPhotos": "Antiguas",
+  "allPhotos": "Todos",
+  "largePhotos": "Archivos grandes",
+  "oldestPhotos": "Antiguos",
   "albums": "Álbumes",
   "chooseWhatToClean": "Elige qué limpiar",
   "seeAll": "Ver todo",
-  "albumPhotoCount": "{count, plural, =1{1 foto} other{{count} fotos}}",
+  "albumPhotoCount": "{count, plural, =1{1 elemento} other{{count} elementos}}",
   "@albumPhotoCount": {
     "placeholders": {
       "count": {
@@ -72,7 +72,7 @@
       }
     }
   },
-  "loadedSessionCount": "Revisarás las {count} fotos cargadas.",
+  "loadedSessionCount": "Revisarás los {count} elementos cargados.",
   "@loadedSessionCount": {
     "placeholders": {
       "count": {
@@ -80,7 +80,7 @@
       }
     }
   },
-  "cleanupTitle": "Revisar fotos",
+  "cleanupTitle": "Revisar medios",
   "swipeHint": "Izquierda para eliminar · derecha para conservar",
   "mark": "Marcar",
   "keep": "Conservar",
@@ -134,17 +134,17 @@
   },
   "reviewMarked": "Revisar marcadas",
   "sessionComplete": "Terminaste esta ronda",
-  "sessionCompleteBody": "Revisa las fotos marcadas antes de decidir si quieres borrarlas.",
-  "nothingMarked": "No marcaste ninguna foto para borrar.",
+  "sessionCompleteBody": "Revisa los elementos marcados antes de decidir si quieres borrarlos.",
+  "nothingMarked": "No marcaste nada para borrar.",
   "continueNextBatch": "Continuar con el siguiente lote",
-  "loadingNextBatch": "Buscando más fotos…",
-  "noMorePhotos": "No hay más fotos nuevas para revisar",
+  "loadingNextBatch": "Buscando más medios…",
+  "noMorePhotos": "No hay más elementos nuevos para revisar",
   "backToGallery": "Volver a la galería",
   "deleteReviewTitle": "Revisión antes de borrar",
-  "deleteReviewSafety": "Estas fotos todavía no se han borrado. Quita cualquiera que quieras conservar.",
-  "removeFromDelete": "Conservar esta foto",
-  "deleteSelected": "Borrar fotos seleccionadas",
-  "deleteReviewedPhotos": "{count, plural, =1{Borrar 1 foto revisada} other{Borrar {count} fotos revisadas}}",
+  "deleteReviewSafety": "Estos elementos todavía no se han borrado. Quita cualquiera que quieras conservar.",
+  "removeFromDelete": "Conservar este elemento",
+  "deleteSelected": "Borrar elementos seleccionados",
+  "deleteReviewedPhotos": "{count, plural, =1{Borrar 1 elemento revisado} other{Borrar {count} elementos revisados}}",
   "@deleteReviewedPhotos": {
     "placeholders": {
       "count": {
@@ -154,7 +154,7 @@
   },
   "deleting": "Esperando confirmación del sistema…",
   "confirmDeleteTitle": "¿Borrar definitivamente?",
-  "confirmDeleteBody": "Se solicitará borrar {count, plural, =1{1 foto} other{{count} fotos}} del dispositivo. El sistema puede pedir otra confirmación.",
+  "confirmDeleteBody": "Se solicitará borrar {count, plural, =1{1 elemento} other{{count} elementos}} del dispositivo. El sistema puede pedir otra confirmación.",
   "@confirmDeleteBody": {
     "placeholders": {
       "count": {
@@ -164,7 +164,7 @@
   },
   "cancel": "Cancelar",
   "confirmDelete": "Confirmar borrado",
-  "deleteSuccess": "{count, plural, =1{Se borró 1 foto} other{Se borraron {count} fotos}}.",
+  "deleteSuccess": "{count, plural, =1{Se borró 1 elemento} other{Se borraron {count} elementos}}.",
   "@deleteSuccess": {
     "placeholders": {
       "count": {
@@ -172,9 +172,9 @@
       }
     }
   },
-  "deletePartial": "Algunas fotos no se borraron o se canceló la confirmación. Siguen en la lista.",
-  "deleteAccessLost": "No se pudo borrar. Revisa el permiso de fotos y vuelve a intentarlo.",
-  "previewUnavailable": "No se pudo cargar esta foto.",
+  "deletePartial": "Algunos elementos no se borraron o se canceló la confirmación. Siguen en la lista.",
+  "deleteAccessLost": "No se pudo borrar. Revisa el permiso de galería y vuelve a intentarlo.",
+  "previewUnavailable": "No se pudo cargar este elemento.",
   "sortBy": "Ordenar por",
   "newestFirst": "Más recientes",
   "oldestFirst": "Más antiguas",
@@ -192,11 +192,11 @@
       }
     }
   },
-  "restoringSession": "Comprobando fotos…",
-  "sessionUnavailable": "No se pudo recuperar la sesión. Revisa el permiso de fotos.",
+  "restoringSession": "Comprobando medios…",
+  "sessionUnavailable": "No se pudo recuperar la sesión. Revisa el permiso de galería.",
   "startNewCleanup": "Empezar una limpieza nueva",
   "replaceSessionTitle": "¿Reemplazar la sesión guardada?",
-  "replaceSessionBody": "Se perderá el progreso y las fotos marcadas de la sesión anterior. Ninguna foto se borrará.",
+  "replaceSessionBody": "Se perderá el progreso y los elementos marcados de la sesión anterior. Nada se borrará.",
   "viewIntroduction": "Ver introducción",
   "savedCleanupTitle": "Sesión de limpieza",
   "noSavedCleanup": "No hay una limpieza pendiente. Empieza una nueva para guardar tu progreso.",
@@ -206,10 +206,20 @@
   "swipeToOrganize": "Desliza para organizar",
   "skip": "Omitir",
   "aboutSwipePix": "Acerca de SwipePix",
-  "aboutSwipePixBody": "SwipePix te ayuda a revisar tu galería de forma rápida y segura. Las fotos permanecen en tu dispositivo, y deslizar solo marca fotos para revisión. Nada se borra hasta que lo confirmas.",
+  "aboutSwipePixBody": "SwipePix te ayuda a revisar tu galería de fotos y videos de forma rápida y segura. Los medios permanecen en tu dispositivo, y deslizar solo marca elementos para revisión. Nada se borra hasta que lo confirmas.",
   "privacyPolicy": "Política de privacidad",
-  "privacyPolicyBody": "SwipePix está diseñada como una herramienta local para revisar fotos. La app solicita acceso a tu galería solo para mostrar fotos, crear sesiones de revisión, calcular metadatos de tamaño cuando estén disponibles y pedir al sistema operativo del dispositivo que borre fotos después de tu confirmación.\n\nSwipePix no sube fotos ni videos. SwipePix no vende ni comparte tus fotos. En la app de producción actual, SwipePix no usa SDKs de publicidad, SDKs de analítica, píxeles de rastreo, SDKs de reportes de fallos, cuentas ni almacenamiento en la nube.\n\nLos datos guardados en este dispositivo pueden incluir tu idioma, apariencia, preferencia de orden, estado del onboarding, progreso de la sesión de limpieza, identificadores de fotos necesarios para reanudar una sesión y metadatos limitados como fechas o tamaños de archivo. Estos datos se guardan localmente en el almacenamiento de la app del dispositivo y se usan solo para la funcionalidad de la app.\n\nLos servicios de la plataforma pueden procesar el permiso de galería, el acceso limitado a fotos seleccionadas y la confirmación de borrado según el comportamiento del sistema de Apple o Google/Android. Si tu dispositivo usa servicios como iCloud Photos o Google Photos, esos servicios dependen del proveedor del dispositivo o de la cuenta, no de SwipePix.\n\nSwipePix no recopila intencionalmente información personal de menores y no está dirigida a menores.\n\nOpciones de privacidad: puedes revocar o limitar el acceso a fotos desde los ajustes del dispositivo. Puedes eliminar los datos locales borrando la app de tu dispositivo. Si la app agrega analítica, cuentas, sincronización en la nube, anuncios, pagos o cualquier procesamiento fuera del dispositivo, esta política y las declaraciones de privacidad de las tiendas deben actualizarse antes del lanzamiento.\n\nContacto: usa el contacto del desarrollador indicado en App Store o Google Play. Antes del lanzamiento público, reemplaza esta frase con el nombre de la entidad legal y un correo dedicado de privacidad.",
+  "privacyPolicyBody": "SwipePix está diseñada como una herramienta local para revisar fotos y videos. La app solicita acceso a tu galería solo para mostrar fotos y videos, crear sesiones de revisión, calcular metadatos de tamaño cuando estén disponibles y pedir al sistema operativo del dispositivo que borre elementos seleccionados después de tu confirmación.\n\nSwipePix no sube fotos ni videos. SwipePix no vende ni comparte tus fotos ni videos. En la app de producción actual, SwipePix no usa SDKs de publicidad, SDKs de analítica, píxeles de rastreo, SDKs de reportes de fallos, cuentas ni almacenamiento en la nube.\n\nLos datos guardados en este dispositivo pueden incluir tu idioma, apariencia, preferencia de orden, estado del onboarding, progreso de la sesión de limpieza, identificadores de medios necesarios para reanudar una sesión y metadatos limitados como fechas, duraciones o tamaños de archivo. Estos datos se guardan localmente en el almacenamiento de la app del dispositivo y se usan solo para la funcionalidad de la app.\n\nLos servicios de la plataforma pueden procesar el permiso de galería, el acceso limitado a medios seleccionados y la confirmación de borrado según el comportamiento del sistema de Apple o Google/Android. Si tu dispositivo usa servicios como iCloud Photos o Google Photos, esos servicios dependen del proveedor del dispositivo o de la cuenta, no de SwipePix.\n\nSwipePix no recopila intencionalmente información personal de menores y no está dirigida a menores.\n\nOpciones de privacidad: puedes revocar o limitar el acceso a la galería desde los ajustes del dispositivo. Puedes eliminar los datos locales borrando la app de tu dispositivo. Si la app agrega analítica, cuentas, sincronización en la nube, anuncios, pagos o cualquier procesamiento fuera del dispositivo, esta política y las declaraciones de privacidad de las tiendas deben actualizarse antes del lanzamiento.\n\nContacto: usa el contacto del desarrollador indicado en App Store o Google Play. Antes del lanzamiento público, reemplaza esta frase con el nombre de la entidad legal y un correo dedicado de privacidad.",
   "termsConditions": "Términos y condiciones",
-  "termsConditionsBody": "Estos Términos regulan tu uso de SwipePix. Si no estás de acuerdo, no uses la app.\n\nServicio. SwipePix te ayuda a revisar fotos en tu propio dispositivo. Deslizar a la izquierda solo marca una foto para revisión de borrado. Las fotos no se borran hasta que revisas las fotos marcadas y solicitas al sistema operativo del dispositivo que las borre. El sistema puede mostrar una confirmación adicional.\n\nTu responsabilidad. Tú eres responsable de decidir qué fotos conservar o borrar y de mantener copias de seguridad de fotos importantes antes de usar funciones de limpieza. SwipePix no puede garantizar la recuperación de fotos después de que el sistema operativo complete el borrado.\n\nSin asesoría profesional. SwipePix se ofrece como herramienta utilitaria y no brinda asesoría legal, de gestión de almacenamiento, archivo, seguridad ni otro tipo de asesoría profesional.\n\nUso permitido. Puedes usar SwipePix solo con fines legales y solo con fotos a las que tienes derecho de acceder y gestionar. No puedes intentar aplicar ingeniería inversa, abusar, interrumpir o usar indebidamente la app o servicios relacionados.\n\nPrivacidad. La Política de privacidad explica qué datos se procesan y guardan. En la app de producción actual, SwipePix está pensada para procesar fotos localmente y no subirlas, venderlas ni compartirlas.\n\nDescargo. SwipePix se ofrece “tal cual” y “según disponibilidad”, sin garantías de ningún tipo en la máxima medida permitida por la ley. No garantizamos que la app funcionará sin interrupciones, sin errores o que será compatible con todos los dispositivos, configuraciones de galería o versiones del sistema operativo.\n\nLimitación de responsabilidad. En la máxima medida permitida por la ley, SwipePix y su desarrollador no serán responsables por daños indirectos, incidentales, especiales, consecuentes, ejemplares o punitivos, ni por pérdida de datos, pérdida de fotos, pérdida de ganancias o interrupción de negocio que surja de o se relacione con tu uso de la app.\n\nArbitraje y renuncia a demandas colectivas. Cualquier disputa, reclamación o controversia que surja de estos Términos o de SwipePix se resolverá mediante arbitraje individual final y vinculante, en lugar de en tribunales, excepto cuando cualquiera de las partes pueda presentar una reclamación individual en un tribunal de reclamos menores si califica. Tú y SwipePix renuncian al derecho a juicio por jurado y al derecho a participar en una demanda colectiva, consolidada, representativa, de fiscal general privado o similar. El arbitraje será administrado por la American Arbitration Association (AAA) bajo sus reglas de arbitraje de consumo aplicables, salvo que las partes acuerden otra cosa. El árbitro solo podrá otorgar remedios de forma individual. Esta sección no impide que cualquiera de las partes solicite medidas cautelares o equitativas por uso indebido de propiedad intelectual o acceso no autorizado.\n\nCambios. Estos Términos pueden actualizarse antes o después del lanzamiento. Si hay un cambio material, actualiza el aviso dentro de la app y la página pública de Términos.",
-  "legalUpdated": "Última actualización: 25 de septiembre de 2026"
+  "termsConditionsBody": "Estos Términos regulan tu uso de SwipePix. Si no estás de acuerdo, no uses la app.\n\nServicio. SwipePix te ayuda a revisar fotos y videos en tu propio dispositivo. Deslizar a la izquierda solo marca un elemento para revisión de borrado. Los elementos no se borran hasta que revisas los elementos marcados y solicitas al sistema operativo del dispositivo que los borre. El sistema puede mostrar una confirmación adicional.\n\nTu responsabilidad. Tú eres responsable de decidir qué fotos o videos conservar o borrar y de mantener copias de seguridad de medios importantes antes de usar funciones de limpieza. SwipePix no puede garantizar la recuperación de medios después de que el sistema operativo complete el borrado.\n\nSin asesoría profesional. SwipePix se ofrece como herramienta utilitaria y no brinda asesoría legal, de gestión de almacenamiento, archivo, seguridad ni otro tipo de asesoría profesional.\n\nUso permitido. Puedes usar SwipePix solo con fines legales y solo con fotos y videos a los que tienes derecho de acceder y gestionar. No puedes intentar aplicar ingeniería inversa, abusar, interrumpir o usar indebidamente la app o servicios relacionados.\n\nPrivacidad. La Política de privacidad explica qué datos se procesan y guardan. En la app de producción actual, SwipePix está pensada para procesar fotos y videos localmente y no subirlos, venderlos ni compartirlos.\n\nDescargo. SwipePix se ofrece “tal cual” y “según disponibilidad”, sin garantías de ningún tipo en la máxima medida permitida por la ley. No garantizamos que la app funcionará sin interrupciones, sin errores o que será compatible con todos los dispositivos, configuraciones de galería o versiones del sistema operativo.\n\nLimitación de responsabilidad. En la máxima medida permitida por la ley, SwipePix y su desarrollador no serán responsables por daños indirectos, incidentales, especiales, consecuentes, ejemplares o punitivos, ni por pérdida de datos, pérdida de fotos, pérdida de ganancias o interrupción de negocio que surja de o se relacione con tu uso de la app.\n\nArbitraje y renuncia a demandas colectivas. Cualquier disputa, reclamación o controversia que surja de estos Términos o de SwipePix se resolverá mediante arbitraje individual final y vinculante, en lugar de en tribunales, excepto cuando cualquiera de las partes pueda presentar una reclamación individual en un tribunal de reclamos menores si califica. Tú y SwipePix renuncian al derecho a juicio por jurado y al derecho a participar en una demanda colectiva, consolidada, representativa, de fiscal general privado o similar. El arbitraje será administrado por la American Arbitration Association (AAA) bajo sus reglas de arbitraje de consumo aplicables, salvo que las partes acuerden otra cosa. El árbitro solo podrá otorgar remedios de forma individual. Esta sección no impide que cualquiera de las partes solicite medidas cautelares o equitativas por uso indebido de propiedad intelectual o acceso no autorizado.\n\nCambios. Estos Términos pueden actualizarse antes o después del lanzamiento. Si hay un cambio material, actualiza el aviso dentro de la app y la página pública de Términos.",
+  "legalUpdated": "Última actualización: 25 de septiembre de 2026",
+  "video": "Video",
+  "media": "Medio",
+  "videoDuration": "{duration}",
+  "@videoDuration": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  }
 }

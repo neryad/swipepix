@@ -28,65 +28,72 @@ class CleanupScreen extends ConsumerWidget {
     );
     final canLoadNext = hasLoadedNext || gallery.hasMore;
     final isActiveReview = state.photos.isNotEmpty && !state.isComplete;
-    return Scaffold(
-      appBar: isActiveReview
-          ? null
-          : AppBar(
-              title: Text(l.cleanupTitle),
-              actions: [
-                TextButton.icon(
-                  onPressed: pendingCount == 0
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        context.go(AppRoutes.gallery);
+      },
+      child: Scaffold(
+        appBar: isActiveReview
+            ? null
+            : AppBar(
+                title: Text(l.cleanupTitle),
+                actions: [
+                  TextButton.icon(
+                    onPressed: pendingCount == 0
+                        ? null
+                        : () => context.push(AppRoutes.cleanupReview),
+                    icon: const Icon(Icons.fact_check_outlined),
+                    label: Text(l.markedCount(pendingCount)),
+                  ),
+                ],
+              ),
+        body: SafeArea(
+          child: state.photos.isEmpty
+              ? _EmptySession(
+                  onBack: () {
+                    controller.discardSession();
+                    context.go(AppRoutes.gallery);
+                  },
+                )
+              : state.isComplete
+              ? _CompletedSession(
+                  pendingCount: pendingCount,
+                  onReview: pendingCount == 0
                       ? null
                       : () => context.push(AppRoutes.cleanupReview),
-                  icon: const Icon(Icons.fact_check_outlined),
-                  label: Text(l.markedCount(pendingCount)),
-                ),
-              ],
-            ),
-      body: SafeArea(
-        child: state.photos.isEmpty
-            ? _EmptySession(
-                onBack: () {
-                  controller.discardSession();
-                  context.go(AppRoutes.gallery);
-                },
-              )
-            : state.isComplete
-            ? _CompletedSession(
-                pendingCount: pendingCount,
-                onReview: pendingCount == 0
-                    ? null
-                    : () => context.push(AppRoutes.cleanupReview),
-                onUndo: state.canUndo ? controller.undo : null,
-                loadingNextBatch: state.loadingNextBatch,
-                canLoadNext: canLoadNext,
-                reviewedCount: state.index,
-                totalCount: state.photos.length,
-                onLoadNext: canLoadNext
-                    ? () async {
-                        final added = await controller.loadNextBatch();
-                        if (added == 0 && context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l.noMorePhotos)),
-                          );
+                  onUndo: state.canUndo ? controller.undo : null,
+                  loadingNextBatch: state.loadingNextBatch,
+                  canLoadNext: canLoadNext,
+                  reviewedCount: state.index,
+                  totalCount: state.photos.length,
+                  onLoadNext: canLoadNext
+                      ? () async {
+                          final added = await controller.loadNextBatch();
+                          if (added == 0 && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l.noMorePhotos)),
+                            );
+                          }
                         }
-                      }
-                    : null,
-                onBack: () {
-                  controller.discardSession();
-                  context.go(AppRoutes.gallery);
-                },
-              )
-            : _ReviewDeck(
-                state: state,
-                onKeep: controller.keep,
-                onMark: controller.markForDeletion,
-                onUndo: state.canUndo ? controller.undo : null,
-                onSettings: () => context.push(AppRoutes.settings),
-                onPending: pendingCount == 0
-                    ? null
-                    : () => context.push(AppRoutes.cleanupReview),
-              ),
+                      : null,
+                  onBack: () {
+                    controller.discardSession();
+                    context.go(AppRoutes.gallery);
+                  },
+                )
+              : _ReviewDeck(
+                  state: state,
+                  onKeep: controller.keep,
+                  onMark: controller.markForDeletion,
+                  onUndo: state.canUndo ? controller.undo : null,
+                  onSettings: () => context.push(AppRoutes.settings),
+                  onPending: pendingCount == 0
+                      ? null
+                      : () => context.push(AppRoutes.cleanupReview),
+                ),
+        ),
       ),
     );
   }
@@ -931,12 +938,23 @@ class _PhotoCard extends ConsumerWidget {
     final size = photo.sizeBytes == null
         ? null
         : _formatFileSize(photo.sizeBytes!);
-    final metadata = size == null ? date : l.photoMetadata(date, size);
+    final metadataParts = [
+      date,
+      if (photo.duration != null) _formatDuration(photo.duration!),
+      ?size,
+    ];
+    final metadata = metadataParts.length == 1
+        ? metadataParts.single
+        : l.photoMetadata(
+            metadataParts.first,
+            metadataParts.skip(1).join('  •  '),
+          );
+    final mediaLabel = photo.isVideo ? l.video : l.photo;
     final scheme = Theme.of(context).colorScheme;
     final palette = SwipePixPalette.of(context);
     return Semantics(
-      label: '${l.photo} · $metadata',
-      image: true,
+      label: '$mediaLabel · $metadata',
+      image: !photo.isVideo,
       child: Material(
         elevation: isBackgroundCard ? 0 : 24,
         shadowColor: Colors.black.withValues(
@@ -1013,6 +1031,12 @@ class _PhotoCard extends ConsumerWidget {
                   ),
                 ),
               ),
+              if (photo.isVideo)
+                Positioned(
+                  top: SwipeSpacing.md,
+                  right: SwipeSpacing.md,
+                  child: _VideoBadge(duration: photo.duration),
+                ),
               if (showMetadata)
                 Positioned(
                   left: 0,
@@ -1082,6 +1106,58 @@ class _PreviewUnavailable extends StatelessWidget {
             ).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
           ),
         ],
+      ),
+    );
+  }
+}
+
+String _formatDuration(Duration duration) {
+  final totalSeconds = duration.inSeconds;
+  final minutes = totalSeconds ~/ 60;
+  final seconds = totalSeconds % 60;
+  final hours = minutes ~/ 60;
+  if (hours > 0) {
+    final remainingMinutes = minutes % 60;
+    return '$hours:${remainingMinutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+  return '$minutes:${seconds.toString().padLeft(2, '0')}';
+}
+
+class _VideoBadge extends StatelessWidget {
+  const _VideoBadge({this.duration});
+
+  final Duration? duration;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = duration == null || duration == Duration.zero
+        ? null
+        : _formatDuration(duration!);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.68),
+        borderRadius: BorderRadius.circular(SwipeRadius.chip),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 16),
+            if (text != null) ...[
+              const SizedBox(width: 3),
+              Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

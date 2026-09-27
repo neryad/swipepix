@@ -6,7 +6,7 @@ This inventory should be reviewed before each App Store / Google Play submission
 
 ## Current production data posture
 
-SwipePix is currently designed as a local-only photo review utility. No production backend, account system, advertising SDK, analytics SDK, crash-reporting SDK, payment SDK, or cloud-sync feature is present in the reviewed repo.
+SwipePix is currently designed as a local-only photo and video review utility. No production backend, account system, advertising SDK, analytics SDK, crash-reporting SDK, payment SDK, or cloud-sync feature is present in the reviewed repo.
 
 ## Data transmitted off-device
 
@@ -18,7 +18,7 @@ Development builds may use Flutter tooling permissions or local development netw
 
 | Data | Source | Purpose | Stored by SwipePix? | Leaves device? |
 | --- | --- | --- | --- | --- |
-| Photo thumbnails/previews | `photo_manager` / OS photo library | Gallery grid, albums, swipe review, delete review | No app copy intentionally retained | No known app transmission |
+| Photo/video thumbnails and previews | `photo_manager` / OS media library | Gallery grid, albums, swipe review, delete review | No app copy intentionally retained | No known app transmission |
 | Photo identifiers | `photo_manager` | Resume cleanup sessions and pending-deletion review | Yes, local app storage | No known app transmission |
 | Photo dates and file sizes | `photo_manager` | Sort, metadata display, estimated storage freeing | Limited session/local state as needed | No known app transmission |
 | Language/theme/sort/onboarding preferences | User/app settings | App functionality | Yes, local app storage | No known app transmission |
@@ -28,7 +28,7 @@ Development builds may use Flutter tooling permissions or local development netw
 
 | Package / SDK | Purpose | Data risk | Store declaration notes |
 | --- | --- | --- | --- |
-| `photo_manager` | Native photo library access, thumbnails/previews, metadata, limited library management, deletion request | Accesses user photos locally | Declare photo permission. If no off-device transmission occurs, this is local processing rather than collection under Apple/Google definitions. |
+| `photo_manager` | Native media library access, thumbnails/previews, metadata, limited library management, deletion request | Accesses user photos and videos locally | Declare photo/video permissions. If no off-device transmission occurs, this is local processing rather than collection under Apple/Google definitions. |
 | `shared_preferences` | Local settings and session persistence | Stores local preferences/photo IDs | Local-only; not collected if not transmitted. |
 | `package_info_plus` | Reads package version/build | No user data | No data collection. |
 | `flutter_riverpod` | State management | No user data collection by itself | No data collection. |
@@ -44,6 +44,7 @@ Declared in `android/app/src/main/AndroidManifest.xml`:
 
 - `READ_EXTERNAL_STORAGE` with `maxSdkVersion=32`.
 - `READ_MEDIA_IMAGES`.
+- `READ_MEDIA_VIDEO`.
 - `READ_MEDIA_VISUAL_USER_SELECTED`.
 
 ### iOS
