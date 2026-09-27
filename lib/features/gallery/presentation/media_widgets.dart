@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../app/design_system.dart';
 
@@ -72,3 +73,11 @@ String formatFileSize(int bytes) {
   if (bytes >= 1024) return '${(bytes / 1024).toStringAsFixed(0)} KB';
   return '$bytes B';
 }
+
+String formatCount(BuildContext context, int count) =>
+    NumberFormat.decimalPattern(
+      Localizations.localeOf(context).toLanguageTag(),
+    ).format(count);
+
+String formatCountMessage(BuildContext context, String message, int count) =>
+    message.replaceFirst(count.toString(), formatCount(context, count));

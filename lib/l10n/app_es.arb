@@ -4,7 +4,7 @@
   "welcome": "Haz espacio para lo que importa",
   "intro": "Empieza conectando tu galería. Tus fotos y videos permanecen en tu dispositivo; SwipePix nunca los sube.",
   "safety": "Tú tienes el control. El swipe solo marcará elementos. Borrar requerirá una revisión y confirmación aparte.",
-  "connect": "Explorar mis fotos",
+  "connect": "Explorar mi galería",
   "gallery": "Tu galería",
   "libraryTitle": "Biblioteca",
   "recentPhotos": "Medios recientes",
@@ -31,7 +31,7 @@
   "error": "No se pudo cargar tu galería. Revisa el acceso y vuelve a intentarlo.",
   "retry": "Reintentar",
   "refresh": "Actualizar galería",
-  "more": "Cargar más fotos",
+  "more": "Cargar más medios",
   "loadingMorePhotos": "Cargando más medios…",
   "readOnly": "Deslizar solo marca elementos; borrar siempre requiere revisión y confirmación.",
   "language": "Idioma",
@@ -132,7 +132,7 @@
       }
     }
   },
-  "reviewMarked": "Revisar marcadas",
+  "reviewMarked": "Revisar elementos",
   "sessionComplete": "Terminaste esta ronda",
   "sessionCompleteBody": "Revisa los elementos marcados antes de decidir si quieres borrarlos.",
   "nothingMarked": "No marcaste nada para borrar.",
@@ -221,5 +221,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "videoPreviewTitle": "Vista previa de video",
+  "loadingVideo": "Cargando video…",
+  "videoPreviewUnavailable": "No se pudo reproducir este video."
 }

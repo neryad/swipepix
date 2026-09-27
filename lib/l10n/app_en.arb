@@ -4,7 +4,7 @@
   "welcome": "Make room for what matters",
   "intro": "Start by connecting your library. Your photos and videos stay on your device; SwipePix never uploads them.",
   "safety": "You stay in control. Swiping only marks items. Deleting requires a separate review and confirmation.",
-  "connect": "Explore my photos",
+  "connect": "Explore my library",
   "gallery": "Your library",
   "libraryTitle": "Library",
   "recentPhotos": "Recent media",
@@ -31,7 +31,7 @@
   "error": "Could not load your library. Check access and try again.",
   "retry": "Try again",
   "refresh": "Refresh library",
-  "more": "Load more photos",
+  "more": "Load more media",
   "loadingMorePhotos": "Loading more media…",
   "readOnly": "Swiping only marks items; deletion always requires review and confirmation.",
   "language": "Language",
@@ -132,7 +132,7 @@
       }
     }
   },
-  "reviewMarked": "Review marked photos",
+  "reviewMarked": "Review marked items",
   "sessionComplete": "You finished this round",
   "sessionCompleteBody": "Review the marked items before deciding whether to delete them.",
   "nothingMarked": "You did not mark anything for deletion.",
@@ -221,5 +221,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "videoPreviewTitle": "Video preview",
+  "loadingVideo": "Loading video…",
+  "videoPreviewUnavailable": "This video could not be played."
 }

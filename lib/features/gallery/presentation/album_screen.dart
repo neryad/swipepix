@@ -91,7 +91,11 @@ class _AlbumsScreenState extends ConsumerState<AlbumsScreen> {
                       final album = items[index - 1];
                       return _AlbumGridTile(
                         title: album.name,
-                        subtitle: l.albumPhotoCount(album.mediaCount),
+                        subtitle: formatCountMessage(
+                          context,
+                          l.albumPhotoCount(album.mediaCount),
+                          album.mediaCount,
+                        ),
                         coverMedia: album.coverMedia,
                         onTap: () =>
                             context.push(AppRoutes.albumDetails(album.id)),
@@ -211,7 +215,11 @@ class AlbumScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: SwipeSpacing.xs),
                         Text(
-                          l.albumPhotoCount(value.mediaCount),
+                          formatCountMessage(
+                            context,
+                            l.albumPhotoCount(value.mediaCount),
+                            value.mediaCount,
+                          ),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(
@@ -378,7 +386,7 @@ class _AllPhotosAlbumTile extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     return _AlbumGridTile(
       title: l.allPhotos,
-      subtitle: l.albumPhotoCount(count),
+      subtitle: formatCountMessage(context, l.albumPhotoCount(count), count),
       coverMedia: coverMedia,
       leadingIcon: Icons.photo_library_outlined,
       onTap: onTap,
@@ -619,7 +627,11 @@ class MediaCover extends ConsumerWidget {
 }
 
 String albumSubtitle(BuildContext context, GalleryAlbum album) =>
-    AppLocalizations.of(context)!.albumPhotoCount(album.mediaCount);
+    formatCountMessage(
+      context,
+      AppLocalizations.of(context)!.albumPhotoCount(album.mediaCount),
+      album.mediaCount,
+    );
 
 String? mediaSizeLabel(MediaAsset media) =>
     media.sizeBytes == null ? null : formatFileSize(media.sizeBytes!);

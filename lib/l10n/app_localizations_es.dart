@@ -23,7 +23,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tú tienes el control. El swipe solo marcará elementos. Borrar requerirá una revisión y confirmación aparte.';
 
   @override
-  String get connect => 'Explorar mis fotos';
+  String get connect => 'Explorar mi galería';
 
   @override
   String get gallery => 'Tu galería';
@@ -98,7 +98,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get refresh => 'Actualizar galería';
 
   @override
-  String get more => 'Cargar más fotos';
+  String get more => 'Cargar más medios';
 
   @override
   String get loadingMorePhotos => 'Cargando más medios…';
@@ -239,7 +239,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get reviewMarked => 'Revisar marcadas';
+  String get reviewMarked => 'Revisar elementos';
 
   @override
   String get sessionComplete => 'Terminaste esta ronda';
@@ -431,4 +431,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String videoDuration(String duration) {
     return '$duration';
   }
+
+  @override
+  String get videoPreviewTitle => 'Vista previa de video';
+
+  @override
+  String get loadingVideo => 'Cargando video…';
+
+  @override
+  String get videoPreviewUnavailable => 'No se pudo reproducir este video.';
 }

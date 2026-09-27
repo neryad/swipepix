@@ -10,6 +10,7 @@ import '../../../app/design_system.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../gallery/application/gallery_controller.dart';
 import '../../gallery/domain/gallery_repository.dart';
+import '../../gallery/presentation/media_video_preview.dart';
 import '../../gallery/presentation/media_widgets.dart';
 import '../application/cleanup_controller.dart';
 
@@ -953,130 +954,154 @@ class _MediaCard extends ConsumerWidget {
     final mediaLabel = photo.isVideo ? l.video : l.photo;
     final scheme = Theme.of(context).colorScheme;
     final palette = SwipePixPalette.of(context);
+
     return Semantics(
       label: '$mediaLabel · $metadata',
       image: !photo.isVideo,
-      child: Material(
-        elevation: isBackgroundCard ? 0 : 24,
-        shadowColor: Colors.black.withValues(
-          alpha: scheme.brightness == Brightness.dark ? 0.58 : 0.22,
-        ),
-        borderRadius: BorderRadius.circular(28),
-        clipBehavior: Clip.antiAlias,
-        child: ColoredBox(
-          color: scheme.surfaceContainerHighest,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              preview.when(
-                data: (bytes) => bytes == null
-                    ? _PreviewUnavailable(message: l.previewUnavailable)
-                    : Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Image.memory(
-                            bytes,
-                            fit: BoxFit.cover,
-                            excludeFromSemantics: true,
-                            opacity: const AlwaysStoppedAnimation(0.3),
-                            errorBuilder: (_, _, _) => _PreviewUnavailable(
-                              message: l.previewUnavailable,
-                            ),
-                          ),
-                          DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.black.withValues(alpha: 0.02),
-                                  Colors.black.withValues(alpha: 0.24),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(isBackgroundCard ? 0 : 2),
-                            child: Image.memory(
+      button: photo.isVideo,
+      child: GestureDetector(
+        onTap: photo.isVideo
+            ? () => showMediaVideoPreview(context, photo)
+            : null,
+        child: Material(
+          elevation: isBackgroundCard ? 0 : 24,
+          shadowColor: Colors.black.withValues(
+            alpha: scheme.brightness == Brightness.dark ? 0.58 : 0.22,
+          ),
+          borderRadius: BorderRadius.circular(28),
+          clipBehavior: Clip.antiAlias,
+          child: ColoredBox(
+            color: scheme.surfaceContainerHighest,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                preview.when(
+                  data: (bytes) => bytes == null
+                      ? _PreviewUnavailable(message: l.previewUnavailable)
+                      : Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.memory(
                               bytes,
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                               excludeFromSemantics: true,
+                              opacity: const AlwaysStoppedAnimation(0.3),
                               errorBuilder: (_, _, _) => _PreviewUnavailable(
                                 message: l.previewUnavailable,
                               ),
                             ),
-                          ),
-                        ],
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black.withValues(alpha: 0.02),
+                                    Colors.black.withValues(alpha: 0.24),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(isBackgroundCard ? 0 : 2),
+                              child: Image.memory(
+                                bytes,
+                                fit: BoxFit.contain,
+                                excludeFromSemantics: true,
+                                errorBuilder: (_, _, _) => _PreviewUnavailable(
+                                  message: l.previewUnavailable,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                  error: (_, _) =>
+                      _PreviewUnavailable(message: l.previewUnavailable),
+                  loading: () => Center(
+                    child: SizedBox.square(
+                      dimension: 28,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.6,
+                        color: palette.accent,
                       ),
-                error: (_, _) =>
-                    _PreviewUnavailable(message: l.previewUnavailable),
-                loading: () => Center(
-                  child: SizedBox.square(
-                    dimension: 28,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.6,
-                      color: palette.accent,
                     ),
                   ),
                 ),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.08),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              if (photo.isVideo)
-                Positioned(
-                  top: SwipeSpacing.md,
-                  right: SwipeSpacing.md,
-                  child: MediaVideoBadge(
-                    duration: photo.duration,
-                    prominent: true,
-                  ),
-                ),
-              if (showMetadata)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withValues(alpha: 0.82),
-                        ],
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        SwipeSpacing.lg,
-                        42,
-                        SwipeSpacing.lg,
-                        SwipeSpacing.lg,
-                      ),
-                      child: Text(
-                        metadata,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.1,
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.08),
                         ),
                       ),
                     ),
                   ),
                 ),
-            ],
+                if (photo.isVideo) ...[
+                  Positioned(
+                    top: SwipeSpacing.md,
+                    right: SwipeSpacing.md,
+                    child: MediaVideoBadge(
+                      duration: photo.duration,
+                      prominent: true,
+                    ),
+                  ),
+                  Center(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.44),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(18),
+                        child: Icon(
+                          Icons.play_arrow_rounded,
+                          color: Colors.white,
+                          size: 56,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                if (showMetadata)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withValues(alpha: 0.82),
+                          ],
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          SwipeSpacing.lg,
+                          42,
+                          SwipeSpacing.lg,
+                          SwipeSpacing.lg,
+                        ),
+                        child: Text(
+                          metadata,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

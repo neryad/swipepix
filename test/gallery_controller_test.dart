@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -67,6 +68,8 @@ class FakeGallery implements GalleryRepository {
   Future<Uint8List?> thumbnail(String id) async => null;
   @override
   Future<Uint8List?> preview(String id) async => null;
+  @override
+  Future<File?> mediaFile(String id) async => null;
   @override
   Future<List<MediaAsset>> resolveMedia(Iterable<String> ids) async => ids
       .where((id) => !unavailableIds.contains(id))

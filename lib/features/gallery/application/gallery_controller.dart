@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/data/local_store.dart';
@@ -15,6 +16,9 @@ final mediaPreviewProvider = FutureProvider.autoDispose
     .family<Uint8List?, String>(
       (ref, id) => ref.watch(galleryRepositoryProvider).preview(id),
     );
+final mediaFileProvider = FutureProvider.autoDispose.family<File?, String>(
+  (ref, id) => ref.watch(galleryRepositoryProvider).mediaFile(id),
+);
 final galleryAlbumsProvider = FutureProvider.autoDispose<List<GalleryAlbum>>((
   ref,
 ) async {

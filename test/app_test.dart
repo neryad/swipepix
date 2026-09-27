@@ -29,8 +29,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Haz espacio para lo que importa'), findsOneWidget);
     expect(repo.requests, 0);
-    await tester.scrollUntilVisible(find.text('Explorar mis fotos'), 200);
-    await tester.tap(find.text('Explorar mis fotos'));
+    await tester.scrollUntilVisible(find.text('Explorar mi galería'), 200);
+    await tester.tap(find.text('Explorar mi galería'));
     await tester.pumpAndSettle();
     expect(find.text('Abrir ajustes del dispositivo'), findsOneWidget);
     expect(repo.reads, 0);
@@ -168,7 +168,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Make room for what matters'), findsOneWidget);
-    expect(find.text('Explore my photos'), findsOneWidget);
+    expect(find.text('Explore my library'), findsOneWidget);
   });
 
   testWidgets('completed onboarding opens gallery and resumes saved cleanup', (

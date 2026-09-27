@@ -8,6 +8,7 @@ import '../../../app/empty_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../gallery/application/gallery_controller.dart';
 import '../../gallery/domain/gallery_repository.dart';
+import '../../gallery/presentation/media_video_preview.dart';
 import '../../gallery/presentation/media_widgets.dart';
 import '../application/cleanup_controller.dart';
 
@@ -215,84 +216,88 @@ class _PendingMediaTile extends ConsumerWidget {
     final l = AppLocalizations.of(context)!;
     final preview = ref.watch(thumbnailProvider(photo.id));
     final palette = SwipePixPalette.of(context);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(SwipeRadius.tile),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          ColoredBox(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            child: preview.when(
-              data: (bytes) => bytes == null
-                  ? const Icon(Icons.broken_image_outlined)
-                  : Image.memory(
-                      bytes,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) =>
-                          const Icon(Icons.broken_image_outlined),
-                    ),
-              error: (_, _) => const Icon(Icons.broken_image_outlined),
-              loading: () => const Center(
-                child: SizedBox.square(
-                  dimension: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: SwipeSpacing.xs,
-            right: SwipeSpacing.xs,
-            child: IconButton.filled(
-              onPressed: disabled ? null : onKeep,
-              tooltip: l.removeFromDelete,
-              style: IconButton.styleFrom(
-                backgroundColor: palette.delete,
-                foregroundColor: Colors.white,
-                minimumSize: const Size.square(30),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              icon: const Icon(Icons.remove_rounded, size: 18),
-            ),
-          ),
-          if (photo.isVideo)
-            Positioned(
-              top: SwipeSpacing.xs,
-              left: SwipeSpacing.xs,
-              child: MediaVideoBadge(duration: photo.duration),
-            ),
-          Positioned(
-            left: SwipeSpacing.sm,
-            bottom: SwipeSpacing.sm,
-            right: SwipeSpacing.sm,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.58),
-                borderRadius: BorderRadius.circular(SwipeRadius.chip),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: SwipeSpacing.sm,
-                  vertical: SwipeSpacing.xs,
-                ),
-                child: Text(
-                  [
-                    MaterialLocalizations.of(
-                      context,
-                    ).formatMediumDate(photo.createdAt),
-                    if (photo.duration != null) formatDuration(photo.duration!),
-                  ].join(' · '),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11,
+    return GestureDetector(
+      onTap: photo.isVideo ? () => showMediaVideoPreview(context, photo) : null,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(SwipeRadius.tile),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ColoredBox(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              child: preview.when(
+                data: (bytes) => bytes == null
+                    ? const Icon(Icons.broken_image_outlined)
+                    : Image.memory(
+                        bytes,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.broken_image_outlined),
+                      ),
+                error: (_, _) => const Icon(Icons.broken_image_outlined),
+                loading: () => const Center(
+                  child: SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              top: SwipeSpacing.xs,
+              right: SwipeSpacing.xs,
+              child: IconButton.filled(
+                onPressed: disabled ? null : onKeep,
+                tooltip: l.removeFromDelete,
+                style: IconButton.styleFrom(
+                  backgroundColor: palette.delete,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.square(30),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                icon: const Icon(Icons.remove_rounded, size: 18),
+              ),
+            ),
+            if (photo.isVideo)
+              Positioned(
+                top: SwipeSpacing.xs,
+                left: SwipeSpacing.xs,
+                child: MediaVideoBadge(duration: photo.duration),
+              ),
+            Positioned(
+              left: SwipeSpacing.sm,
+              bottom: SwipeSpacing.sm,
+              right: SwipeSpacing.sm,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.58),
+                  borderRadius: BorderRadius.circular(SwipeRadius.chip),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: SwipeSpacing.sm,
+                    vertical: SwipeSpacing.xs,
+                  ),
+                  child: Text(
+                    [
+                      MaterialLocalizations.of(
+                        context,
+                      ).formatMediumDate(photo.createdAt),
+                      if (photo.duration != null)
+                        formatDuration(photo.duration!),
+                    ].join(' · '),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 11,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

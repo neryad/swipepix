@@ -125,7 +125,7 @@ abstract class AppLocalizations {
   /// No description provided for @connect.
   ///
   /// In en, this message translates to:
-  /// **'Explore my photos'**
+  /// **'Explore my library'**
   String get connect;
 
   /// No description provided for @gallery.
@@ -245,7 +245,7 @@ abstract class AppLocalizations {
   /// No description provided for @more.
   ///
   /// In en, this message translates to:
-  /// **'Load more photos'**
+  /// **'Load more media'**
   String get more;
 
   /// No description provided for @loadingMorePhotos.
@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// No description provided for @reviewMarked.
   ///
   /// In en, this message translates to:
-  /// **'Review marked photos'**
+  /// **'Review marked items'**
   String get reviewMarked;
 
   /// No description provided for @sessionComplete.
@@ -775,6 +775,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{duration}'**
   String videoDuration(String duration);
+
+  /// No description provided for @videoPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Video preview'**
+  String get videoPreviewTitle;
+
+  /// No description provided for @loadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading video…'**
+  String get loadingVideo;
+
+  /// No description provided for @videoPreviewUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This video could not be played.'**
+  String get videoPreviewUnavailable;
 }
 
 class _AppLocalizationsDelegate

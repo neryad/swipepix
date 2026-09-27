@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 enum GalleryAccess {
@@ -78,6 +79,7 @@ abstract interface class GalleryRepository {
   Future<List<MediaAsset>> resolveMedia(Iterable<String> ids);
   Future<Uint8List?> thumbnail(String id);
   Future<Uint8List?> preview(String id);
+  Future<File?> mediaFile(String id);
   Future<List<String>> deleteMedia(List<String> ids);
   Future<void> manageLimited();
   Future<void> openSettings();

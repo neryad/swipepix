@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../app/app_routes.dart';
 import '../../../app/design_system.dart';
@@ -10,6 +9,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../cleanup/application/cleanup_controller.dart';
 import '../application/gallery_controller.dart';
 import '../domain/gallery_repository.dart';
+import 'media_video_preview.dart';
 import 'media_widgets.dart';
 
 class GalleryScreen extends ConsumerStatefulWidget {
@@ -405,7 +405,7 @@ class _HomeSummary extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _formatCount(context, count),
+                    formatCount(context, count),
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w900,
                       letterSpacing: -0.8,
@@ -413,7 +413,7 @@ class _HomeSummary extends StatelessWidget {
                   ),
                   const SizedBox(height: SwipeSpacing.xxs),
                   Text(
-                    l.photoSummary(count),
+                    formatCountMessage(context, l.photoSummary(count), count),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: scheme.onSurfaceVariant,
                       fontWeight: FontWeight.w700,
@@ -563,7 +563,7 @@ class _QuickCleanup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final formattedCount = _formatCount(context, totalCount);
+    final formattedCount = formatCount(context, totalCount);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -756,7 +756,11 @@ class _AlbumCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    l.albumPhotoCount(album.mediaCount),
+                    formatCountMessage(
+                      context,
+                      l.albumPhotoCount(album.mediaCount),
+                      album.mediaCount,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -911,7 +915,7 @@ class _LibraryHeader extends StatelessWidget {
             children: [
               _SectionTitle(title: l.recentPhotos),
               Text(
-                l.photoSummary(count),
+                formatCountMessage(context, l.photoSummary(count), count),
                 style: Theme.of(
                   context,
                 ).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
@@ -1226,6 +1230,7 @@ class MediaTile extends ConsumerWidget {
       ?size,
     ].join(' · ');
     final preview = ref.watch(thumbnailProvider(photo.id));
+
     Widget unavailable() => Center(
       child: Tooltip(
         message: l.thumbnailError,
@@ -1236,72 +1241,74 @@ class MediaTile extends ConsumerWidget {
         ),
       ),
     );
+
     return Semantics(
       label: label,
       image: !photo.isVideo,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(SwipeRadius.tile),
-        child: ColoredBox(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              preview.when(
-                data: (bytes) => bytes == null
-                    ? unavailable()
-                    : Image.memory(
-                        bytes,
-                        fit: BoxFit.cover,
-                        excludeFromSemantics: true,
-                        errorBuilder: (_, _, _) => unavailable(),
-                      ),
-                error: (_, _) => unavailable(),
-                loading: () => const Center(
-                  child: SizedBox.square(
-                    dimension: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ),
-              ),
-              if (photo.isVideo)
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: MediaVideoBadge(duration: photo.duration),
-                ),
-              if (size != null)
-                Positioned(
-                  left: 6,
-                  bottom: 6,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.68),
-                      borderRadius: BorderRadius.circular(SwipeRadius.chip),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.08),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 7,
-                        vertical: 3,
-                      ),
-                      child: Text(
-                        size,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+      button: photo.isVideo,
+      child: GestureDetector(
+        onTap: photo.isVideo
+            ? () => showMediaVideoPreview(context, photo)
+            : null,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(SwipeRadius.tile),
+          child: ColoredBox(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                preview.when(
+                  data: (bytes) => bytes == null
+                      ? unavailable()
+                      : Image.memory(
+                          bytes,
+                          fit: BoxFit.cover,
+                          excludeFromSemantics: true,
+                          errorBuilder: (_, _, _) => unavailable(),
+                        ),
+                  error: (_, _) => unavailable(),
+                  loading: () => const Center(
+                    child: SizedBox.square(
+                      dimension: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
                 ),
-            ],
+                if (photo.isVideo)
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: MediaVideoBadge(duration: photo.duration),
+                  ),
+                if (size != null)
+                  Positioned(
+                    left: 6,
+                    bottom: 6,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.68),
+                        borderRadius: BorderRadius.circular(SwipeRadius.chip),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.08),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 7,
+                          vertical: 3,
+                        ),
+                        child: Text(
+                          size,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-String _formatCount(BuildContext context, int count) =>
-    NumberFormat.decimalPattern(
-      Localizations.localeOf(context).toLanguageTag(),
-    ).format(count);

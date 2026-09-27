@@ -23,7 +23,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'You stay in control. Swiping only marks items. Deleting requires a separate review and confirmation.';
 
   @override
-  String get connect => 'Explore my photos';
+  String get connect => 'Explore my library';
 
   @override
   String get gallery => 'Your library';
@@ -98,7 +98,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refresh => 'Refresh library';
 
   @override
-  String get more => 'Load more photos';
+  String get more => 'Load more media';
 
   @override
   String get loadingMorePhotos => 'Loading more media…';
@@ -237,7 +237,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get reviewMarked => 'Review marked photos';
+  String get reviewMarked => 'Review marked items';
 
   @override
   String get sessionComplete => 'You finished this round';
@@ -429,4 +429,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String videoDuration(String duration) {
     return '$duration';
   }
+
+  @override
+  String get videoPreviewTitle => 'Video preview';
+
+  @override
+  String get loadingVideo => 'Loading video…';
+
+  @override
+  String get videoPreviewUnavailable => 'This video could not be played.';
 }

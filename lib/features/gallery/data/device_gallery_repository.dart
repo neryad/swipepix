@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../domain/gallery_repository.dart';
@@ -190,6 +192,13 @@ class DeviceGalleryRepository implements GalleryRepository {
   Future<Uint8List?> preview(String id) async {
     final asset = await AssetEntity.fromId(id);
     return asset?.thumbnailDataWithSize(const ThumbnailSize(1440, 1440));
+  }
+
+  @override
+  Future<File?> mediaFile(String id) async {
+    final asset = await AssetEntity.fromId(id);
+    if (asset == null || asset.type != AssetType.video) return null;
+    return asset.file;
   }
 
   @override
