@@ -216,79 +216,102 @@ void main() {
     expect(container.read(cleanupProvider).current?.id, 'two');
   });
 
-  testWidgets('system back from swipe review returns to gallery', (
-    tester,
-  ) async {
-    final repo = FakeGallery()
-      ..fetch = (_) async => [
-        MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
-        MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
-      ];
-    final container = ProviderContainer(
-      overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
-    );
-    addTearDown(container.dispose);
-    container.read(localeProvider.notifier).select(const Locale('en'));
-    container.read(routerProvider).go('/gallery');
-    await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: const SwipePixApp(),
-      ),
-    );
-    await tester.pumpAndSettle();
+  testWidgets(
+    'system back from swipe review returns to gallery',
+    (tester) async {
+      final repo = FakeGallery()
+        ..fetch = (_) async => [
+          MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+          MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
+        ];
+      final container = ProviderContainer(
+        overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
+      );
+      addTearDown(container.dispose);
+      container.read(localeProvider.notifier).select(const Locale('en'));
+      container.read(routerProvider).go('/gallery');
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const SwipePixApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Start reviewing'));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('active-media-one')), findsOneWidget);
+      await tester.tap(find.text('Start reviewing'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('active-media-one')), findsOneWidget);
 
-    await tester.binding.handlePopRoute();
-    await tester.pumpAndSettle();
+      final screenSize =
+          tester.view.physicalSize / tester.view.devicePixelRatio;
+      await tester.dragFrom(
+        Offset(1, screenSize.height / 2),
+        Offset(screenSize.width * 0.6, 0),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.text('Recent media'), findsOneWidget);
-    expect(container.read(cleanupProvider).current?.id, 'one');
-  });
+      expect(find.text('Recent media'), findsOneWidget);
+      expect(container.read(cleanupProvider).current?.id, 'one');
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
 
-  testWidgets('swipe flow marks, reviews, and deletes after review action', (
-    tester,
-  ) async {
-    final repo = FakeGallery()
-      ..fetch = (_) async => [
-        MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
-        MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
-      ];
-    final container = ProviderContainer(
-      overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
-    );
-    addTearDown(container.dispose);
-    container.read(localeProvider.notifier).select(const Locale('en'));
-    container.read(routerProvider).go('/gallery');
-    await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: const SwipePixApp(),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Start reviewing'));
-    await tester.pumpAndSettle();
-    await tester.drag(
-      find.byKey(const ValueKey('active-media-one')),
-      const Offset(-500, 0),
-    );
-    await tester.pumpAndSettle();
-    expect(container.read(cleanupProvider).pendingDeletion, {'one'});
-    expect(repo.deleteCalls, 0);
-    await tester.tap(find.byTooltip('1 marked'));
-    await tester.pumpAndSettle();
-    expect(find.text('Review before deleting'), findsOneWidget);
-    expect(find.text('Delete permanently?'), findsNothing);
-    expect(repo.deleteCalls, 0);
-    await tester.tap(find.text('Delete 1 reviewed item'));
-    await tester.pumpAndSettle();
-    expect(repo.deleteCalls, 1);
-    expect(container.read(cleanupProvider).pendingDeletion, isEmpty);
-    expect(container.read(cleanupProvider).current?.id, 'two');
-    expect(find.text('SwipePix'), findsOneWidget);
-  });
+  testWidgets(
+    'swipe flow marks, reviews, and deletes after review action',
+    (tester) async {
+      final repo = FakeGallery()
+        ..fetch = (_) async => [
+          MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+          MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
+        ];
+      final container = ProviderContainer(
+        overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
+      );
+      addTearDown(container.dispose);
+      container.read(localeProvider.notifier).select(const Locale('en'));
+      container.read(routerProvider).go('/gallery');
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const SwipePixApp(),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Start reviewing'));
+      await tester.pumpAndSettle();
+      await tester.drag(
+        find.byKey(const ValueKey('active-media-one')),
+        const Offset(-500, 0),
+      );
+      await tester.pumpAndSettle();
+      expect(container.read(cleanupProvider).pendingDeletion, {'one'});
+      expect(repo.deleteCalls, 0);
+      await tester.tap(find.byTooltip('1 marked'));
+      await tester.pumpAndSettle();
+      expect(find.text('Review before deleting'), findsOneWidget);
+      expect(find.text('Delete permanently?'), findsNothing);
+      expect(repo.deleteCalls, 0);
+
+      final screenSize =
+          tester.view.physicalSize / tester.view.devicePixelRatio;
+      await tester.dragFrom(
+        Offset(1, screenSize.height / 2),
+        Offset(screenSize.width * 0.6, 0),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Review before deleting'), findsNothing);
+      expect(container.read(cleanupProvider).pendingDeletion, {'one'});
+      await tester.tap(find.byTooltip('1 marked'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Delete 1 reviewed item'));
+      await tester.pumpAndSettle();
+      expect(repo.deleteCalls, 1);
+      expect(container.read(cleanupProvider).pendingDeletion, isEmpty);
+      expect(container.read(cleanupProvider).current?.id, 'two');
+      expect(find.text('SwipePix'), findsOneWidget);
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
 }

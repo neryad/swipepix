@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,11 +41,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.cleanup,
-        builder: (_, _) => const CleanupScreen(),
+        pageBuilder: (_, state) => CupertinoPage<void>(
+          key: state.pageKey,
+          child: const CleanupScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.cleanupReview,
-        builder: (_, _) => const DeleteReviewScreen(),
+        pageBuilder: (_, state) => CupertinoPage<void>(
+          key: state.pageKey,
+          child: const DeleteReviewScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.settings,

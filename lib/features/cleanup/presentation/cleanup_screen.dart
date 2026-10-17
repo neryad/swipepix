@@ -31,7 +31,7 @@ class CleanupScreen extends ConsumerWidget {
     final canLoadNext = hasLoadedNext || gallery.hasMore;
     final isActiveReview = state.photos.isNotEmpty && !state.isComplete;
     return PopScope(
-      canPop: false,
+      canPop: context.canPop(),
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
         context.go(AppRoutes.gallery);
