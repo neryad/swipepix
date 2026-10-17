@@ -256,6 +256,37 @@ void main() {
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
+  testWidgets('back button from swipe review returns to gallery', (
+    tester,
+  ) async {
+    final repo = FakeGallery()
+      ..fetch = (_) async => [
+        MediaAsset(id: 'one', createdAt: DateTime(2026, 1, 1)),
+        MediaAsset(id: 'two', createdAt: DateTime(2026, 1, 2)),
+      ];
+    final container = ProviderContainer(
+      overrides: [galleryRepositoryProvider.overrideWithValue(repo)],
+    );
+    addTearDown(container.dispose);
+    container.read(localeProvider.notifier).select(const Locale('en'));
+    container.read(routerProvider).go('/gallery');
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const SwipePixApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Start reviewing'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Back to library'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Recent media'), findsOneWidget);
+    expect(container.read(cleanupProvider).current?.id, 'one');
+  });
+
   testWidgets(
     'swipe flow marks, reviews, and deletes after review action',
     (tester) async {

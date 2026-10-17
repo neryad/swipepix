@@ -90,6 +90,7 @@ class CleanupScreen extends ConsumerWidget {
                   onKeep: controller.keep,
                   onMark: controller.markForDeletion,
                   onUndo: state.canUndo ? controller.undo : null,
+                  onBack: () => context.go(AppRoutes.gallery),
                   onSettings: () => context.push(AppRoutes.settings),
                   onPending: pendingCount == 0
                       ? null
@@ -107,6 +108,7 @@ class _ReviewDeck extends StatefulWidget {
     required this.onKeep,
     required this.onMark,
     required this.onUndo,
+    required this.onBack,
     required this.onSettings,
     required this.onPending,
   });
@@ -115,6 +117,7 @@ class _ReviewDeck extends StatefulWidget {
   final VoidCallback onKeep;
   final VoidCallback onMark;
   final VoidCallback? onUndo;
+  final VoidCallback onBack;
   final VoidCallback onSettings;
   final VoidCallback? onPending;
 
@@ -342,6 +345,7 @@ class _ReviewDeckState extends State<_ReviewDeck>
               progress: progress,
               pendingText: l.markedCount(state.pendingDeletion.length),
               pendingCount: state.pendingDeletion.length,
+              onBack: widget.onBack,
               onSettings: widget.onSettings,
               onPending: widget.onPending,
             ),
@@ -502,6 +506,7 @@ class _ReviewHeader extends StatelessWidget {
     required this.progress,
     required this.pendingText,
     required this.pendingCount,
+    required this.onBack,
     required this.onSettings,
     required this.onPending,
   });
@@ -510,6 +515,7 @@ class _ReviewHeader extends StatelessWidget {
   final double progress;
   final String pendingText;
   final int pendingCount;
+  final VoidCallback onBack;
   final VoidCallback onSettings;
   final VoidCallback? onPending;
 
@@ -535,6 +541,12 @@ class _ReviewHeader extends StatelessWidget {
             ),
             child: Row(
               children: [
+                _HeaderIconButton(
+                  onPressed: onBack,
+                  tooltip: l.backToGallery,
+                  icon: Icons.arrow_back_rounded,
+                ),
+                const SizedBox(width: SwipeSpacing.xs),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: SwipeSpacing.sm,
